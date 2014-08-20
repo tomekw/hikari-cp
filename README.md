@@ -1,4 +1,4 @@
-[![clojars version](https://clojars.org/hikari-cp)](https://clojars.org/hikari-cp)
+[![hikari-cp](http://clojars.org/hikari-cp/latest-version.svg)](http://clojars.org/hikari-cp)
 
 # hikari-cp
 
