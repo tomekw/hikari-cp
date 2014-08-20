@@ -18,6 +18,14 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 I won't be available on-line until 08.09.2014!
 
+## Installation
+
+Add the following dependency to your `project.clj` file:
+
+```clj
+[hikari-cp "0.2.0"]
+```
+
 ## Usage
 
 ```clj
