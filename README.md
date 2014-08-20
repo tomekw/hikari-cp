@@ -6,12 +6,15 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Future plans
 
-* I'm still learning Clojure and this is my first public Clojure project
+* I'm still learning Clojure and this is my first public project in this
+  language
 * Add proper documentation
 * Write tests
 * Use [Prismatic/schema](https://github.com/Prismatic/schema) to
   validate the configuration options
 * Handle configuration errors
+* (Probably) learn to write more idiomatic Clojure
+* Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
 I won't be available on-line until 08.09.2014!
 
@@ -37,16 +40,16 @@ I won't be available on-line until 08.09.2014!
              :port                  5432
              })
 
-(def ds-config (data-source-config config))
+(def ds-config (datasource-config config))
 
-(def data-source
-  (data-source-from-config ds-config))
+(def datasource
+  (datasource-from-config ds-config))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource data-source}]
+  (jdbc/with-db-connection [conn {:datasource datasource}]
     (let [rows (jdbc/query conn "SELECT * FROM table")]
       (println rows)))
-  (close-data-source data-source))
+  (close-datasource datasource))
 ```
 
 ## License

@@ -1,7 +1,7 @@
 (ns hikari-cp.core
   (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource))
 
-(def ^{:private true} default-data-source-options
+(def ^{:private true} default-datasource-options
   {:auto-commit        true
    :read-only          false
    :connection-timeout 30000
@@ -10,11 +10,11 @@
    :minimum-idle       10
    :maximum-pool-size  10})
 
-(defn data-source-config
+(defn datasource-config
   ""
-  [data-source-options]
+  [datasource-options]
   (let [config (HikariConfig.)
-        options               (merge default-data-source-options data-source-options)
+        options               (merge default-datasource-options datasource-options)
         auto-commit           (:auto-commit options)
         read-only             (:read-only options)
         connection-timeout    (:connection-timeout options)
@@ -43,12 +43,12 @@
     (.addDataSourceProperty  config "serverName"   server-name-with-port)
     config))
 
-(defn data-source-from-config
+(defn datasource-from-config
   ""
   [config]
-  (let [data-source (HikariDataSource. config)] data-source))
+  (let [datasource (HikariDataSource. config)] datasource))
 
-(defn close-data-source
+(defn close-datasource
   ""
-  [data-source]
-  (.close data-source))
+  [datasource]
+  (.close datasource))
