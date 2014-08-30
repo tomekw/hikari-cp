@@ -26,8 +26,8 @@
         username              (:username options)
         password              (:password options)
         database-name         (:database-name options)
-        server-name           (str (:server-name options))
-        port                  (str (:port options))
+        server-name           (:server-name options)
+        port                  (:port options)
         server-name-with-port (clojure.string/join [server-name ":" port])]
     (.setDataSourceClassName config datasource-class-name)
     (.setAutoCommit          config auto-commit)
@@ -40,7 +40,10 @@
     (.addDataSourceProperty  config "user"         username)
     (.addDataSourceProperty  config "password"     password)
     (.addDataSourceProperty  config "databaseName" database-name)
-    (.addDataSourceProperty  config "serverName"   server-name-with-port)
+    (if (= datasource-class-name "net.sourceforge.jtds.jdbcx.JtdsDataSource")
+      (do (.addDataSourceProperty config "serverName" server-name)
+          (.addDataSourceProperty config "portNumber" port))
+      (.addDataSourceProperty  config "serverName"  server-name-with-port))
     config))
 
 (defn datasource-from-config
