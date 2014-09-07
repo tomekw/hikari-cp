@@ -1,6 +1,6 @@
 [![hikari-cp](http://clojars.org/hikari-cp/latest-version.svg)](http://clojars.org/hikari-cp)
 
-# hikari-cp
+# hikari-cp [![Build Status](https://secure.travis-ci.org/tomekw/hikari-cp.png)](http://travis-ci.org/tomekw/hikari-cp)
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
