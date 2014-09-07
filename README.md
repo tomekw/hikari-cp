@@ -17,6 +17,8 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 This library is under construction and public API is subject to change
 before reaching the version `1.0.0`.
 
+`hikari-cp` targets only Java version 8.
+
 ## Installation
 
 Add the following dependency to your `project.clj` file:
