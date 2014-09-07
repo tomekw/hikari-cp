@@ -26,6 +26,13 @@ Add the following dependency to your `project.clj` file:
 [hikari-cp "0.2.0"]
 ```
 
+## Adapters and corresponding datasource class names
+
+| Adapter    | Datasource class name                         | Tested with hikari-cp |
+| ---------- | --------------------------------------------- | :-------------------: |
+| postgresql | org.postgresql.ds.PGSimpleDataSource          | Yes                   |
+| mysql      | com.mysql.jdbc.jdbc2.optional.MysqlDataSource | Yes                   |
+
 ## Usage
 
 ```clj
