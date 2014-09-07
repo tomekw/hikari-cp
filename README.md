@@ -13,7 +13,7 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 * Handle configuration errors
 * Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
-## Discalimer
+## Disclaimer
 
 This library is under construction and public API is subject to change
 before reaching the version `1.0.0`.
