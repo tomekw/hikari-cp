@@ -7,7 +7,6 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 ## Future plans
 
 * Add proper documentation
-* Write tests
 * Use [Prismatic/schema](https://github.com/Prismatic/schema) to
   validate the configuration options
 * Handle configuration errors
@@ -45,9 +44,9 @@ Add the following dependency to your `project.clj` file:
              :connection-timeout    30000
              :idle-timeout          600000
              :max-lifetime          1800000
-             :datasource-class-name "org.postgresql.ds.PGSimpleDataSource"
              :minimum-idle          10
              :maximum-pool-size     10
+             :datasource-class-name "org.postgresql.ds.PGSimpleDataSource"
              :username              "username"
              :password              "password"
              :database-name         "database"
