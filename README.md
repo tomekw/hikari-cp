@@ -6,17 +6,17 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Future plans
 
-* I'm still learning Clojure and this is my first public project in this
-  language
 * Add proper documentation
 * Write tests
 * Use [Prismatic/schema](https://github.com/Prismatic/schema) to
   validate the configuration options
 * Handle configuration errors
-* (Probably) learn to write more idiomatic Clojure
 * Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
-I won't be available on-line until 08.09.2014!
+## Discalimer
+
+This library is under construction and public API is subject to change
+before reaching the version `1.0.0`.
 
 ## Installation
 
