@@ -39,14 +39,14 @@ Plus, add the database driver you want to use.
 | `:max-lifetime`       | No       | `1800000`          | This property controls the maximum lifetime of a connection in the pool. A value of 0 indicates no maximum lifetime (infinite lifetime).                                                                                                       |
 | `:minimum-idle`       | No       | `10`               | This property controls the minimum number of idle connections that HikariCP tries to maintain in the pool.                                                                                                                                     |
 | `:maximum-pool-size`  | No       | `10`               | This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections. Basically this value will determine the maximum number of actual connections to the database backend.                   |
-| `:adapter`            | Yes      | None               | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names.        |
-| `:username`           | Yes      | None               | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                             |
+| `:adapter`            | **Yes**  | None               | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names.        |
+| `:username`           | **Yes**  | None               | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                             |
 | `:password`           | No       | None               | This property sets the default authentication password used when obtaining Connections from the underlying driver.                                                                                                                             |
-| `:database-name`      | Yes      | None               | This property sets the database name.                                                                                                                                                                                                          |
+| `:database-name`      | **Yes**  | None               | This property sets the database name.                                                                                                                                                                                                          |
 | `:server-name`        | No       | Depends on adapter | This property sets the hostname client connects to.                                                                                                                                                                                            |
 | `:port`               | No       | Depends on adapter | This property sets the port clients connects on.                                                                                                                                                                                               |
 
-*Please note:* All time values are specified in milliseconds.
+**Please note:** All time values are specified in milliseconds.
 
 ## Adapters and corresponding datasource class names
 
@@ -58,11 +58,11 @@ Plus, add the database driver you want to use.
 | `:h2`         | `org.h2.jdbcx.JdbcDataSource`                      | No                    |
 | `:hsqldb`     | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
 | `:mariadb`    | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
-| `:mysql`      | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | Yes                   |
+| `:mysql`      | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
 | `:sqlserver`  | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
 | `:oracle`     | `oracle.jdbc.pool.OracleDataSource`                | No                    |
 | `:pgjdbc-ng`  | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
-| `:postgresql` | `org.postgresql.ds.PGSimpleDataSource`             | Yes                   |
+| `:postgresql` | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
 | `:sybase`     | `com.sybase.jdbcx.SybDataSource`                   | No                    |
 
 ## Usage
