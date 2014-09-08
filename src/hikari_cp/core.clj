@@ -10,6 +10,20 @@
    :minimum-idle       10
    :maximum-pool-size  10})
 
+(def ^{:private true} adapters-to-datasource-class-names
+  {:derby      "org.apache.derby.jdbc.ClientDataSource"
+   :firebird   "org.firebirdsql.pool.FBSimpleDataSource"
+   :db2        "com.ibm.db2.jcc.DB2SimpleDataSource"
+   :h2         "org.h2.jdbcx.JdbcDataSource"
+   :hsqldb     "org.hsqldb.jdbc.JDBCDataSource"
+   :mariadb    "org.mariadb.jdbc.MySQLDataSource"
+   :mysql      "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+   :sqlserver  "com.microsoft.sqlserver.jdbc.SQLServerDataSource"
+   :oracle     "oracle.jdbc.pool.OracleDataSource"
+   :pgjdbc-ng  "com.impossibl.postgres.jdbc.PGDataSource"
+   :postgresql "org.postgresql.ds.PGSimpleDataSource"
+   :sybase     "com.sybase.jdbcx.SybDataSource"})
+
 (defn datasource-config
   ""
   [datasource-options]
@@ -22,7 +36,8 @@
         max-lifetime          (:max-lifetime options)
         minimum-idle          (:minimum-idle options)
         maximum-pool-size     (:maximum-pool-size options)
-        datasource-class-name (:datasource-class-name options)
+        adapter               (:adapter options)
+        datasource-class-name (get adapters-to-datasource-class-names adapter)
         username              (:username options)
         password              (:password options)
         database-name         (:database-name options)

@@ -31,12 +31,12 @@
 (expect 1     (.getMaximumPoolSize   datasource-config-with-overrides))
 
 (def datasource-config-with-required-settings
-  (datasource-config {:datasource-class-name "org.postgresql.ds.PGSimpleDataSource"
-                      :username              "username"
-                      :password              "password"
-                      :database-name         "database"
-                      :server-name           "host-1"
-                      :port                  5433}))
+  (datasource-config {:adapter       :postgresql
+                      :username      "username"
+                      :password      "password"
+                      :database-name "database"
+                      :server-name   "host-1"
+                      :port          5433}))
 
 (expect "org.postgresql.ds.PGSimpleDataSource" (.getDataSourceClassName datasource-config-with-required-settings))
 (expect "username"                             (.getUsername            datasource-config-with-required-settings))
