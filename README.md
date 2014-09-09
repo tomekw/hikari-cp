@@ -50,20 +50,21 @@ Plus, add the database driver you want to use.
 
 ## Adapters and corresponding datasource class names
 
-| Adapter       | Datasource class name                              | Tested with hikari-cp |
-| ------------- | -------------------------------------------------- | :-------------------: |
-| `:derby`      | `org.apache.derby.jdbc.ClientDataSource`           | No                    |
-| `:firebird`   | `org.firebirdsql.pool.FBSimpleDataSource`          | No                    |
-| `:db2`        | `com.ibm.db2.jcc.DB2SimpleDataSource`              | No                    |
-| `:h2`         | `org.h2.jdbcx.JdbcDataSource`                      | No                    |
-| `:hsqldb`     | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
-| `:mariadb`    | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
-| `:mysql`      | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
-| `:sqlserver`  | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
-| `:oracle`     | `oracle.jdbc.pool.OracleDataSource`                | No                    |
-| `:pgjdbc-ng`  | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
-| `:postgresql` | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
-| `:sybase`     | `com.sybase.jdbcx.SybDataSource`                   | No                    |
+| Adapter           | Datasource class name                              | Tested with hikari-cp |
+| ----------------- | -------------------------------------------------- | :-------------------: |
+| `:derby`          | `org.apache.derby.jdbc.ClientDataSource`           | No                    |
+| `:firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          | No                    |
+| `:db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              | No                    |
+| `:h2`             | `org.h2.jdbcx.JdbcDataSource`                      | No                    |
+| `:hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
+| `:mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
+| `:mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
+| `:sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | No                    |
+| `:sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
+| `:oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
+| `:pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
+| `:postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
+| `:sybase`         | `com.sybase.jdbcx.SybDataSource`                   | No                    |
 
 ## Usage
 
