@@ -1,5 +1,6 @@
 (ns hikari-cp.core
-  (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource))
+  (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource)
+  (:require [schema.core :as s]))
 
 (def ^{:private true} default-datasource-options
   {:auto-commit        true
@@ -25,11 +26,43 @@
    :postgresql     "org.postgresql.ds.PGSimpleDataSource"
    :sybase         "com.sybase.jdbcx.SybDataSource"})
 
+(def ^{:private true} AdaptersList
+  (apply s/enum (keys adapters-to-datasource-class-names)))
+
+(def ^{:private true} PositiveInt
+  (s/both s/Int (s/pred pos? 'pos?)))
+
+(defn- gte-100?
+  "Returns true if num is greater than or equal 100, else false"
+  [x]
+  (>= x 100))
+
+(def ^{:private true} IntGte100
+  (s/both s/Int (s/pred gte-100? 'gte-100?)))
+
+(def ^{:private true} ConfigurationOptions
+  {:auto-commit                  s/Bool
+   :read-only                    s/Bool
+   :connection-timeout           IntGte100
+   :idle-timeout                 PositiveInt
+   :max-lifetime                 PositiveInt
+   :minimum-idle                 PositiveInt
+   :maximum-pool-size            PositiveInt
+   :adapter                      AdaptersList
+   :username                     s/Str
+   (s/optional-key :password)    s/Str
+   :database-name                s/Str
+   (s/optional-key :server-name) s/Str
+   (s/optional-key :port)        PositiveInt})
+
 (defn datasource-config
   ""
   [datasource-options]
   (let [config (HikariConfig.)
-        options               (merge default-datasource-options datasource-options)
+        options               (s/validate ConfigurationOptions
+                                          (merge
+                                            default-datasource-options
+                                            datasource-options))
         auto-commit           (:auto-commit options)
         read-only             (:read-only options)
         connection-timeout    (:connection-timeout options)
@@ -52,11 +85,11 @@
     (.setMinimumIdle         config minimum-idle)
     (.setMaximumPoolSize     config maximum-pool-size)
     (.setDataSourceClassName config datasource-class-name)
-    (if username      (.setUsername config username))
-    (if password      (.setPassword config password))
-    (if database-name (.addDataSourceProperty config "databaseName" database-name))
-    (if server-name   (.addDataSourceProperty config "serverName"   server-name))
-    (if port          (.addDataSourceProperty config "portNumber"   port))
+    (.setUsername            config username)
+    (.addDataSourceProperty  config "databaseName" database-name)
+    (if password    (.setPassword           config password))
+    (if server-name (.addDataSourceProperty config "serverName" server-name))
+    (if port        (.addDataSourceProperty config "portNumber" port))
     config))
 
 (defn datasource-from-config

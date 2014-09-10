@@ -6,8 +6,6 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Future plans
 
-* Use [Prismatic/schema](https://github.com/Prismatic/schema) to
-  validate the configuration options
 * Handle configuration errors
 * Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
