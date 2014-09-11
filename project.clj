@@ -6,7 +6,8 @@
   :scm {:name "git"
         :url "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [com.zaxxer/HikariCP "2.0.1"]]
+                 [com.zaxxer/HikariCP "2.0.1"]
+                 [prismatic/schema    "0.2.6"]]
   :profiles {:dev {
                    :dependencies [[expectations              "2.0.9"]
                                   [org.slf4j/slf4j-nop       "1.7.7"]

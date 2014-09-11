@@ -6,9 +6,6 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Future plans
 
-* Use [Prismatic/schema](https://github.com/Prismatic/schema) to
-  validate the configuration options
-* Handle configuration errors
 * Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
 ## Disclaimer
@@ -98,6 +95,14 @@ Plus, add the database driver you want to use.
     (let [rows (jdbc/query conn "SELECT * FROM table")]
       (println rows)))
   (close-datasource datasource))
+```
+
+`datasource-config` will throw `IllegalArgumentException` when invalid
+arguments are provided:
+
+``` clj
+(datasource-config (dissoc config :username :database-name))
+;; IllegalArgumentException: Invalid configuration options: (:username :database-name)
 ```
 
 ## License
