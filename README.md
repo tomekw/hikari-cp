@@ -6,7 +6,6 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Future plans
 
-* Handle configuration errors
 * Support Heroku's `DATABASE_URL` with `datasource-from-url`
 
 ## Disclaimer
