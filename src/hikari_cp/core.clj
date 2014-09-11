@@ -2,7 +2,7 @@
   (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource)
   (:require [schema.core :as s]))
 
-(def ^{:private true} default-datasource-options
+(def default-datasource-options
   {:auto-commit        true
    :read-only          false
    :connection-timeout 30000
@@ -29,40 +29,55 @@
 (def ^{:private true} AdaptersList
   (apply s/enum (keys adapters-to-datasource-class-names)))
 
-(def ^{:private true} PositiveInt
-  (s/both s/Int (s/pred pos? 'pos?)))
+(defn- gte-0?
+  "Returns true if num is greater than or equal 0, else false"
+  [x]
+  (>= x 0))
 
 (defn- gte-100?
   "Returns true if num is greater than or equal 100, else false"
   [x]
   (>= x 100))
 
+(def ^{:private true} IntGte0
+  (s/both s/Int (s/pred gte-0? 'gte-0?)))
+
 (def ^{:private true} IntGte100
   (s/both s/Int (s/pred gte-100? 'gte-100?)))
 
-(def ^{:private true} ConfigurationOptions
+(def ConfigurationOptions
   {:auto-commit                  s/Bool
    :read-only                    s/Bool
    :connection-timeout           IntGte100
-   :idle-timeout                 PositiveInt
-   :max-lifetime                 PositiveInt
-   :minimum-idle                 PositiveInt
-   :maximum-pool-size            PositiveInt
+   :idle-timeout                 IntGte0
+   :max-lifetime                 IntGte0
+   :minimum-idle                 IntGte0
+   :maximum-pool-size            IntGte0
    :adapter                      AdaptersList
    :username                     s/Str
    (s/optional-key :password)    s/Str
    :database-name                s/Str
    (s/optional-key :server-name) s/Str
-   (s/optional-key :port)        PositiveInt})
+   (s/optional-key :port)        IntGte0})
+
+(defn- exception-message
+  ""
+  [e]
+  (format "Invalid configuration options: %s" (keys (:error (.getData e)))))
 
 (defn datasource-config
   ""
   [datasource-options]
   (let [config (HikariConfig.)
-        options               (s/validate ConfigurationOptions
-                                          (merge
-                                            default-datasource-options
-                                            datasource-options))
+        options               (try
+                                (s/validate ConfigurationOptions
+                                            (merge
+                                              default-datasource-options
+                                              datasource-options))
+                                (catch clojure.lang.ExceptionInfo e
+                                  (throw
+                                    (IllegalArgumentException.
+                                      (exception-message e)))))
         auto-commit           (:auto-commit options)
         read-only             (:read-only options)
         connection-timeout    (:connection-timeout options)

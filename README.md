@@ -98,6 +98,14 @@ Plus, add the database driver you want to use.
   (close-datasource datasource))
 ```
 
+`datasource-config` will throw `IllegalArgumentException` when invalid
+arguments are provided:
+
+``` clj
+(datasource-config (dissoc config :username :database-name))
+;; IllegalArgumentException: Invalid configuration options: (:username :database-name)
+```
+
 ## License
 
 Copyright © 2014 Tomek Wałkuski
