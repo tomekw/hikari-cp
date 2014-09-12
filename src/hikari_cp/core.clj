@@ -65,43 +65,37 @@
   [e]
   (format "Invalid configuration options: %s" (keys (:error (.getData e)))))
 
+(defn- validate-options
+  ""
+  [provided-options]
+  (try
+    (s/validate ConfigurationOptions
+                (merge default-datasource-options provided-options))
+    (catch clojure.lang.ExceptionInfo e
+      (throw
+        (IllegalArgumentException. (exception-message e))))))
+
 (defn datasource-config
   ""
   [datasource-options]
   (let [config (HikariConfig.)
-        options               (try
-                                (s/validate ConfigurationOptions
-                                            (merge
-                                              default-datasource-options
-                                              datasource-options))
-                                (catch clojure.lang.ExceptionInfo e
-                                  (throw
-                                    (IllegalArgumentException.
-                                      (exception-message e)))))
-        auto-commit           (:auto-commit options)
-        read-only             (:read-only options)
-        connection-timeout    (:connection-timeout options)
-        idle-timeout          (:idle-timeout options)
-        max-lifetime          (:max-lifetime options)
-        minimum-idle          (:minimum-idle options)
-        maximum-pool-size     (:maximum-pool-size options)
-        adapter               (:adapter options)
-        datasource-class-name (get adapters-to-datasource-class-names adapter)
-        username              (:username options)
+        options               (validate-options datasource-options)
+        datasource-class-name (get
+                                adapters-to-datasource-class-names
+                                (:adapter options))
         password              (:password options)
-        database-name         (:database-name options)
         server-name           (:server-name options)
         port                  (:port options)]
-    (.setAutoCommit          config auto-commit)
-    (.setReadOnly            config read-only)
-    (.setConnectionTimeout   config connection-timeout)
-    (.setIdleTimeout         config idle-timeout)
-    (.setMaxLifetime         config max-lifetime)
-    (.setMinimumIdle         config minimum-idle)
-    (.setMaximumPoolSize     config maximum-pool-size)
+    (.setAutoCommit          config (:auto-commit options))
+    (.setReadOnly            config (:read-only options))
+    (.setConnectionTimeout   config (:connection-timeout options))
+    (.setIdleTimeout         config (:idle-timeout options))
+    (.setMaxLifetime         config (:max-lifetime options))
+    (.setMinimumIdle         config (:minimum-idle options))
+    (.setMaximumPoolSize     config (:maximum-pool-size options))
     (.setDataSourceClassName config datasource-class-name)
-    (.setUsername            config username)
-    (.addDataSourceProperty  config "databaseName" database-name)
+    (.setUsername            config (:username options))
+    (.addDataSourceProperty  config "databaseName" (:database-name options))
     (if password    (.setPassword           config password))
     (if server-name (.addDataSourceProperty config "serverName" server-name))
     (if port        (.addDataSourceProperty config "portNumber" port))
