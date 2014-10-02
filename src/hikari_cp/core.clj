@@ -1,6 +1,7 @@
 (ns hikari-cp.core
   (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource)
-  (:require [schema.core :as s]))
+  (:require [camel-snake-kebab.core :refer [->camelCaseString]]
+            [schema.core :as s]))
 
 (def default-datasource-options
   {:auto-commit        true
@@ -46,19 +47,19 @@
   (s/both s/Int (s/pred gte-100? 'gte-100?)))
 
 (def ConfigurationOptions
-  {:auto-commit                  s/Bool
-   :read-only                    s/Bool
-   :connection-timeout           IntGte100
-   :idle-timeout                 IntGte0
-   :max-lifetime                 IntGte0
-   :minimum-idle                 IntGte0
-   :maximum-pool-size            IntGte0
-   :adapter                      AdaptersList
-   :username                     s/Str
-   (s/optional-key :password)    s/Str
-   :database-name                s/Str
-   (s/optional-key :server-name) s/Str
-   (s/optional-key :port)        IntGte0})
+  {:auto-commit                    s/Bool
+   :read-only                      s/Bool
+   :connection-timeout             IntGte100
+   :idle-timeout                   IntGte0
+   :max-lifetime                   IntGte0
+   :minimum-idle                   IntGte0
+   :maximum-pool-size              IntGte0
+   :adapter                        AdaptersList
+   (s/optional-key :username)      s/Str
+   (s/optional-key :password)      s/Str
+   (s/optional-key :database-name) s/Str
+   (s/optional-key :server-name)   s/Str
+   (s/optional-key :port-number)   IntGte0})
 
 (defn- exception-message
   ""
@@ -83,9 +84,11 @@
         datasource-class-name (get
                                 adapters-to-datasource-class-names
                                 (:adapter options))
+        username              (:username options)
+        database-name         (:database-name options)
         password              (:password options)
         server-name           (:server-name options)
-        port                  (:port options)]
+        port-number           (:port-number options)]
     (.setAutoCommit          config (:auto-commit options))
     (.setReadOnly            config (:read-only options))
     (.setConnectionTimeout   config (:connection-timeout options))
@@ -94,11 +97,11 @@
     (.setMinimumIdle         config (:minimum-idle options))
     (.setMaximumPoolSize     config (:maximum-pool-size options))
     (.setDataSourceClassName config datasource-class-name)
-    (.setUsername            config (:username options))
-    (.addDataSourceProperty  config "databaseName" (:database-name options))
-    (if password    (.setPassword           config password))
-    (if server-name (.addDataSourceProperty config "serverName" server-name))
-    (if port        (.addDataSourceProperty config "portNumber" port))
+    (if username (.setUsername config username))
+    (if password (.setPassword config password))
+    (if database-name (.addDataSourceProperty config (->camelCaseString :database-name) database-name))
+    (if server-name   (.addDataSourceProperty config (->camelCaseString :server-name) server-name))
+    (if port-number   (.addDataSourceProperty config (->camelCaseString :port-number) port-number))
     config))
 
 (defn datasource-from-config

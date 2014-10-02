@@ -37,11 +37,11 @@ Plus, add the database driver you want to use.
 | `:minimum-idle`       | No       | `10`               | This property controls the minimum number of idle connections that HikariCP tries to maintain in the pool.                                                                                                                                     |
 | `:maximum-pool-size`  | No       | `10`               | This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections. Basically this value will determine the maximum number of actual connections to the database backend.                   |
 | `:adapter`            | **Yes**  | None               | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names.        |
-| `:username`           | **Yes**  | None               | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                             |
+| `:username`           | No       | None               | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                             |
 | `:password`           | No       | None               | This property sets the default authentication password used when obtaining Connections from the underlying driver.                                                                                                                             |
-| `:database-name`      | **Yes**  | None               | This property sets the database name.                                                                                                                                                                                                          |
+| `:database-name`      | No       | None               | This property sets the database name.                                                                                                                                                                                                          |
 | `:server-name`        | No       | Depends on adapter | This property sets the hostname client connects to.                                                                                                                                                                                            |
-| `:port`               | No       | Depends on adapter | This property sets the port clients connects on.                                                                                                                                                                                               |
+| `:port-number`        | No       | Depends on adapter | This property sets the port clients connects on.                                                                                                                                                                                               |
 
 **Please note:** All time values are specified in milliseconds.
 
@@ -82,7 +82,7 @@ Plus, add the database driver you want to use.
              :password           "password"
              :database-name      "database"
              :server-name        "localhost"
-             :port               5432
+             :port-number        5432
              })
 
 (def ds-config (datasource-config config))
