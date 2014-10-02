@@ -76,11 +76,17 @@
       (throw
         (IllegalArgumentException. (exception-message e))))))
 
+(defn- add-datasource-property
+  ""
+  [config property value]
+  (if value (.addDataSourceProperty config (->camelCaseString property) value)))
+
 (defn datasource-config
   ""
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
+        not-core-options      (apply dissoc options (conj (filter keyword? (keys ConfigurationOptions)) :username :password))
         datasource-class-name (get
                                 adapters-to-datasource-class-names
                                 (:adapter options))
@@ -89,6 +95,7 @@
         password              (:password options)
         server-name           (:server-name options)
         port-number           (:port-number options)]
+    ;; Set pool-specific properties
     (.setAutoCommit          config (:auto-commit options))
     (.setReadOnly            config (:read-only options))
     (.setConnectionTimeout   config (:connection-timeout options))
@@ -97,11 +104,12 @@
     (.setMinimumIdle         config (:minimum-idle options))
     (.setMaximumPoolSize     config (:maximum-pool-size options))
     (.setDataSourceClassName config datasource-class-name)
+    ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
-    (if database-name (.addDataSourceProperty config (->camelCaseString :database-name) database-name))
-    (if server-name   (.addDataSourceProperty config (->camelCaseString :server-name) server-name))
-    (if port-number   (.addDataSourceProperty config (->camelCaseString :port-number) port-number))
+    ;; Set datasource-specific properties
+    (doseq [key-value-pair not-core-options]
+      (add-datasource-property config (key key-value-pair) (val key-value-pair)))
     config))
 
 (defn datasource-from-config
