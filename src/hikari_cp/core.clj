@@ -47,54 +47,48 @@
   (s/both s/Int (s/pred gte-100? 'gte-100?)))
 
 (def ConfigurationOptions
-  {:auto-commit                    s/Bool
-   :read-only                      s/Bool
-   :connection-timeout             IntGte100
-   :idle-timeout                   IntGte0
-   :max-lifetime                   IntGte0
-   :minimum-idle                   IntGte0
-   :maximum-pool-size              IntGte0
-   :adapter                        AdaptersList
-   (s/optional-key :username)      s/Str
-   (s/optional-key :password)      s/Str
-   (s/optional-key :database-name) s/Str
-   (s/optional-key :server-name)   s/Str
-   (s/optional-key :port-number)   IntGte0})
+  {:auto-commit        s/Bool
+   :read-only          s/Bool
+   :connection-timeout IntGte100
+   :idle-timeout       IntGte0
+   :max-lifetime       IntGte0
+   :minimum-idle       IntGte0
+   :maximum-pool-size  IntGte0
+   :adapter            AdaptersList})
 
 (defn- exception-message
   ""
   [e]
   (format "Invalid configuration options: %s" (keys (:error (.getData e)))))
 
-(defn- validate-options
-  ""
-  [provided-options]
-  (try
-    (s/validate ConfigurationOptions
-                (merge default-datasource-options provided-options))
-    (catch clojure.lang.ExceptionInfo e
-      (throw
-        (IllegalArgumentException. (exception-message e))))))
-
 (defn- add-datasource-property
   ""
   [config property value]
   (if value (.addDataSourceProperty config (->camelCaseString property) value)))
+
+(defn validate-options
+  ""
+  [options]
+  (try
+    (let [all-options (merge default-datasource-options options)
+          required-options (select-keys all-options (keys ConfigurationOptions))]
+      (s/validate ConfigurationOptions required-options)
+      all-options)
+    (catch clojure.lang.ExceptionInfo e
+      (throw
+        (IllegalArgumentException. (exception-message e))))))
 
 (defn datasource-config
   ""
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
-        not-core-options      (apply dissoc options (conj (filter keyword? (keys ConfigurationOptions)) :username :password))
+        not-core-options      (apply dissoc options (conj (keys ConfigurationOptions) :username :password))
+        username              (:username options)
+        password              (:password options)
         datasource-class-name (get
                                 adapters-to-datasource-class-names
-                                (:adapter options))
-        username              (:username options)
-        database-name         (:database-name options)
-        password              (:password options)
-        server-name           (:server-name options)
-        port-number           (:port-number options)]
+                                (:adapter options))]
     ;; Set pool-specific properties
     (.setAutoCommit          config (:auto-commit options))
     (.setReadOnly            config (:read-only options))
