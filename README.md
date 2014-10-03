@@ -20,7 +20,7 @@ before reaching the version `1.0.0`.
 Add the following dependency to your `project.clj` file:
 
 ```clj
-[hikari-cp "0.6.0"]
+[hikari-cp "0.7.0"]
 ```
 
 Plus, add the database driver you want to use.
