@@ -16,7 +16,7 @@
    :password           "password"
    :database-name      "database"
    :server-name        "host-1"
-   :port               5433})
+   :port-number        5433})
 
 (def datasource-config-with-required-settings
   (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
@@ -64,50 +64,50 @@
         (.getMaximumPoolSize datasource-config-with-overrides))
 
 (expect IllegalArgumentException
-        (datasource-config (dissoc valid-options :username :database-name)))
-(expect "Invalid configuration options: (:username :database-name)"
+        (datasource-config (dissoc valid-options :adapter)))
+(expect "Invalid configuration options: (:adapter)"
         (try
-          (datasource-config (dissoc valid-options :username :database-name))
+          (datasource-config (dissoc valid-options :adapter))
           (catch IllegalArgumentException e
             (str (.getMessage e)))))
 
 (expect map?
-        (s/validate ConfigurationOptions valid-options))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:auto-commit 1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:read-only 1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:connection-timeout "foo"})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:connection-timeout 99})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:idle-timeout -1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:max-lifetime -1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:minimum-idle -1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:maximum-pool-size -1})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:adapter :foo})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:username nil})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (dissoc valid-options :username)))
+        (validate-options valid-options))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:auto-commit 1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:read-only 1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:connection-timeout "foo"})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:connection-timeout 99})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:idle-timeout -1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:max-lifetime -1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:minimum-idle -1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:maximum-pool-size -1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:adapter :foo})))
 (expect map?
-        (s/validate ConfigurationOptions (dissoc valid-options :password)))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:password nil})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:database-name nil})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (dissoc valid-options :database-name)))
+        (validate-options (merge valid-options {:username nil})))
 (expect map?
-        (s/validate ConfigurationOptions (dissoc valid-options :server-name)))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:server-name nil})))
-(expect clojure.lang.ExceptionInfo
-        (s/validate ConfigurationOptions (merge valid-options {:port -1})))
+        (validate-options (dissoc valid-options :username)))
 (expect map?
-        (s/validate ConfigurationOptions (dissoc valid-options :port)))
+        (validate-options (dissoc valid-options :password)))
+(expect map?
+        (validate-options (merge valid-options {:password nil})))
+(expect map?
+        (validate-options (merge valid-options {:database-name nil})))
+(expect map?
+        (validate-options (dissoc valid-options :database-name)))
+(expect map?
+        (validate-options (dissoc valid-options :server-name)))
+(expect map?
+        (validate-options (merge valid-options {:server-name nil})))
+(expect map?
+        (validate-options (merge valid-options {:port-number -1})))
+(expect map?
+        (validate-options (dissoc valid-options :port-number)))
