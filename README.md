@@ -49,7 +49,7 @@ as a datasource property:
 
 ```clj
 ;; {:tcp-keep-alive true} will be:
-(.addDataSourceProperty config "TcpKeepAlive" true)
+(.addDataSourceProperty config "tcpKeepAlive" true)
 ```
 
 **Please note:** All time values are specified in milliseconds.
