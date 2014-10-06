@@ -54,7 +54,8 @@
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
    :maximum-pool-size  IntGte0
-   :adapter            AdaptersList})
+   :adapter            AdaptersList
+   s/Keyword           s/Any})
 
 (defn- exception-message
   ""
@@ -70,10 +71,7 @@
   ""
   [options]
   (try
-    (let [all-options (merge default-datasource-options options)
-          required-options (select-keys all-options (keys ConfigurationOptions))]
-      (s/validate ConfigurationOptions required-options)
-      all-options)
+    (s/validate ConfigurationOptions (merge default-datasource-options options))
     (catch clojure.lang.ExceptionInfo e
       (throw
         (IllegalArgumentException. (exception-message e))))))
