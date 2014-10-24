@@ -6,7 +6,7 @@
   :scm {:name "git"
         :url "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [camel-snake-kebab   "0.2.4"]
+                 [camel-snake-kebab   "0.2.5" :exclusions [org.clojure/clojure]]
                  [com.zaxxer/HikariCP "2.1.0"]
                  [prismatic/schema    "0.3.1"]]
   :profiles {:dev {
