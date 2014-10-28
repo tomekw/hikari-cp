@@ -61,7 +61,7 @@ as a datasource property:
 | `:derby`          | `org.apache.derby.jdbc.ClientDataSource`           | No                    |
 | `:firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          | No                    |
 | `:db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              | No                    |
-| `:h2`             | `org.h2.jdbcx.JdbcDataSource`                      | No                    |
+| `:h2`             | `org.h2.jdbcx.JdbcDataSource`                      | **Yes**               |
 | `:hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
 | `:mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
 | `:mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
