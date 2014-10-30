@@ -12,7 +12,7 @@
   :profiles {:dev {
                    :dependencies [[expectations              "2.0.12"]
                                   [org.slf4j/slf4j-nop       "1.7.7"]
-                                  [org.clojure/java.jdbc     "0.3.5"]
+                                  [org.clojure/java.jdbc     "0.3.6"]
                                   [org.postgresql/postgresql "9.3-1102-jdbc41"]]
                    :plugins [[lein-expectations "0.0.7"]]}}
   :aliases {"test" "expectations"})
