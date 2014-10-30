@@ -19,7 +19,7 @@ before reaching the version `1.0.0`.
 
 Add the following dependency to your `project.clj` file:
 
-```clj
+```clojure
 [hikari-cp "0.8.0"]
 ```
 
@@ -47,7 +47,7 @@ You can also add other datasource-specific configuration options.
 Keywords will be converted to the camelCase format add added
 as a datasource property:
 
-```clj
+```clojure
 ;; {:tcp-keep-alive true} will be:
 (.addDataSourceProperty config "tcpKeepAlive" true)
 ```
@@ -74,7 +74,7 @@ as a datasource property:
 
 ## Usage
 
-```clj
+```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
             [clojure.java.jdbc :as jdbc]))
@@ -109,7 +109,7 @@ as a datasource property:
 `datasource-config` will throw `IllegalArgumentException` when invalid
 arguments are provided:
 
-``` clj
+```clojure
 (datasource-config (dissoc config :username :database-name))
 ;; IllegalArgumentException: Invalid configuration options: (:username :database-name)
 ```
