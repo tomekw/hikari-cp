@@ -74,6 +74,8 @@ as a datasource property:
 
 ## Usage
 
+### PostgreSQL example
+
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
@@ -105,6 +107,14 @@ as a datasource property:
       (println rows)))
   (close-datasource datasource))
 ```
+
+### H2 minimal config example
+
+```clojure
+(def config {:url "jdbc:h2:~/test"})
+```
+
+### Notice
 
 `datasource-config` will throw `IllegalArgumentException` when invalid
 arguments are provided:
