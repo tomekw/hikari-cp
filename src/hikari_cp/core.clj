@@ -35,6 +35,11 @@
   [x]
   (>= x 0))
 
+(defn- gte-1?
+  "Returns true if num is greater than or equal 1, else false"
+  [x]
+  (>= x 1))
+
 (defn- gte-100?
   "Returns true if num is greater than or equal 100, else false"
   [x]
@@ -42,6 +47,9 @@
 
 (def ^{:private true} IntGte0
   (s/both s/Int (s/pred gte-0? 'gte-0?)))
+
+(def ^{:private true} IntGte1
+  (s/both s/Int (s/pred gte-1? 'gte-1?)))
 
 (def ^{:private true} IntGte100
   (s/both s/Int (s/pred gte-100? 'gte-100?)))
@@ -53,7 +61,7 @@
    :idle-timeout       IntGte0
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
-   :maximum-pool-size  IntGte0
+   :maximum-pool-size  IntGte1
    :adapter            AdaptersList
    s/Keyword           s/Any})
 

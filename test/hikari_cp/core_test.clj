@@ -10,7 +10,7 @@
    :idle-timeout       0
    :max-lifetime       0
    :minimum-idle       0
-   :maximum-pool-size  0
+   :maximum-pool-size  1
    :adapter            :postgresql
    :username           "username"
    :password           "password"
@@ -60,7 +60,7 @@
         (.getMaxLifetime datasource-config-with-overrides))
 (expect 0
         (.getMinimumIdle datasource-config-with-overrides))
-(expect 0
+(expect 1
         (.getMaximumPoolSize datasource-config-with-overrides))
 
 (expect IllegalArgumentException
@@ -89,6 +89,8 @@
         (validate-options (merge valid-options {:minimum-idle -1})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:maximum-pool-size -1})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:maximum-pool-size 0})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:adapter :foo})))
 (expect map?
