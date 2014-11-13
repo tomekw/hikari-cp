@@ -11,6 +11,7 @@
    :max-lifetime       0
    :minimum-idle       0
    :maximum-pool-size  1
+   :pool-name          "db-pool"
    :adapter            :postgresql
    :username           "username"
    :password           "password"
@@ -62,6 +63,8 @@
         (.getMinimumIdle datasource-config-with-overrides))
 (expect 1
         (.getMaximumPoolSize datasource-config-with-overrides))
+(expect "db-pool"
+        (.getPoolName datasource-config-with-overrides))
 
 (expect IllegalArgumentException
         (datasource-config (dissoc valid-options :adapter)))

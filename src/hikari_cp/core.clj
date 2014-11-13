@@ -89,9 +89,10 @@
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
-        not-core-options      (apply dissoc options (conj (keys ConfigurationOptions) :username :password))
+        not-core-options      (apply dissoc options (conj (keys ConfigurationOptions) :username :password :pool-name))
         username              (:username options)
         password              (:password options)
+        pool-name             (:pool-name options)
         datasource-class-name (get
                                 adapters-to-datasource-class-names
                                 (:adapter options))]
@@ -107,6 +108,7 @@
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
+    (if pool-name (.setPoolName config pool-name))
     ;; Set datasource-specific properties
     (doseq [key-value-pair not-core-options]
       (add-datasource-property config (key key-value-pair) (val key-value-pair)))
