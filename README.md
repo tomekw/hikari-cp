@@ -20,7 +20,7 @@ before reaching the version `1.0.0`.
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "0.9.1"]
+[hikari-cp "0.10.0"]
 ```
 
 Plus, add the database driver you want to use.
