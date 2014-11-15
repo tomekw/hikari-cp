@@ -1,3 +1,7 @@
+## 0.11.0
+
+* updated `HikariCP` to `2.2.5`
+
 ## 0.10.0
 
 * added `:pool-name` configuration option
