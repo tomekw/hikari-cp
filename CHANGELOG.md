@@ -1,4 +1,4 @@
-## unreleased
+## 0.11.1
 
 * replaced `camel-snake-kebab` with `org.tobereplaced/lettercase` to make sure
   builds using `:aot` continue to work on Mac and Windows
