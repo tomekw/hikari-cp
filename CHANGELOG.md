@@ -1,3 +1,8 @@
+## unreleased
+
+* replaced `camel-snake-kebab` with `org.tobereplaced/lettercase` to make sure
+  builds using `:aot` continue to work on Mac and Windows
+
 ## 0.11.0
 
 * updated `HikariCP` to `2.2.5`
