@@ -1,6 +1,6 @@
 (ns hikari-cp.core
   (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource)
-  (:require [camel-snake-kebab.core :refer [->camelCaseString]]
+  (:require [org.tobereplaced.lettercase :refer [mixed-name]]
             [schema.core :as s]))
 
 (def default-datasource-options
@@ -73,7 +73,7 @@
 (defn- add-datasource-property
   ""
   [config property value]
-  (if value (.addDataSourceProperty config (->camelCaseString property) value)))
+  (if value (.addDataSourceProperty config (mixed-name property) value)))
 
 (defn validate-options
   ""
