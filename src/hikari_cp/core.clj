@@ -13,19 +13,19 @@
    :maximum-pool-size  10})
 
 (def ^{:private true} adapters-to-datasource-class-names
-  {:derby          "org.apache.derby.jdbc.ClientDataSource"
-   :firebird       "org.firebirdsql.pool.FBSimpleDataSource"
-   :db2            "com.ibm.db2.jcc.DB2SimpleDataSource"
-   :h2             "org.h2.jdbcx.JdbcDataSource"
-   :hsqldb         "org.hsqldb.jdbc.JDBCDataSource"
-   :mariadb        "org.mariadb.jdbc.MySQLDataSource"
-   :mysql          "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
-   :sqlserver-jtds "net.sourceforge.jtds.jdbcx.JtdsDataSource"
-   :sqlserver      "com.microsoft.sqlserver.jdbc.SQLServerDataSource"
-   :oracle         "oracle.jdbc.pool.OracleDataSource"
-   :pgjdbc-ng      "com.impossibl.postgres.jdbc.PGDataSource"
-   :postgresql     "org.postgresql.ds.PGSimpleDataSource"
-   :sybase         "com.sybase.jdbcx.SybDataSource"})
+  {"derby"          "org.apache.derby.jdbc.ClientDataSource"
+   "firebird"       "org.firebirdsql.pool.FBSimpleDataSource"
+   "db2"            "com.ibm.db2.jcc.DB2SimpleDataSource"
+   "h2"             "org.h2.jdbcx.JdbcDataSource"
+   "hsqldb"         "org.hsqldb.jdbc.JDBCDataSource"
+   "mariadb"        "org.mariadb.jdbc.MySQLDataSource"
+   "mysql"          "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+   "sqlserver-jtds" "net.sourceforge.jtds.jdbcx.JtdsDataSource"
+   "sqlserver"      "com.microsoft.sqlserver.jdbc.SQLServerDataSource"
+   "oracle"         "oracle.jdbc.pool.OracleDataSource"
+   "pgjdbc-ng"      "com.impossibl.postgres.jdbc.PGDataSource"
+   "postgresql"     "org.postgresql.ds.PGSimpleDataSource"
+   "sybase"         "com.sybase.jdbcx.SybDataSource"})
 
 (def ^{:private true} AdaptersList
   (apply s/enum (keys adapters-to-datasource-class-names)))

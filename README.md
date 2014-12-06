@@ -7,7 +7,8 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 ## Disclaimer
 
 This library is under construction and public API is subject to change
-before reaching the version `1.0.0`.
+before reaching the version `1.0.0`. The public API was changed in `0.12.0`
+(probably the last release before `1.0.0`). Please refer to the CHANGELOG.
 
 `hikari-cp` targets only Java version 8.
 
@@ -53,21 +54,21 @@ as a datasource property:
 
 ## Adapters and corresponding datasource class names
 
-| Adapter           | Datasource class name                              | Tested with hikari-cp |
-| ----------------- | -------------------------------------------------- | :-------------------: |
-| `:derby`          | `org.apache.derby.jdbc.ClientDataSource`           | No                    |
-| `:firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          | No                    |
-| `:db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              | No                    |
-| `:h2`             | `org.h2.jdbcx.JdbcDataSource`                      | **Yes**               |
-| `:hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
-| `:mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
-| `:mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
-| `:sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | No                    |
-| `:sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
-| `:oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
-| `:pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
-| `:postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
-| `:sybase`         | `com.sybase.jdbcx.SybDataSource`                   | No                    |
+| Adapter          | Datasource class name                              | Tested with hikari-cp |
+| ---------------- | -------------------------------------------------- | :-------------------: |
+| `derby`          | `org.apache.derby.jdbc.ClientDataSource`           | No                    |
+| `firebird`       | `org.firebirdsql.pool.FBSimpleDataSource`          | No                    |
+| `db2`            | `com.ibm.db2.jcc.DB2SimpleDataSource`              | No                    |
+| `h2`             | `org.h2.jdbcx.JdbcDataSource`                      | **Yes**               |
+| `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
+| `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
+| `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
+| `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | No                    |
+| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
+| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
+| `pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
+| `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
+| `sybase`         | `com.sybase.jdbcx.SybDataSource`                   | No                    |
 
 ## Usage
 
@@ -85,7 +86,7 @@ as a datasource property:
                          :max-lifetime       1800000
                          :minimum-idle       10
                          :maximum-pool-size  10
-                         :adapter            :postgresql
+                         :adapter            "postgresql"
                          :username           "username"
                          :password           "password"
                          :database-name      "database"
@@ -105,7 +106,8 @@ as a datasource property:
 ### H2 minimal config example
 
 ```clojure
-(def datasource-options {:url "jdbc:h2:~/test"})
+(def datasource-options {:adapter "h2"
+                         :url     "jdbc:h2:~/test"})
 ```
 
 ### Notice

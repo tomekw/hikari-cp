@@ -3,6 +3,7 @@
 * `datasource-from-config` has been deprecated and will be removed
   in version `1.0.0`
 * added `make-datasource` function. It takes options map directly as an argument
+* changed the `:adapter` key value type from keyword to string
 
 ## 0.11.1
 

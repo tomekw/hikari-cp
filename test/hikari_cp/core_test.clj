@@ -12,7 +12,7 @@
    :minimum-idle       0
    :maximum-pool-size  1
    :pool-name          "db-pool"
-   :adapter            :postgresql
+   :adapter            "postgresql"
    :username           "username"
    :password           "password"
    :database-name      "database"
