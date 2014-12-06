@@ -115,9 +115,20 @@
     config))
 
 (defn datasource-from-config
-  ""
+  "DEPRECATED
+
+  Function will be removed in version 1.0.0"
+  {:deprecated "0.12.0"}
   [config]
+  (println "WARNING: datasource-from-config is deprecated and will be removed in version 1.0.0")
   (let [datasource (HikariDataSource. config)] datasource))
+
+(defn make-datasource
+  ""
+  [datasource-options]
+  (let [config (datasource-config datasource-options)
+        datasource (HikariDataSource. config)]
+    datasource))
 
 (defn close-datasource
   ""

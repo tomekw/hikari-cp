@@ -4,10 +4,6 @@
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
-## Future plans
-
-* Support Heroku's `DATABASE_URL` with `datasource-from-url`
-
 ## Disclaimer
 
 This library is under construction and public API is subject to change
@@ -82,25 +78,22 @@ as a datasource property:
   (:require [hikari-cp.core :refer :all]
             [clojure.java.jdbc :as jdbc]))
 
-(def config {:auto-commit        true
-             :read-only          false
-             :connection-timeout 30000
-             :idle-timeout       600000
-             :max-lifetime       1800000
-             :minimum-idle       10
-             :maximum-pool-size  10
-             :adapter            :postgresql
-             :username           "username"
-             :password           "password"
-             :database-name      "database"
-             :server-name        "localhost"
-             :port-number        5432
-             })
-
-(def ds-config (datasource-config config))
+(def datasource-options {:auto-commit        true
+                         :read-only          false
+                         :connection-timeout 30000
+                         :idle-timeout       600000
+                         :max-lifetime       1800000
+                         :minimum-idle       10
+                         :maximum-pool-size  10
+                         :adapter            :postgresql
+                         :username           "username"
+                         :password           "password"
+                         :database-name      "database"
+                         :server-name        "localhost"
+                         :port-number        5432})
 
 (def datasource
-  (datasource-from-config ds-config))
+  (make-datasource datasource-options))
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
@@ -112,16 +105,16 @@ as a datasource property:
 ### H2 minimal config example
 
 ```clojure
-(def config {:url "jdbc:h2:~/test"})
+(def datasource-options {:url "jdbc:h2:~/test"})
 ```
 
 ### Notice
 
-`datasource-config` will throw `IllegalArgumentException` when invalid
+`make-datasource` will throw `IllegalArgumentException` when invalid
 arguments are provided:
 
 ```clojure
-(datasource-config (dissoc config :username :database-name))
+(make-datasource (dissoc config :username :database-name))
 ;; IllegalArgumentException: Invalid configuration options: (:username :database-name)
 ```
 

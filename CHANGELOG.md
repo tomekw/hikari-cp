@@ -1,3 +1,9 @@
+## unreleased
+
+* `datasource-from-config` has been deprecated and will be removed
+  in version `1.0.0`
+* added `make-datasource` function. It takes options map directly as an argument
+
 ## 0.11.1
 
 * replaced `camel-snake-kebab` with `org.tobereplaced/lettercase` to make sure
