@@ -17,7 +17,7 @@ before reaching the version `1.0.0`. The public API was changed in `0.12.0`
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "0.11.1"]
+[hikari-cp "0.12.0"]
 ```
 
 Plus, add the database driver you want to use.

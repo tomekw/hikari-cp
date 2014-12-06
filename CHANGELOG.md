@@ -1,4 +1,4 @@
-## unreleased
+## 0.12.0
 
 * `datasource-from-config` has been deprecated and will be removed
   in version `1.0.0`
