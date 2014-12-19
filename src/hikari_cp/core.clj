@@ -58,7 +58,6 @@
   {:auto-commit        s/Bool
    :read-only          s/Bool
    :connection-timeout IntGte100
-   :connection-test-query s/Str
    :idle-timeout       IntGte0
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
@@ -90,10 +89,13 @@
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
-        not-core-options      (apply dissoc options (conj (keys ConfigurationOptions) :username :password :pool-name))
+        not-core-options      (apply dissoc options
+                                     (conj (keys ConfigurationOptions)
+                                           :username :password :pool-name :connection-test-query))
         username              (:username options)
         password              (:password options)
         pool-name             (:pool-name options)
+        connection-test-query (:connection-test-query options)
         datasource-class-name (get
                                 adapters-to-datasource-class-names
                                 (:adapter options))]
@@ -101,8 +103,6 @@
     (.setAutoCommit          config (:auto-commit options))
     (.setReadOnly            config (:read-only options))
     (.setConnectionTimeout   config (:connection-timeout options))
-    (when-let [query (:connection-test-query options)]
-      (.setConnectionTestQuery config query))
     (.setIdleTimeout         config (:idle-timeout options))
     (.setMaxLifetime         config (:max-lifetime options))
     (.setMinimumIdle         config (:minimum-idle options))
@@ -112,6 +112,7 @@
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
+    (if connection-test-query (.setConnectionTestQuery config query))
     ;; Set datasource-specific properties
     (doseq [key-value-pair not-core-options]
       (add-datasource-property config (key key-value-pair) (val key-value-pair)))
