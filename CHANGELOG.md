@@ -1,3 +1,7 @@
+## 0.12.1
+
+* allowed optional configuration of `connection-test-query`
+
 ## 0.12.0
 
 * `datasource-from-config` has been deprecated and will be removed
