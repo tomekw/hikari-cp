@@ -58,6 +58,7 @@
   {:auto-commit        s/Bool
    :read-only          s/Bool
    :connection-timeout IntGte100
+   :connection-test-query s/Str
    :idle-timeout       IntGte0
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
@@ -100,6 +101,8 @@
     (.setAutoCommit          config (:auto-commit options))
     (.setReadOnly            config (:read-only options))
     (.setConnectionTimeout   config (:connection-timeout options))
+    (when-let [query (:connection-test-query options)]
+      (.setConnectionTestQuery config query))
     (.setIdleTimeout         config (:idle-timeout options))
     (.setMaxLifetime         config (:max-lifetime options))
     (.setMinimumIdle         config (:minimum-idle options))
