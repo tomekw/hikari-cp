@@ -112,7 +112,7 @@
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
-    (if connection-test-query (.setConnectionTestQuery config query))
+    (if connection-test-query (.setConnectionTestQuery config connection-test-query))
     ;; Set datasource-specific properties
     (doseq [key-value-pair not-core-options]
       (add-datasource-property config (key key-value-pair) (val key-value-pair)))
