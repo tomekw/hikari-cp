@@ -92,30 +92,39 @@
         not-core-options      (apply dissoc options
                                      (conj (keys ConfigurationOptions)
                                            :username :password :pool-name :connection-test-query))
-        username              (:username options)
-        password              (:password options)
-        pool-name             (:pool-name options)
-        connection-test-query (:connection-test-query options)
+        {:keys [adapter
+                auto-commit
+                connection-test-query
+                connection-timeout
+                idle-timeout
+                max-lifetime
+                maximum-pool-size
+                minimum-idle
+                password
+                pool-name
+                read-only
+                username]} options
         datasource-class-name (get
                                 adapters-to-datasource-class-names
-                                (:adapter options))]
+                                adapter)]
     ;; Set pool-specific properties
-    (.setAutoCommit          config (:auto-commit options))
-    (.setReadOnly            config (:read-only options))
-    (.setConnectionTimeout   config (:connection-timeout options))
-    (.setIdleTimeout         config (:idle-timeout options))
-    (.setMaxLifetime         config (:max-lifetime options))
-    (.setMinimumIdle         config (:minimum-idle options))
-    (.setMaximumPoolSize     config (:maximum-pool-size options))
-    (.setDataSourceClassName config datasource-class-name)
+    (doto config
+      (.setAutoCommit          auto-commit)
+      (.setReadOnly            read-only)
+      (.setConnectionTimeout   connection-timeout)
+      (.setIdleTimeout         idle-timeout)
+      (.setMaxLifetime         max-lifetime)
+      (.setMinimumIdle         minimum-idle)
+      (.setMaximumPoolSize     maximum-pool-size)
+      (.setDataSourceClassName datasource-class-name))
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
     ;; Set datasource-specific properties
-    (doseq [key-value-pair not-core-options]
-      (add-datasource-property config (key key-value-pair) (val key-value-pair)))
+    (doseq [[k v] not-core-options]
+      (add-datasource-property config k v))
     config))
 
 (defn datasource-from-config
