@@ -114,8 +114,8 @@
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
     ;; Set datasource-specific properties
-    (doseq [key-value-pair not-core-options]
-      (add-datasource-property config (key key-value-pair) (val key-value-pair)))
+    (doseq [[k v] not-core-options]
+      (add-datasource-property config k v))
     config))
 
 (defn datasource-from-config
