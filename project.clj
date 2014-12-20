@@ -11,7 +11,7 @@
                  [prismatic/schema            "0.3.3"]]
   :profiles {:dev {
                    :dependencies [[expectations              "2.0.13"]
-                                  [org.slf4j/slf4j-nop       "1.7.7"]
+                                  [org.slf4j/slf4j-nop       "1.7.9"]
                                   [org.clojure/java.jdbc     "0.3.6"]
                                   [org.postgresql/postgresql "9.3-1102-jdbc41"]]
                    :plugins [[lein-expectations "0.0.7"]]}}
