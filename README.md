@@ -17,7 +17,7 @@ before reaching the version `1.0.0`. The public API was changed in `0.12.0`
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "0.12.0"]
+[hikari-cp "0.12.1"]
 ```
 
 Plus, add the database driver you want to use.
@@ -40,6 +40,7 @@ Plus, add the database driver you want to use.
 | `:database-name`      | No       | None                   | This property sets the database name.                                                                                                                                                                                                          |
 | `:server-name`        | No       | Depends on the adapter | This property sets the hostname client connects to.                                                                                                                                                                                            |
 | `:port-number`        | No       | Depends on the adapter | This property sets the port clients connects on.                                                                                                                                                                                               |
+| `:connection-test-query` | No    | Depends on the adapter | Only set for non-jdbc4 drivers like jtds                                                            |
 
 You can also add other datasource-specific configuration options.
 Keywords will be converted to the camelCase format add added
@@ -63,8 +64,8 @@ as a datasource property:
 | `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
 | `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
 | `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
-| `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | No                    |
-| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | No                    |
+| `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | **Yes**               |
+| `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | **Yes**               |
 | `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
 | `pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
 | `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |

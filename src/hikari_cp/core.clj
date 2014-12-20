@@ -89,10 +89,13 @@
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
-        not-core-options      (apply dissoc options (conj (keys ConfigurationOptions) :username :password :pool-name))
+        not-core-options      (apply dissoc options
+                                     (conj (keys ConfigurationOptions)
+                                           :username :password :pool-name :connection-test-query))
         username              (:username options)
         password              (:password options)
         pool-name             (:pool-name options)
+        connection-test-query (:connection-test-query options)
         datasource-class-name (get
                                 adapters-to-datasource-class-names
                                 (:adapter options))]
@@ -109,6 +112,7 @@
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
+    (if connection-test-query (.setConnectionTestQuery config connection-test-query))
     ;; Set datasource-specific properties
     (doseq [key-value-pair not-core-options]
       (add-datasource-property config (key key-value-pair) (val key-value-pair)))
