@@ -68,9 +68,16 @@
 
 (expect IllegalArgumentException
         (datasource-config (dissoc valid-options :adapter)))
-(expect "Invalid configuration options: (:adapter)"
+(expect "Must specify :adapter or :jdbc-url"
         (try
           (datasource-config (dissoc valid-options :adapter))
+          (catch IllegalArgumentException e
+            (str (.getMessage e)))))
+(expect IllegalArgumentException
+        (datasource-config (merge valid-options {:jdbc-url "jdbc:mydriver:"})))
+(expect "Must not specify both :adapter and :jdbc-url"
+        (try
+          (datasource-config (merge valid-options {:jdbc-url "jdbc:mydriver:"}))
           (catch IllegalArgumentException e
             (str (.getMessage e)))))
 
@@ -116,3 +123,7 @@
         (validate-options (merge valid-options {:port-number -1})))
 (expect map?
         (validate-options (dissoc valid-options :port-number)))
+(expect map?
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:mydriver:"})))
+(expect IllegalArgumentException
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "http://www.github.com"})))

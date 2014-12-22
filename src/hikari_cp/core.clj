@@ -54,6 +54,14 @@
 (def ^{:private true} IntGte100
   (s/both s/Int (s/pred gte-100? 'gte-100?)))
 
+(defn- jdbc-url?
+  "Returns true if string is a plausible JDBC URL"
+  [s]
+  (.startsWith s "jdbc:"))
+  
+(def ^{:private true} JdbcUrl
+  (s/both s/Str (s/pred jdbc-url? 'jbdc-url?)))
+
 (def ConfigurationOptions
   {:auto-commit        s/Bool
    :read-only          s/Bool
@@ -62,7 +70,8 @@
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
    :maximum-pool-size  IntGte1
-   :adapter            AdaptersList
+   (s/optional-key :adapter) AdaptersList
+   (s/optional-key :jdbc-url) JdbcUrl
    s/Keyword           s/Any})
 
 (defn- exception-message
@@ -91,22 +100,21 @@
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options
                                      (conj (keys ConfigurationOptions)
+                                           :adapter :jdbc-url
                                            :username :password :pool-name :connection-test-query))
         {:keys [adapter
                 auto-commit
                 connection-test-query
                 connection-timeout
                 idle-timeout
+                jdbc-url
                 max-lifetime
                 maximum-pool-size
                 minimum-idle
                 password
                 pool-name
                 read-only
-                username]} options
-        datasource-class-name (get
-                                adapters-to-datasource-class-names
-                                adapter)]
+                username]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -115,8 +123,11 @@
       (.setIdleTimeout         idle-timeout)
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
-      (.setMaximumPoolSize     maximum-pool-size)
-      (.setDataSourceClassName datasource-class-name))
+      (.setMaximumPoolSize     maximum-pool-size))
+     (cond (and adapter jdbc-url) (throw (IllegalArgumentException. "Must not specify both :adapter and :jdbc-url"))
+           adapter (.setDataSourceClassName config (get adapters-to-datasource-class-names adapter))
+           jdbc-url (.setJdbcUrl config jdbc-url)
+           :else (throw (IllegalArgumentException. "Must specify :adapter or :jdbc-url")))
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
