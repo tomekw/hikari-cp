@@ -25,6 +25,7 @@
    "oracle"         "oracle.jdbc.pool.OracleDataSource"
    "pgjdbc-ng"      "com.impossibl.postgres.jdbc.PGDataSource"
    "postgresql"     "org.postgresql.ds.PGSimpleDataSource"
+   "fdbsql"         "com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource"
    "sybase"         "com.sybase.jdbcx.SybDataSource"})
 
 (def ^{:private true} AdaptersList
