@@ -1,3 +1,7 @@
+## 0.13.0
+
+* added support for FoundationDB driver (`:adapter` set to `fdbsql`)
+
 ## 0.12.1
 
 * allowed optional configuration of `connection-test-query`

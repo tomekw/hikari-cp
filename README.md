@@ -69,6 +69,7 @@ as a datasource property:
 | `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
 | `pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
 | `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
+| `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` | No                    |
 | `sybase`         | `com.sybase.jdbcx.SybDataSource`                   | No                    |
 
 ## Usage
