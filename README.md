@@ -6,10 +6,6 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 
 ## Disclaimer
 
-This library is under construction and public API is subject to change
-before reaching the version `1.0.0`. The public API was changed in `0.12.0`
-(probably the last release before `1.0.0`). Please refer to the CHANGELOG.
-
 `hikari-cp` targets only Java version 8.
 
 ## Installation
@@ -17,7 +13,7 @@ before reaching the version `1.0.0`. The public API was changed in `0.12.0`
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "0.13.0"]
+[hikari-cp "1.0.0"]
 ```
 
 Plus, add the database driver you want to use.
