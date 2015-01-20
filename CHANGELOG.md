@@ -1,3 +1,7 @@
+## 1.0.0
+
+* updated `HikariCP` to `2.3.0`
+
 ## 0.13.0
 
 * added support for FoundationDB driver (`:adapter` set to `fdbsql`)
