@@ -1,6 +1,7 @@
 ## 1.1.0
 
 * updated `HikariCP` to `2.3.1`
+* removed `datasource-from-config` function
 
 ## 1.0.0
 
