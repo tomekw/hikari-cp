@@ -7,6 +7,7 @@
   {:auto-commit        true
    :read-only          false
    :connection-timeout 30000
+   :validation-timeout 5000
    :idle-timeout       600000
    :max-lifetime       1800000
    :minimum-idle       10
@@ -59,6 +60,7 @@
   {:auto-commit        s/Bool
    :read-only          s/Bool
    :connection-timeout IntGte1000
+   :validation-timeout IntGte1000
    :idle-timeout       IntGte0
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
@@ -97,6 +99,7 @@
                 auto-commit
                 connection-test-query
                 connection-timeout
+                validation-timeout
                 idle-timeout
                 max-lifetime
                 maximum-pool-size
@@ -113,6 +116,7 @@
       (.setAutoCommit          auto-commit)
       (.setReadOnly            read-only)
       (.setConnectionTimeout   connection-timeout)
+      (.setValidationTimeout   validation-timeout)
       (.setIdleTimeout         idle-timeout)
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)

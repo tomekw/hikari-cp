@@ -2,6 +2,7 @@
 
 * updated `HikariCP` to `2.3.1`
 * removed `datasource-from-config` function
+* added support for `:validation-timeout` configuration option
 
 ## 1.0.0
 

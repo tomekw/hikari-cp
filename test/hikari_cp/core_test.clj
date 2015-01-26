@@ -7,6 +7,7 @@
   {:auto-commit        false
    :read-only          true
    :connection-timeout 1000
+   :validation-timeout 1000
    :idle-timeout       0
    :max-lifetime       0
    :minimum-idle       0
@@ -31,6 +32,8 @@
         (.isReadOnly datasource-config-with-required-settings))
 (expect 30000
         (.getConnectionTimeout datasource-config-with-required-settings))
+(expect 5000
+        (.getValidationTimeout datasource-config-with-required-settings))
 (expect 600000
         (.getIdleTimeout datasource-config-with-required-settings))
 (expect 1800000
@@ -55,6 +58,8 @@
         (.isReadOnly datasource-config-with-overrides))
 (expect 1000
         (.getConnectionTimeout datasource-config-with-overrides))
+(expect 1000
+        (.getValidationTimeout datasource-config-with-overrides))
 (expect 0
         (.getIdleTimeout datasource-config-with-overrides))
 (expect 0
@@ -84,6 +89,8 @@
         (validate-options (merge valid-options {:connection-timeout "foo"})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:connection-timeout 999})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:validation-timeout 999})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:idle-timeout -1})))
 (expect IllegalArgumentException
