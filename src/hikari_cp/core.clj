@@ -41,10 +41,10 @@
   [x]
   (>= x 1))
 
-(defn- gte-100?
-  "Returns true if num is greater than or equal 100, else false"
+(defn- gte-1000?
+  "Returns true if num is greater than or equal 1000, else false"
   [x]
-  (>= x 100))
+  (>= x 1000))
 
 (def ^{:private true} IntGte0
   (s/both s/Int (s/pred gte-0? 'gte-0?)))
@@ -52,13 +52,13 @@
 (def ^{:private true} IntGte1
   (s/both s/Int (s/pred gte-1? 'gte-1?)))
 
-(def ^{:private true} IntGte100
-  (s/both s/Int (s/pred gte-100? 'gte-100?)))
+(def ^{:private true} IntGte1000
+  (s/both s/Int (s/pred gte-1000? 'gte-1000?)))
 
 (def ConfigurationOptions
   {:auto-commit        s/Bool
    :read-only          s/Bool
-   :connection-timeout IntGte100
+   :connection-timeout IntGte1000
    :idle-timeout       IntGte0
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
