@@ -81,10 +81,12 @@ as a datasource property:
 (def datasource-options {:auto-commit        true
                          :read-only          false
                          :connection-timeout 30000
+                         :validation-timeout 5000
                          :idle-timeout       600000
                          :max-lifetime       1800000
                          :minimum-idle       10
                          :maximum-pool-size  10
+                         :pool-name          "db-pool"
                          :adapter            "postgresql"
                          :username           "username"
                          :password           "password"
