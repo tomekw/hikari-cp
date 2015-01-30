@@ -1,3 +1,5 @@
+* fixed setting of datasource properties to false
+
 ## 1.1.0
 
 * updated `HikariCP` to `2.3.1`
