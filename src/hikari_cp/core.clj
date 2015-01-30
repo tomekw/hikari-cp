@@ -76,7 +76,7 @@
 (defn- add-datasource-property
   ""
   [config property value]
-  (if value (.addDataSourceProperty config (mixed-name property) value)))
+  (when-not (nil? value) (.addDataSourceProperty config (mixed-name property) value)))
 
 (defn validate-options
   ""
