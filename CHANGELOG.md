@@ -1,6 +1,8 @@
 ## 1.1.1
 
 * updated `HikariCP` to `2.3.2`
+* fixed issue with setting datasource-specific configuration options
+  to falsey values
 
 ## 1.1.0
 

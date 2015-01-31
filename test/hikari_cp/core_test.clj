@@ -26,6 +26,12 @@
 (def datasource-config-with-overrides
   (datasource-config valid-options))
 
+(def mysql-datasouurce-config
+  (datasource-config (merge valid-options
+                            {:adapter "mysql" :use-legacy-datetime-code false})))
+
+(expect false
+        (get (.getDataSourceProperties mysql-datasouurce-config) "useLegacyDatetimeCode"))
 (expect true
         (.isAutoCommit datasource-config-with-required-settings))
 (expect false

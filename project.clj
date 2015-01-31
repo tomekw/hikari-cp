@@ -8,11 +8,12 @@
   :dependencies [[org.clojure/clojure         "1.6.0"]
                  [org.tobereplaced/lettercase "1.0.0"]
                  [com.zaxxer/HikariCP         "2.3.2"]
-                 [prismatic/schema            "0.3.3"]]
+                 [prismatic/schema            "0.3.6"]]
   :profiles {:dev {
-                   :dependencies [[expectations              "2.0.13"]
-                                  [org.slf4j/slf4j-nop       "1.7.10"]
-                                  [org.clojure/java.jdbc     "0.3.6"]
-                                  [org.postgresql/postgresql "9.3-1102-jdbc41"]]
+                   :dependencies [[expectations               "2.0.13"]
+                                  [org.slf4j/slf4j-nop        "1.7.10"]
+                                  [org.clojure/java.jdbc      "0.3.6"]
+                                  [mysql/mysql-connector-java "5.1.34"]
+                                  [org.postgresql/postgresql  "9.3-1102-jdbc41"]]
                    :plugins [[lein-expectations "0.0.7"]]}}
   :aliases {"test" "expectations"})
