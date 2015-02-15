@@ -85,7 +85,7 @@
     (s/validate ConfigurationOptions (merge default-datasource-options options))
     (catch clojure.lang.ExceptionInfo e
       (throw
-        (IllegalArgumentException. (exception-message e))))))
+       (IllegalArgumentException. (exception-message e))))))
 
 (defn datasource-config
   ""
@@ -109,8 +109,8 @@
                 read-only
                 username]} options
         datasource-class-name (get
-                                adapters-to-datasource-class-names
-                                adapter)]
+                               adapters-to-datasource-class-names
+                               adapter)]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
