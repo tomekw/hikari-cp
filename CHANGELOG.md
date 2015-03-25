@@ -1,3 +1,7 @@
+## 1.2.1
+
+* updated `HikariCP` to `2.3.5`
+
 ## 1.2.0
 
 * updated `HikariCP` to `2.3.4`
