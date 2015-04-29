@@ -7,10 +7,10 @@
         :url "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure         "1.6.0"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP         "2.3.6"]
-                 [prismatic/schema            "0.4.0"]]
+                 [com.zaxxer/HikariCP         "2.3.7"]
+                 [prismatic/schema            "0.4.1"]]
   :profiles {:dev {
-                   :dependencies [[expectations               "2.1.0"]
+                   :dependencies [[expectations               "2.1.1"]
                                   [org.slf4j/slf4j-nop        "1.7.12"]
                                   [org.clojure/java.jdbc      "0.3.6"]
                                   [mysql/mysql-connector-java "5.1.35"]
