@@ -13,7 +13,7 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "1.2.3"]
+[hikari-cp "1.2.4"]
 ```
 
 Plus, add the database driver you want to use.
