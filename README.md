@@ -12,10 +12,10 @@ Add the following dependency to your `project.clj` file:
 [hikari-cp "1.2.4"]
 ```
 
-Note: hikari-cp targets java 8 by default. If you are using an older version of java, your `project.clj` should look more like:
+Note: hikari-cp targets Java 8 by default. If you are using an older version of Java, your `project.clj` should look more like:
 
 ```clojure
-[hikari-cp "1.2.4" :exclusions [com.zaxxer/HikariCP]]
+[hikari-cp "VERSION" :exclusions [com.zaxxer/HikariCP]]
 [com.zaxxer/HikariCP-java6 "2.3.9"]
 ```
 
