@@ -4,10 +4,6 @@
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
-## Disclaimer
-
-`hikari-cp` targets only Java version 8.
-
 ## Installation
 
 Add the following dependency to your `project.clj` file:
@@ -16,7 +12,14 @@ Add the following dependency to your `project.clj` file:
 [hikari-cp "1.2.4"]
 ```
 
-Plus, add the database driver you want to use.
+Note: hikari-cp targets Java 8 by default. If you are using an older version of Java, your `project.clj` should look more like:
+
+```clojure
+[hikari-cp "VERSION" :exclusions [com.zaxxer/HikariCP]]
+[com.zaxxer/HikariCP-java6 "2.3.9"]
+```
+
+You'll also need to add the JDBC driver needed for your database.
 
 ## Configuration options
 
