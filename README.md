@@ -16,7 +16,7 @@ Note: hikari-cp targets Java 8 by default. If you are using an older version of 
 
 ```clojure
 [hikari-cp "VERSION" :exclusions [com.zaxxer/HikariCP]]
-[com.zaxxer/HikariCP-java6 "2.4.0"]
+[com.zaxxer/HikariCP-java6 "2.4.1"]
 ```
 
 You'll also need to add the JDBC driver needed for your database.

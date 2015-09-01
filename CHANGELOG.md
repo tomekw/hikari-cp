@@ -1,6 +1,7 @@
 ## unreleased
 
 * updated `clojure` to `1.7.0`
+* updated `HikariCP` to `2.4.1`
 
 ## 1.3.0
 
