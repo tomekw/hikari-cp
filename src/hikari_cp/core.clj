@@ -97,6 +97,7 @@
                                            :username :password :pool-name :connection-test-query))
         {:keys [adapter
                 auto-commit
+                configure
                 connection-test-query
                 connection-timeout
                 validation-timeout
@@ -127,6 +128,8 @@
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
+    (when configure
+      (configure config))
     ;; Set datasource-specific properties
     (doseq [[k v] not-core-options]
       (add-datasource-property config k v))
