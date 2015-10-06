@@ -77,6 +77,7 @@
    :maximum-pool-size  IntGte1
    (s/optional-key :leak-detection-threshold) IntGte2000
    :register-mbeans    s/Bool
+   (s/optional-key :connection-init-sql) s/Str
    s/Keyword           s/Any})
 
 (def AdapterConfigurationOptions
@@ -138,7 +139,8 @@
                 leak-detection-threshold
                 register-mbeans
                 jdbc-url
-                driver-class-name]} options]
+                driver-class-name
+                connection-init-sql]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -151,6 +153,8 @@
       (.setMaximumPoolSize     maximum-pool-size)
       (.setRegisterMbeans      register-mbeans)
       (.setMaximumPoolSize     maximum-pool-size))
+    (when connection-init-sql
+      (.setConnectionInitSql config connection-init-sql))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
