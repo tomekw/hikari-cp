@@ -93,8 +93,8 @@
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options
-                                     (conj (keys ConfigurationOptions)
-                                           :username :password :pool-name :connection-test-query))
+                                     :username :password :pool-name :connection-test-query :configure
+                                     (keys ConfigurationOptions))
         {:keys [adapter
                 auto-commit
                 configure
