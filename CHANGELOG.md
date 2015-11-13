@@ -1,3 +1,7 @@
+## unreleased
+
+* Added `sqlite` support with `org.sqlite.JDBC` adapter
+
 ## 1.3.1
 
 * updated `clojure` to `1.7.0`
