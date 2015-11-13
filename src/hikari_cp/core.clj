@@ -27,7 +27,8 @@
    "pgjdbc-ng"      "com.impossibl.postgres.jdbc.PGDataSource"
    "postgresql"     "org.postgresql.ds.PGSimpleDataSource"
    "fdbsql"         "com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource"
-   "sybase"         "com.sybase.jdbcx.SybDataSource"})
+   "sybase"         "com.sybase.jdbcx.SybDataSource"
+   "sqlite"         "org.sqlite.JDBC"})
 
 (def ^{:private true} AdaptersList
   (apply s/enum (keys adapters-to-datasource-class-names)))
