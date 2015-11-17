@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.4.0
+
 * Added `sqlite` support with `org.sqlite.JDBC` adapter
 * Added a general purpose way to alter Hikari config
 
