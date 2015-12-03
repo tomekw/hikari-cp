@@ -129,3 +129,20 @@
         (validate-options (merge valid-options {:port-number -1})))
 (expect map?
         (validate-options (dissoc valid-options :port-number)))
+
+
+;; -- check leak detections option
+;; default should stay 0
+(expect 0 (-> valid-options
+              (datasource-config)
+              (.getLeakDetectionThreshold)))
+
+;; it should apply a correct value
+(let [config (datasource-config (assoc valid-options :leak-detection-threshold 3000))]
+  (expect 3000 (.getLeakDetectionThreshold config)))
+
+;; it should complain, that value is too small
+(expect IllegalArgumentException
+  (validate-options (assoc valid-options :leak-detection-threshold 1)))
+(expect IllegalArgumentException
+  (validate-options (assoc valid-options :leak-detection-threshold 1999)))

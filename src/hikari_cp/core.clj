@@ -48,6 +48,11 @@
   [x]
   (>= x 1000))
 
+(defn- gte-2000?
+  "Returns true if num is greater than or equal 1000, else false"
+  [x]
+  (or (== 0 x) (>= x 2000)))
+
 (def ^{:private true} IntGte0
   (s/both s/Int (s/pred gte-0? 'gte-0?)))
 
@@ -56,6 +61,9 @@
 
 (def ^{:private true} IntGte1000
   (s/both s/Int (s/pred gte-1000? 'gte-1000?)))
+
+(def ^{:private true} IntGte2000
+  (s/both s/Int (s/pred gte-2000? 'gte-2000?)))
 
 (def ConfigurationOptions
   {:auto-commit        s/Bool
@@ -67,6 +75,7 @@
    :minimum-idle       IntGte0
    :maximum-pool-size  IntGte1
    :adapter            AdaptersList
+   (s/optional-key :leak-detection-threshold) IntGte2000
    s/Keyword           s/Any})
 
 (defn- exception-message
@@ -109,7 +118,8 @@
                 password
                 pool-name
                 read-only
-                username]} options
+                username
+                leak-detection-threshold]} options
         datasource-class-name (get
                                adapters-to-datasource-class-names
                                adapter)]
@@ -124,11 +134,14 @@
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size)
       (.setDataSourceClassName datasource-class-name))
+
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
+    (when leak-detection-threshold
+      (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
       (configure config))
     ;; Set datasource-specific properties
