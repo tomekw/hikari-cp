@@ -1,5 +1,7 @@
 ## unreleased
 
+* Added `leak-detection-threshold` option for Hikari config. 
+
 ## 1.4.0
 
 * Added `sqlite` support with `org.sqlite.JDBC` adapter
