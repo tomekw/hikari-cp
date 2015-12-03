@@ -48,8 +48,8 @@
   [x]
   (>= x 1000))
 
-(defn- gte-2000?
-  "Returns true if num is greater than or equal 1000, else false"
+(defn- leak-threshold?
+  "Returns true only if x is acceptable value, 0 or greater-than-equal 2000"
   [x]
   (or (== 0 x) (>= x 2000)))
 
@@ -63,7 +63,7 @@
   (s/both s/Int (s/pred gte-1000? 'gte-1000?)))
 
 (def ^{:private true} IntGte2000
-  (s/both s/Int (s/pred gte-2000? 'gte-2000?)))
+  (s/both s/Int (s/pred leak-threshold? 'leak-threshold?)))
 
 (def ConfigurationOptions
   {:auto-commit        s/Bool
