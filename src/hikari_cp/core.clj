@@ -103,7 +103,8 @@
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options
-                                     :username :password :pool-name :connection-test-query :configure
+                                     :username :password :pool-name :connection-test-query
+                                     :configure :leak-detection-threshold
                                      (keys ConfigurationOptions))
         {:keys [adapter
                 auto-commit
