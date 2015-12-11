@@ -122,7 +122,8 @@
                 pool-name
                 read-only
                 username
-                leak-detection-threshold]} options
+                leak-detection-threshold
+                register-mbeans]} options
         datasource-class-name (get
                                adapters-to-datasource-class-names
                                adapter)]
