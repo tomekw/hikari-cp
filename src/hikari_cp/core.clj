@@ -77,8 +77,8 @@
    :maximum-pool-size  IntGte1
    :adapter            AdaptersList
    (s/optional-key :leak-detection-threshold) IntGte2000
-   s/Keyword           s/Any
-   :register-mbeans    s/Bool})
+   :register-mbeans    s/Bool
+   s/Keyword           s/Any})
 
 (defn- exception-message
   ""
