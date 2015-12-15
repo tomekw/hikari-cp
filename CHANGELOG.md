@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.5.0
+
 * Updated `HikariCP` to `2.4.3`
 * Added `leak-detection-threshold` option for Hikari config.
 * Added `register-mbeans` option for Hikari config.

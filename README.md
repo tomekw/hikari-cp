@@ -9,13 +9,13 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "1.4.0"]
+[hikari-cp "1.5.0"]
 ```
 
 Note: hikari-cp targets Java 8 by default. If you are using an older version of Java, your `project.clj` should look more like:
 
 ```clojure
-[hikari-cp-java6 "1.4.0"]
+[hikari-cp-java6 "1.5.0"]
 ```
 
 You'll also need to add the JDBC driver needed for your database.
