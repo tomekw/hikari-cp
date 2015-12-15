@@ -11,7 +11,8 @@
    :idle-timeout       600000
    :max-lifetime       1800000
    :minimum-idle       10
-   :maximum-pool-size  10})
+   :maximum-pool-size  10
+   :register-mbeans    false})
 
 (def ^{:private true} adapters-to-datasource-class-names
   {"derby"          "org.apache.derby.jdbc.ClientDataSource"
@@ -48,6 +49,11 @@
   [x]
   (>= x 1000))
 
+(defn- leak-threshold?
+  "Returns true only if x is acceptable value, 0 or greater-than-equal 2000"
+  [x]
+  (or (== 0 x) (>= x 2000)))
+
 (def ^{:private true} IntGte0
   (s/both s/Int (s/pred gte-0? 'gte-0?)))
 
@@ -56,6 +62,9 @@
 
 (def ^{:private true} IntGte1000
   (s/both s/Int (s/pred gte-1000? 'gte-1000?)))
+
+(def ^{:private true} IntGte2000
+  (s/both s/Int (s/pred leak-threshold? 'leak-threshold?)))
 
 (def ConfigurationOptions
   {:auto-commit        s/Bool
@@ -67,6 +76,8 @@
    :minimum-idle       IntGte0
    :maximum-pool-size  IntGte1
    :adapter            AdaptersList
+   (s/optional-key :leak-detection-threshold) IntGte2000
+   :register-mbeans    s/Bool
    s/Keyword           s/Any})
 
 (defn- exception-message
@@ -94,7 +105,8 @@
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options
-                                     :username :password :pool-name :connection-test-query :configure
+                                     :username :password :pool-name :connection-test-query
+                                     :configure :leak-detection-threshold
                                      (keys ConfigurationOptions))
         {:keys [adapter
                 auto-commit
@@ -109,7 +121,9 @@
                 password
                 pool-name
                 read-only
-                username]} options
+                username
+                leak-detection-threshold
+                register-mbeans]} options
         datasource-class-name (get
                                adapters-to-datasource-class-names
                                adapter)]
@@ -123,12 +137,16 @@
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size)
-      (.setDataSourceClassName datasource-class-name))
+      (.setDataSourceClassName datasource-class-name)
+      (.setRegisterMbeans      register-mbeans))
+
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
+    (when leak-detection-threshold
+      (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
       (configure config))
     ;; Set datasource-specific properties
