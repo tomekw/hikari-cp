@@ -1,5 +1,8 @@
 ## unreleased
 
+* Allow configuring without an adapter, but using a JDBC URL and driver class
+  name
+
 ## 1.5.0
 
 * Updated `HikariCP` to `2.4.3`
