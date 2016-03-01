@@ -91,7 +91,8 @@
 
 (def ConfigurationOptions (s/conditional
                              :adapter AdapterConfigurationOptions
-                             :jdbc-url JDBCUrlConfigurationOptions))
+                             :jdbc-url JDBCUrlConfigurationOptions
+                             :else AdapterConfigurationOptions))
 
 
 (defn- exception-message
@@ -153,8 +154,6 @@
       (.setMaximumPoolSize     maximum-pool-size)
       (.setRegisterMbeans      register-mbeans)
       (.setMaximumPoolSize     maximum-pool-size))
-    (when connection-init-sql
-      (.setConnectionInitSql config connection-init-sql))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
@@ -170,6 +169,8 @@
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
       (configure config))
+    (when connection-init-sql
+      (.setConnectionInitSql config connection-init-sql))
     ;; Set datasource-specific properties
     (doseq [[k v] not-core-options]
       (add-datasource-property config k v))
