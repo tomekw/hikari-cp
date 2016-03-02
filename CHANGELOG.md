@@ -2,6 +2,7 @@
 
 * Allow configuring without an adapter, but using a JDBC URL and driver class
   name
+* Added `connection-init-sql` option for Hikari config.
 
 ## 1.5.0
 
