@@ -66,7 +66,7 @@
 (def ^{:private true} IntGte2000
   (s/both s/Int (s/pred leak-threshold? 'leak-threshold?)))
 
-(def ConfigurationOptions
+(def BaseConfigurationOptions
   {:auto-commit        s/Bool
    :read-only          s/Bool
    :connection-timeout IntGte1000
@@ -75,10 +75,25 @@
    :max-lifetime       IntGte0
    :minimum-idle       IntGte0
    :maximum-pool-size  IntGte1
-   :adapter            AdaptersList
    (s/optional-key :leak-detection-threshold) IntGte2000
    :register-mbeans    s/Bool
+   (s/optional-key :connection-init-sql) s/Str
    s/Keyword           s/Any})
+
+(def AdapterConfigurationOptions
+  (assoc BaseConfigurationOptions
+         :adapter AdaptersList))
+
+(def JDBCUrlConfigurationOptions
+  (assoc BaseConfigurationOptions
+         :jdbc-url s/Str
+         :driver-class-name s/Str))
+
+(def ConfigurationOptions (s/conditional
+                             :adapter AdapterConfigurationOptions
+                             :jdbc-url JDBCUrlConfigurationOptions
+                             :else AdapterConfigurationOptions))
+
 
 (defn- exception-message
   ""
@@ -123,10 +138,10 @@
                 read-only
                 username
                 leak-detection-threshold
-                register-mbeans]} options
-        datasource-class-name (get
-                               adapters-to-datasource-class-names
-                               adapter)]
+                register-mbeans
+                jdbc-url
+                driver-class-name
+                connection-init-sql]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -137,9 +152,14 @@
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size)
-      (.setDataSourceClassName datasource-class-name)
-      (.setRegisterMbeans      register-mbeans))
-
+      (.setRegisterMbeans      register-mbeans)
+      (.setMaximumPoolSize     maximum-pool-size))
+    (if adapter
+      (->> (get adapters-to-datasource-class-names adapter)
+           (.setDataSourceClassName config))
+      (doto config
+        (.setJdbcUrl jdbc-url)
+        (.setDriverClassName driver-class-name)))
     ;; Set optional properties
     (if username (.setUsername config username))
     (if password (.setPassword config password))
@@ -149,6 +169,8 @@
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
       (configure config))
+    (when connection-init-sql
+      (.setConnectionInitSql config connection-init-sql))
     ;; Set datasource-specific properties
     (doseq [[k v] not-core-options]
       (add-datasource-property config k v))

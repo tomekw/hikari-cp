@@ -54,9 +54,10 @@
         (.getUsername datasource-config-with-required-settings))
 (expect "password"
         (.getPassword datasource-config-with-required-settings))
-; Quick and dirty hack to read portNumber from Properties
-(expect "{portNumber=5433, databaseName=database, serverName=host-1}"
-        (str (.getDataSourceProperties datasource-config-with-required-settings)))
+(expect 5433
+        (-> datasource-config-with-required-settings
+            .getDataSourceProperties
+            (get "portNumber")))
 
 (expect false
         (.isAutoCommit datasource-config-with-overrides))
@@ -81,7 +82,7 @@
         (datasource-config (dissoc valid-options :adapter)))
 (expect "Invalid configuration options: (:adapter)"
         (try
-          (datasource-config (dissoc valid-options :adapter))
+          (datasource-config (validate-options (dissoc valid-options :adapter)))
           (catch IllegalArgumentException e
             (str (.getMessage e)))))
 

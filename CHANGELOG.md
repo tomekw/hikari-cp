@@ -1,5 +1,11 @@
 ## unreleased
 
+## 1.6.0
+
+* Allow configuring without an adapter, but using a JDBC URL and driver class
+  name
+* Added `connection-init-sql` option for Hikari config.
+
 ## 1.5.0
 
 * Added `leak-detection-threshold` option for Hikari config.

@@ -9,13 +9,13 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "1.5.0"]
+[hikari-cp "1.6.0"]
 ```
 
 Note: hikari-cp targets Java 8 by default. If you are using an older version of Java, your `project.clj` should look more like:
 
 ```clojure
-[hikari-cp-java6 "1.5.0"]
+[hikari-cp-java6 "1.6.0"]
 ```
 
 You'll also need to add the JDBC driver needed for your database.
@@ -33,13 +33,20 @@ You'll also need to add the JDBC driver needed for your database.
 | `:minimum-idle`          | No       | `10`                   | This property controls the minimum number of idle connections that HikariCP tries to maintain in the pool.                                                                                                                                                                                                                             |
 | `:maximum-pool-size`     | No       | `10`                   | This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections. Basically this value will determine the maximum number of actual connections to the database backend.                                                                                                           |
 | `:pool-name`             | No       | Auto-generated         | This property represents a user-defined name for the connection pool and appears mainly in logging and JMX management consoles to identify pools and pool configurations.                                                                                                                                                              |
-| `:adapter`               | **Yes**  | None                   | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names.                                                                                                |
+| `:jdbc-url`              | **Yes¹** | None                   | This property sets the JDBC connection URL.                                                                                                  |
+| `:driver-class-name`     | No       | None                   | This property sets the JDBC driver class.                                                                                                    |
+| `:adapter`               | **Yes¹** | None                   | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names.                                                                                                |
 | `:username`              | No       | None                   | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                                                                                                                     |
 | `:password`              | No       | None                   | This property sets the default authentication password used when obtaining Connections from the underlying driver.                                                                                                                                                                                                                     |
 | `:database-name`         | No       | None                   | This property sets the database name.                                                                                                                                                                                                                                                                                                  |
 | `:server-name`           | No       | Depends on the adapter | This property sets the hostname client connects to.                                                                                                                                                                                                                                                                                    |
 | `:port-number`           | No       | Depends on the adapter | This property sets the port clients connects on.                                                                                                                                                                                                                                                                                       |
 | `:connection-test-query` | No       | None                   | If your driver supports JDBC4 we strongly recommend not setting this property. This is for "legacy" databases that do not support the JDBC4 `Connection.isValid()` API. This is the query that will be executed just before a connection is given to you from the pool to validate that the connection to the database is still alive. |
+| `:leak-detection-threshold` | No       | 0  | This property controls the amount of time that a connection can be out of the pool before a message is logged indicating a possible connection leak. A value of 0 means leak detection is disabled, minimum accepted value is 2000 (ms). ( *ps: it's rarely needed option, use only for debugging* ) |
+| `:register-mbeans`       | No       | false | This property register mbeans which can be used in jmx to monitor hikari-cp.                                                                                                                                                                                                                                                                            |
+| `:connection-init-sql`   | No       | None                   | This property sets a SQL statement that will be executed after every new connection creation before adding it to the pool.                                                                                                                                                                                                             |
+
+**¹** `:adapter` and `:jdbc-url` are mutually exlusive.
 
 You can also add other datasource-specific configuration options.
 Keywords will be converted to the camelCase format add added
