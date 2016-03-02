@@ -147,3 +147,8 @@
   (validate-options (assoc valid-options :leak-detection-threshold 1)))
 (expect IllegalArgumentException
   (validate-options (assoc valid-options :leak-detection-threshold 1999)))
+
+;; Ensure that core options aren't being set as datasource properties
+(expect #{"portNumber" "databaseName" "serverName"}
+  (set (keys (.getDataSourceProperties datasource-config-with-required-settings))))
+
