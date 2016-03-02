@@ -152,8 +152,6 @@
       (.setIdleTimeout         idle-timeout)
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
-      (.setMaximumPoolSize     maximum-pool-size)
-      (.setRegisterMbeans      register-mbeans)
       (.setMaximumPoolSize     maximum-pool-size))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
@@ -172,6 +170,8 @@
       (configure config))
     (when connection-init-sql
       (.setConnectionInitSql config connection-init-sql))
+    (when register-mbeans
+      (.setRegisterMbeans config register-mbeans))
     ;; Set datasource-specific properties
     (doseq [[k v] not-core-options]
       (add-datasource-property config k v))
