@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.6.1
+
 * Call setRegisterMbeans property only when it is specified.
 * Fix a bug introduced in a25b7a7f20b0a5c46dd83ea32d7a5a7b1c184273 where
   the non core options are no longer properly detected.
