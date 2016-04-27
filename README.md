@@ -117,8 +117,8 @@ as a datasource property:
 ### H2 minimal config example
 
 ```clojure
-(def datasource-options {:adapter "h2"
-                         :url     "jdbc:h2:~/test"})
+(def datasource-options {:adapter  "h2"
+                         :jdbc-url "jdbc:h2:~/test"})
 ```
 
 ### Notice
