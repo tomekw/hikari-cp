@@ -154,6 +154,7 @@
 (expect map?
         (validate-options (dissoc valid-options :port-number)))
 
+
 ;; -- check leak detections option
 ;; default should stay 0
 (expect 0 (-> valid-options
@@ -166,13 +167,13 @@
 
 ;; it should complain, that value is too small
 (expect IllegalArgumentException
-        (validate-options (assoc valid-options :leak-detection-threshold 1)))
+  (validate-options (assoc valid-options :leak-detection-threshold 1)))
 (expect IllegalArgumentException
-        (validate-options (assoc valid-options :leak-detection-threshold 1999)))
+  (validate-options (assoc valid-options :leak-detection-threshold 1999)))
 
 ;; Ensure that core options aren't being set as datasource properties
 (expect #{"portNumber" "databaseName" "serverName"}
-        (set (keys (.getDataSourceProperties datasource-config-with-required-settings))))
+  (set (keys (.getDataSourceProperties datasource-config-with-required-settings))))
 
 (expect HikariPool$PoolInitializationException
-        (make-datasource valid-options))
+  (make-datasource valid-options))
