@@ -86,6 +86,9 @@
           (catch IllegalArgumentException e
             (str (.getMessage e)))))
 
+(expect "jdbc:postgres:test"
+        (.getJdbcUrl (datasource-config {:jdbc-url "jdbc:postgres:test"})))
+
 (expect map?
         (validate-options valid-options))
 (expect IllegalArgumentException

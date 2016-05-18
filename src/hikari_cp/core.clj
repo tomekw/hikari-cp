@@ -87,7 +87,7 @@
 (def JDBCUrlConfigurationOptions
   (assoc BaseConfigurationOptions
          :jdbc-url s/Str
-         :driver-class-name s/Str))
+         (s/optional-key :driver-class-name) s/Str))
 
 (def ConfigurationOptions (s/conditional
                              :adapter AdapterConfigurationOptions
@@ -156,10 +156,9 @@
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
-      (doto config
-        (.setJdbcUrl jdbc-url)
-        (.setDriverClassName driver-class-name)))
+      (.setJdbcUrl config jdbc-url))
     ;; Set optional properties
+    (if driver-class-name (.setDriverClassName config driver-class-name))
     (if username (.setUsername config username))
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))

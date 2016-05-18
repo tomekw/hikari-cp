@@ -1,5 +1,7 @@
 ## unreleased
 
+* Make `driver-class-name` optional when `jdbc-url` is given.
+
 ## 1.6.1
 
 * Call setRegisterMbeans property only when it is specified.
