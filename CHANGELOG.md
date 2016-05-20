@@ -1,5 +1,6 @@
 ## unreleased
 
+* Added `datasource` and `datasource-classname` options
 * Make `connection-init-sql` a none core option
 * Make `driver-class-name` optional when `jdbc-url` is given.
 
