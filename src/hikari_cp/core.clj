@@ -1,5 +1,7 @@
 (ns hikari-cp.core
-  (:import com.zaxxer.hikari.HikariConfig com.zaxxer.hikari.HikariDataSource)
+  (:import com.zaxxer.hikari.HikariConfig
+           com.zaxxer.hikari.HikariDataSource
+           javax.sql.DataSource)
   (:require [org.tobereplaced.lettercase :refer [mixed-name]]
             [schema.core :as s]))
 
@@ -89,7 +91,18 @@
          :jdbc-url s/Str
          (s/optional-key :driver-class-name) s/Str))
 
+(def DatasourceConfigurationOptions
+  (assoc BaseConfigurationOptions
+    :datasource DataSource))
+
+(def DatasourceClassnameConfigurationOptions
+  (assoc BaseConfigurationOptions
+    :datasource-classname s/Str))
+
+;(s/optional-key :driver-class-name)
 (def ConfigurationOptions (s/conditional
+                             :datasource DatasourceConfigurationOptions
+                             :datasource-classname DatasourceClassnameConfigurationOptions
                              :adapter AdapterConfigurationOptions
                              :jdbc-url JDBCUrlConfigurationOptions
                              :else AdapterConfigurationOptions))
@@ -125,6 +138,8 @@
                                      :driver-class-name :connection-init-sql
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
+                datasource
+                datasource-classname
                 auto-commit
                 configure
                 connection-test-query
@@ -153,6 +168,8 @@
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size))
+    (if datasource (.setDataSource config datasource))
+    (if datasource-classname (.setDataSourceClassName config datasource-classname))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
