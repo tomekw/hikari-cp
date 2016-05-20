@@ -1,30 +1,42 @@
 (ns hikari-cp.core-test
-  (:require [hikari-cp.core :refer :all]
-            [schema.core :as s])
-  (:use expectations))
+  (:require [hikari-cp.core :refer :all])
+  (:use expectations)
+  (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)))
 
 (def valid-options
-  {:auto-commit        false
-   :read-only          true
-   :connection-timeout 1000
-   :validation-timeout 1000
-   :idle-timeout       0
-   :max-lifetime       0
-   :minimum-idle       0
-   :maximum-pool-size  1
-   :pool-name          "db-pool"
-   :adapter            "postgresql"
-   :username           "username"
-   :password           "password"
-   :database-name      "database"
-   :server-name        "host-1"
-   :port-number        5433})
+  {:auto-commit              false
+   :read-only                true
+   :connection-timeout       1000
+   :validation-timeout       1000
+   :idle-timeout             0
+   :max-lifetime             0
+   :minimum-idle             0
+   :maximum-pool-size        1
+   :pool-name                "db-pool"
+   :adapter                  "postgresql"
+   :username                 "username"
+   :password                 "password"
+   :database-name            "database"
+   :server-name              "host-1"
+   :port-number              5433
+   :connection-init-sql      "set join_collapse_limit=4"
+   :connection-test-query    "select 0"
+   :register-mbeans          true
+   #_:leak-detection-threshold #_4000})                     ; a valid option but tested separately below.
+
+(def alternate-valid-options
+  {:driver-class-name "org.postgresql.ds.PGPoolingDataSource"
+   :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
 (def datasource-config-with-required-settings
   (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
 
 (def datasource-config-with-overrides
   (datasource-config valid-options))
+
+(def datasource-config-with-overrides-alternate
+  (datasource-config (-> (dissoc valid-options :adapter)
+                         (merge alternate-valid-options))))
 
 (def mysql-datasouurce-config
   (datasource-config (merge valid-options
@@ -77,6 +89,17 @@
         (.getMaximumPoolSize datasource-config-with-overrides))
 (expect "db-pool"
         (.getPoolName datasource-config-with-overrides))
+(expect "set join_collapse_limit=4"
+        (.getConnectionInitSql datasource-config-with-overrides))
+(expect "select 0"
+        (.getConnectionTestQuery datasource-config-with-overrides))
+(expect true
+        (.isRegisterMbeans datasource-config-with-overrides))
+
+(expect "org.postgresql.ds.PGPoolingDataSource"
+          (.getDriverClassName datasource-config-with-overrides-alternate))
+(expect "jdbc:postgresql://localhost:5433/test"
+        (.getJdbcUrl datasource-config-with-overrides-alternate))
 
 (expect IllegalArgumentException
         (datasource-config (dissoc valid-options :adapter)))
@@ -155,3 +178,5 @@
 (expect #{"portNumber" "databaseName" "serverName"}
   (set (keys (.getDataSourceProperties datasource-config-with-required-settings))))
 
+(expect HikariPool$PoolInitializationException
+  (make-datasource valid-options))

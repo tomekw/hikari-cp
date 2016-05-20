@@ -122,7 +122,7 @@
         not-core-options      (apply dissoc options
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
-                                     :driver-class-name
+                                     :driver-class-name :connection-init-sql
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 auto-commit
