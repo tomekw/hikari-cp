@@ -1,5 +1,6 @@
 ## unreleased
 
+* Make `connection-init-sql` a none core option
 * Make `driver-class-name` optional when `jdbc-url` is given.
 
 ## 1.6.1
