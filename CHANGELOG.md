@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.7.1
+
 * added `jdbc-url` to be a required key for datasource
 
 ## 1.7.0
