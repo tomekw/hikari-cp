@@ -1,5 +1,7 @@
 ## unreleased
 
+* added `jdbc-url` to be a required key for datasource
+
 ## 1.7.0
 
 * Added `datasource` and `datasource-classname` options
