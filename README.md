@@ -48,7 +48,7 @@ You'll also need to add the JDBC driver needed for your database.
 | `:datasource`            | No       | None                   | This property allows you to directly set the instance of the DataSource to be wrapped by the pool.                                                                                                                                                                                                                                     |
 | `:datasource-classname`  | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
 
-**¹** `:adapter` and `:jdbc-url` are mutually exlusive.
+**¹** `:adapter` and `:jdbc-url` are mutually exclusive.
 
 You can also add other datasource-specific configuration options.
 Keywords will be converted to the camelCase format add added
@@ -74,7 +74,7 @@ as a datasource property:
 | `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
 | `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | **Yes**               |
 | `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | **Yes**               |
-| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | No                    |
+| `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | **Yes**               |
 | `pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
 | `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
 | `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` | No                    |
@@ -121,6 +121,31 @@ as a datasource property:
 ```clojure
 (def datasource-options {:adapter "h2"
                          :url     "jdbc:h2:~/test"})
+```
+
+### Oracle example
+
+```clojure
+(ns hikari-cp.example
+  (:require [hikari-cp.core :refer :all]
+            [clojure.java.jdbc :as jdbc]))
+
+(def datasource-options {:username              "username"
+                         :password              "password"
+                         :database-name         "database"
+                         :server-name           "localhost"
+                         :port-number           1521
+                         :driverType            "thin"       ; Other options are oci8, oci or kprb. See jdbc.pool.OracleDataSource.makeURL()
+                         :adapter               "oracle"})
+
+(def datasource
+  (make-datasource datasource-options))
+
+(defn -main [& args]
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+    (let [rows (jdbc/query conn "SELECT * FROM table")]
+      (println rows)))
+  (close-datasource datasource))
 ```
 
 ### Notice
