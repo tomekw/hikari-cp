@@ -1,5 +1,9 @@
 ## unreleased
 
+## 1.7.3
+
+* Fixed validation for datasource
+
 ## 1.7.2
 
 * Updated `HikariCP` to `2.4.7`
