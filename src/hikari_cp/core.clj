@@ -93,12 +93,10 @@
 
 (def DatasourceConfigurationOptions
   (assoc BaseConfigurationOptions
-         :jdbc-url s/Str
          :datasource DataSource))
 
 (def DatasourceClassnameConfigurationOptions
   (assoc BaseConfigurationOptions
-         :jdbc-url s/Str
          :datasource-classname s/Str))
 
 ;(s/optional-key :driver-class-name)
