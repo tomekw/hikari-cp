@@ -1,7 +1,8 @@
 (ns hikari-cp.core-test
   (:require [hikari-cp.core :refer :all])
   (:use expectations)
-  (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)))
+  (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
+           (com.codahale.metrics MetricRegistry)))
 
 (def valid-options
   {:auto-commit              false
@@ -28,6 +29,9 @@
   {:driver-class-name "org.postgresql.ds.PGPoolingDataSource"
    :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
+(def metric-registry-options
+  {:metric-registry (MetricRegistry.)})
+
 (def datasource-config-with-required-settings
   (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
 
@@ -41,6 +45,8 @@
 (def mysql-datasouurce-config
   (datasource-config (merge valid-options
                             {:adapter "mysql" :use-legacy-datetime-code false})))
+
+(def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
 
 (expect false
         (get (.getDataSourceProperties mysql-datasouurce-config) "useLegacyDatetimeCode"))
@@ -70,6 +76,11 @@
         (-> datasource-config-with-required-settings
             .getDataSourceProperties
             (get "portNumber")))
+(expect nil
+        (.getMetricRegistry datasource-config-with-required-settings))
+(expect (:metric-registry metric-registry-options)
+        (.getMetricRegistry metric-registry-config))
+
 
 (expect false
         (.isAutoCommit datasource-config-with-overrides))

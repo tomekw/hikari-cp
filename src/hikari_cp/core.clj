@@ -80,6 +80,7 @@
    (s/optional-key :leak-detection-threshold) IntGte2000
    :register-mbeans    s/Bool
    (s/optional-key :connection-init-sql) s/Str
+   (s/optional-key :metric-registry) s/Any
    s/Keyword           s/Any})
 
 (def AdapterConfigurationOptions
@@ -157,7 +158,8 @@
                 register-mbeans
                 jdbc-url
                 driver-class-name
-                connection-init-sql]} options]
+                connection-init-sql
+                metric-registry]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -180,6 +182,7 @@
     (if password (.setPassword config password))
     (if pool-name (.setPoolName config pool-name))
     (if connection-test-query (.setConnectionTestQuery config connection-test-query))
+    (when metric-registry (.setMetricRegistry config metric-registry))
     (when leak-detection-threshold
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
