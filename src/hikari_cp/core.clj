@@ -113,10 +113,16 @@
   [e]
   (format "Invalid configuration options: %s" (keys (:error (.getData e)))))
 
+(defmulti translate-property keyword)
+(defmethod translate-property :use-ssl [_] "useSSL")
+(defmethod translate-property :useSSL [_] "useSSL")
+(defmethod translate-property :default [x] (mixed-name x))
+
 (defn- add-datasource-property
   ""
-  [config property value]
-  (if (not (nil? value)) (.addDataSourceProperty config (mixed-name property) value)))
+  [^HikariConfig config property value]
+  (when-not (nil? value)
+    (.addDataSourceProperty config (translate-property property) value)))
 
 (defn validate-options
   ""
