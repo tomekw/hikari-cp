@@ -1,7 +1,8 @@
 (ns hikari-cp.core
   (:import com.zaxxer.hikari.HikariConfig
            com.zaxxer.hikari.HikariDataSource
-           javax.sql.DataSource)
+           javax.sql.DataSource
+           clojure.lang.ExceptionInfo)
   (:require [org.tobereplaced.lettercase :refer [mixed-name]]
             [schema.core :as s]))
 
@@ -110,7 +111,7 @@
 
 (defn- exception-message
   ""
-  [e]
+  ^String [^ExceptionInfo e]
   (format "Invalid configuration options: %s" (keys (:error (.getData e)))))
 
 (defmulti translate-property keyword)
@@ -129,7 +130,7 @@
   [options]
   (try
     (s/validate ConfigurationOptions (merge default-datasource-options options))
-    (catch clojure.lang.ExceptionInfo e
+    (catch ExceptionInfo e
       (throw
        (IllegalArgumentException. (exception-message e))))))
 
@@ -208,5 +209,5 @@
 
 (defn close-datasource
   ""
-  [datasource]
+  [^HikariDataSource datasource]
   (.close datasource))
