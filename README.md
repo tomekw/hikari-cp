@@ -59,7 +59,7 @@ as a datasource property, unless a special translation is defined:
 (.addDataSourceProperty config "tcpKeepAlive" true)
 
 ;; {:use-ssl false} has a custom translation, so it will be:
-(.addDataSourceProperty config "useSSL" true)
+(.addDataSourceProperty config "useSSL" false)
 ```
 
 Custom translations of properties can be added by extending the
