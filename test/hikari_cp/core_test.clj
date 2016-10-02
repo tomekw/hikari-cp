@@ -180,3 +180,11 @@
 
 (expect HikariPool$PoolInitializationException
   (make-datasource valid-options))
+
+(expect "useSSL" (translate-property :useSSL))
+(expect "useSSL" (translate-property :use-ssl))
+(expect "useFoo" (translate-property :useFOO))
+
+;; translate-property is extensible
+(defmethod translate-property ::extend-translate-test [_] 42)
+(expect 42 (translate-property ::extend-translate-test))

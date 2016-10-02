@@ -51,13 +51,19 @@ You'll also need to add the JDBC driver needed for your database.
 **¹** `:adapter` and `:jdbc-url` are mutually exclusive.
 
 You can also add other datasource-specific configuration options.
-Keywords will be converted to the camelCase format add added
-as a datasource property:
+By default, keywords will be converted to the camelCase format add added
+as a datasource property, unless a special translation is defined:
 
 ```clojure
 ;; {:tcp-keep-alive true} will be:
 (.addDataSourceProperty config "tcpKeepAlive" true)
+
+;; {:use-ssl false} has a custom translation, so it will be:
+(.addDataSourceProperty config "useSSL" false)
 ```
+
+Custom translations of properties can be added by extending the
+`translate-property` multimethod.
 
 **Please note:** All time values are specified in milliseconds.
 
