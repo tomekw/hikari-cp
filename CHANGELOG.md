@@ -1,4 +1,5 @@
 ## unreleased
+* Added support for dropwizard metrics registry.
 
 ## 1.7.4
 

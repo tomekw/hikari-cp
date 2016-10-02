@@ -47,6 +47,7 @@ You'll also need to add the JDBC driver needed for your database.
 | `:connection-init-sql`   | No       | None                   | This property sets a SQL statement that will be executed after every new connection creation before adding it to the pool.                                                                                                                                                                                                             |
 | `:datasource`            | No       | None                   | This property allows you to directly set the instance of the DataSource to be wrapped by the pool.                                                                                                                                                                                                                                     |
 | `:datasource-classname`  | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
+| `:metric-registry`  | No      | None | This is an instance of a dropwizard metrics MetricsRegistry |
 
 **¹** `:adapter` and `:jdbc-url` are mutually exclusive.
 
