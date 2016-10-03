@@ -1,5 +1,7 @@
 ## unreleased
+
 * Added support for dropwizard metrics registry.
+* Added support for useSSL property.
 
 ## 1.7.4
 
