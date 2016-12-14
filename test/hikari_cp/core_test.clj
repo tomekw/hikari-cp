@@ -29,6 +29,9 @@
   {:driver-class-name "org.postgresql.ds.PGPoolingDataSource"
    :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
+(def alternate-valid-options2
+  {:datasource-classname "com.sybase.jdbc3.jdbc.SybDataSource"})
+
 (def metric-registry-options
   {:metric-registry (MetricRegistry.)})
 
@@ -41,6 +44,10 @@
 (def datasource-config-with-overrides-alternate
   (datasource-config (-> (dissoc valid-options :adapter)
                          (merge alternate-valid-options))))
+
+(def datasource-config-with-overrides-alternate2
+  (datasource-config (-> (dissoc valid-options :adapter)
+                         (merge alternate-valid-options2))))
 
 (def mysql-datasouurce-config
   (datasource-config (merge valid-options
@@ -111,6 +118,9 @@
           (.getDriverClassName datasource-config-with-overrides-alternate))
 (expect "jdbc:postgresql://localhost:5433/test"
         (.getJdbcUrl datasource-config-with-overrides-alternate))
+
+(expect "com.sybase.jdbc3.jdbc.SybDataSource"
+        (.getDataSourceClassName datasource-config-with-overrides-alternate2))
 
 (expect IllegalArgumentException
         (datasource-config (dissoc valid-options :adapter)))
