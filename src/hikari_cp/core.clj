@@ -31,7 +31,7 @@
    "pgjdbc-ng"      "com.impossibl.postgres.jdbc.PGDataSource"
    "postgresql"     "org.postgresql.ds.PGSimpleDataSource"
    "fdbsql"         "com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource"
-   "sybase"         "com.sybase.jdbcx.SybDataSource"
+   "sybase"         "com.sybase.jdbc4.jdbc.SybDataSource"
    "sqlite"         "org.sqlite.JDBC"})
 
 (def ^{:private true} AdaptersList
@@ -143,7 +143,7 @@
         not-core-options      (apply dissoc options
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
-                                     :driver-class-name :connection-init-sql
+                                     :datasource-classname :driver-class-name :connection-init-sql
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 datasource
