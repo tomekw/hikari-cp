@@ -118,7 +118,7 @@ Custom translations of properties can be added by extending the
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
-    (let [rows (jdbc/query conn "SELECT * FROM table")]
+    (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource datasource))
 ```
@@ -150,7 +150,7 @@ Custom translations of properties can be added by extending the
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
-    (let [rows (jdbc/query conn "SELECT 0")]
+    (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
       (println rows)))
   (close-datasource datasource))
 ```
@@ -179,7 +179,7 @@ Custom translations of properties can be added by extending the
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
-    (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
+    (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource datasource))
 ```
