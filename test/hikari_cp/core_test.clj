@@ -197,7 +197,7 @@
 
 ;; Ensure that core options aren't being set as datasource properties
 (expect #{"portNumber" "databaseName" "serverName"}
-  (set (keys (.getDataSourceProperties datasource-config-with-required-settings))))
+  (set (keys (.getDataSourceProperties metric-registry-config))))
 
 (expect HikariPool$PoolInitializationException
   (make-datasource valid-options))

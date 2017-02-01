@@ -143,7 +143,7 @@
         not-core-options      (apply dissoc options
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
-                                     :datasource-classname :driver-class-name :connection-init-sql
+                                     :datasource-classname :driver-class-name :connection-init-sql :metric-registry
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 datasource
