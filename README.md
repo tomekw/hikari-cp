@@ -85,7 +85,7 @@ Custom translations of properties can be added by extending the
 | `pgjdbc-ng`      | `com.impossibl.postgres.jdbc.PGDataSource`         | No                    |
 | `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
 | `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` | No                    |
-| `sybase`         | `com.sybase.jdbcx.SybDataSource`                   | No                    |
+| `sybase`         | `com.sybase.jdbc4.jdbc.SybDataSource`              | Yes                   |
 
 ## Usage
 
@@ -118,7 +118,7 @@ Custom translations of properties can be added by extending the
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
-    (let [rows (jdbc/query conn "SELECT * FROM table")]
+    (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource datasource))
 ```
@@ -150,7 +150,36 @@ Custom translations of properties can be added by extending the
 
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
-    (let [rows (jdbc/query conn "SELECT * FROM table")]
+    (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
+      (println rows)))
+  (close-datasource datasource))
+```
+
+### Sybase example
+
+```clojure
+(ns hikari-cp.example
+  (:require [hikari-cp.core :refer :all]
+            [clojure.java.jdbc :as jdbc]))
+
+(def datasource-options {:username              "username"
+                         :password              "password"
+                         :database-name         "database"
+                         :server-name           "localhost"
+                         :port-number           5900
+                         :adapter               "sybase"}) ; assumes jconn4.jar (com.sybase.jdbc4.jdbc.SybDataSource)
+
+; if you're using jconn2.jar or jconn3.jar replace :adapter "sybase" with the following
+; :datasource-classname "com.sybase.jdbc3.jdbc.SybDataSource"
+; or
+; :datasource-classname "com.sybase.jdbc2.jdbc.SybDataSource"
+
+(def datasource
+  (make-datasource datasource-options))
+
+(defn -main [& args]
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+    (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource datasource))
 ```
