@@ -184,6 +184,12 @@ Custom translations of properties can be added by extending the
   (close-datasource datasource))
 ```
 
+### SQLite example
+
+```clojure
+(def datasource-options {:jdbc-url "jdbc:sqlite:db/database.db"})
+```
+
 ### Notice
 
 `make-datasource` will throw `IllegalArgumentException` when invalid
