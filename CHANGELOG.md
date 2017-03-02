@@ -1,5 +1,5 @@
 ## unreleased
-* updated to latest HikariCP 2.6.0 fix 7 issue and add idea project auxiliary file to .gitignore
+* updated  `HikariCP` to `2.6.0` 
 ## 1.7.5
 
 * Added support for dropwizard metrics registry.
