@@ -5,9 +5,9 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :scm {:name "git"
         :url "https://github.com/tomekw/hikari-cp"}
-  :dependencies [[org.clojure/clojure         "1.7.0"]
+  :dependencies [[org.clojure/clojure         "1.8.0"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP         "2.5.1"]
+                 [com.zaxxer/HikariCP         "2.6.0"]
                  [prismatic/schema            "1.0.4"]]
   :profiles {:dev {
                    :dependencies [[expectations               "2.1.4"]

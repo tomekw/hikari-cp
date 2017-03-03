@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated  `HikariCP` to `2.6.0` 
+
 ## 1.7.5
 
 * Added support for dropwizard metrics registry.
