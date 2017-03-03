@@ -5,10 +5,10 @@ pom.xml
 pom.xml.asc
 *.jar
 *.class
-/.lein-*
-/.nrepl-port
-/lib
-/.idea
-/.env
+.lein-*
+.nrepl-port
+lib
+.idea
+.env
 *.log
 *.iml
