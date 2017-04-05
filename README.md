@@ -202,7 +202,7 @@ arguments are provided:
 
 ## License
 
-Copyright © 2014 - 2016 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
+Copyright © 2014 - 2017 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
