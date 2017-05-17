@@ -127,7 +127,7 @@
     (.addDataSourceProperty config (translate-property property) value)))
 
 (defn validate-options
-  ""
+  "Validate `options`"
   [options]
   (try
     (s/validate ConfigurationOptions (merge default-datasource-options options))
@@ -136,7 +136,7 @@
        (IllegalArgumentException. (exception-message e))))))
 
 (defn datasource-config
-  ""
+  "Create datasource config from `datasource-options`"
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
@@ -204,13 +204,13 @@
     config))
 
 (defn make-datasource
-  ""
+  "Make datasource from `datasource-options`"
   [datasource-options]
   (let [config (datasource-config datasource-options)
         datasource (HikariDataSource. config)]
     datasource))
 
 (defn close-datasource
-  ""
+  "Close given `datasource`"
   [^HikariDataSource datasource]
   (.close datasource))
