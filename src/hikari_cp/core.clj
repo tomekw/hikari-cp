@@ -127,7 +127,7 @@
     (.addDataSourceProperty config (translate-property property) value)))
 
 (defn validate-options
-  ""
+  "Validate `options`"
   [options]
   (try
     (s/validate ConfigurationOptions (merge default-datasource-options options))
@@ -136,7 +136,7 @@
        (IllegalArgumentException. (exception-message e))))))
 
 (defn datasource-config
-  ""
+  "Create datasource config from `datasource-options`"
   [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
@@ -177,18 +177,18 @@
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size))
-    (if datasource (.setDataSource config datasource))
-    (if datasource-classname (.setDataSourceClassName config datasource-classname))
+    (when datasource (.setDataSource config datasource))
+    (when datasource-classname (.setDataSourceClassName config datasource-classname))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
       (.setJdbcUrl config jdbc-url))
     ;; Set optional properties
-    (if driver-class-name (.setDriverClassName config driver-class-name))
-    (if username (.setUsername config username))
-    (if password (.setPassword config password))
-    (if pool-name (.setPoolName config pool-name))
-    (if connection-test-query (.setConnectionTestQuery config connection-test-query))
+    (when driver-class-name (.setDriverClassName config driver-class-name))
+    (when username (.setUsername config username))
+    (when password (.setPassword config password))
+    (when pool-name (.setPoolName config pool-name))
+    (when connection-test-query (.setConnectionTestQuery config connection-test-query))
     (when metric-registry (.setMetricRegistry config metric-registry))
     (when leak-detection-threshold
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
@@ -204,13 +204,13 @@
     config))
 
 (defn make-datasource
-  ""
+  "Make datasource from `datasource-options`"
   [datasource-options]
   (let [config (datasource-config datasource-options)
         datasource (HikariDataSource. config)]
     datasource))
 
 (defn close-datasource
-  ""
+  "Close given `datasource`"
   [^HikariDataSource datasource]
   (.close datasource))
