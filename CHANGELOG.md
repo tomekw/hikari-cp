@@ -1,23 +1,24 @@
 ## unreleased
 
 * updated  `HikariCP` to `2.6.0` 
+* do not attempt to use :metric-registry as a datasource property
 
 ## 1.7.5
 
-* Added support for dropwizard metrics registry.
-* Added support for useSSL property.
+* added support for dropwizard metrics registry.
+* added support for useSSL property.
 
 ## 1.7.4
 
-* Updated `HikariCP` to `2.5.1`
+* updated `HikariCP` to `2.5.1`
 
 ## 1.7.3
 
-* Fixed validation for datasource
+* fixed validation for datasource
 
 ## 1.7.2
 
-* Updated `HikariCP` to `2.4.7`
+* updated `HikariCP` to `2.4.7`
 
 ## 1.7.1
 
@@ -25,9 +26,9 @@
 
 ## 1.7.0
 
-* Added `datasource` and `datasource-classname` options
-* Make `connection-init-sql` a none core option
-* Make `driver-class-name` optional when `jdbc-url` is given.
+* added `datasource` and `datasource-classname` options
+* make `connection-init-sql` a none core option
+* make `driver-class-name` optional when `jdbc-url` is given.
 
 ## 1.6.1
 
@@ -37,20 +38,20 @@
 
 ## 1.6.0
 
-* Allow configuring without an adapter, but using a JDBC URL and driver class
+* allow configuring without an adapter, but using a JDBC URL and driver class
   name
-* Added `connection-init-sql` option for Hikari config.
+* added `connection-init-sql` option for Hikari config.
 
 ## 1.5.0
 
-* Updated `HikariCP` to `2.4.3`
-* Added `leak-detection-threshold` option for Hikari config.
-* Added `register-mbeans` option for Hikari config.
+* updated `HikariCP` to `2.4.3`
+* added `leak-detection-threshold` option for Hikari config.
+* added `register-mbeans` option for Hikari config.
 
 ## 1.4.0
 
-* Added `sqlite` support with `org.sqlite.JDBC` adapter
-* Added a general purpose way to alter Hikari config
+* added `sqlite` support with `org.sqlite.JDBC` adapter
+* added a general purpose way to alter Hikari config
 
 ## 1.3.1
 
