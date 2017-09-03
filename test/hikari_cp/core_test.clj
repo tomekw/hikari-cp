@@ -2,7 +2,8 @@
   (:require [hikari-cp.core :refer :all])
   (:use expectations)
   (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
-           (com.codahale.metrics MetricRegistry)))
+           (com.codahale.metrics MetricRegistry)
+           (com.codahale.metrics.health HealthCheckRegistry)))
 
 (def valid-options
   {:auto-commit              false
@@ -35,6 +36,9 @@
 (def metric-registry-options
   {:metric-registry (MetricRegistry.)})
 
+(def health-check-registry-options
+  {:health-check-registry (HealthCheckRegistry.)})
+
 (def datasource-config-with-required-settings
   (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
 
@@ -54,6 +58,8 @@
                             {:adapter "mysql" :use-legacy-datetime-code false})))
 
 (def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
+
+(def health-check-registry-config (datasource-config (merge valid-options health-check-registry-options)))
 
 (expect false
         (get (.getDataSourceProperties mysql-datasouurce-config) "useLegacyDatetimeCode"))
@@ -87,6 +93,11 @@
         (.getMetricRegistry datasource-config-with-required-settings))
 (expect (:metric-registry metric-registry-options)
         (.getMetricRegistry metric-registry-config))
+
+(expect nil
+  (.getHealthCheckRegistry datasource-config-with-required-settings))
+(expect (:health-check-registry health-check-registry-options)
+  (.getHealthCheckRegistry health-check-registry-config))
 
 
 (expect false
