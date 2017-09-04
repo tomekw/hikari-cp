@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.7.6
+
 * updated  `HikariCP` to `2.6.0` 
 * do not attempt to use :metric-registry as a datasource property
 
