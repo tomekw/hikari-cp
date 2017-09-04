@@ -1,16 +1,17 @@
 ## unreleased
 
-* added support for dropwizard healthcheck functionality.
+* added support for dropwizard healthcheck functionality
+* updated `HikariCP` to `2.7.0`
 
 ## 1.7.6
 
-* updated  `HikariCP` to `2.6.0` 
+* updated `HikariCP` to `2.6.0` 
 * do not attempt to use :metric-registry as a datasource property
 
 ## 1.7.5
 
-* added support for dropwizard metrics registry.
-* added support for useSSL property.
+* added support for dropwizard metrics registry
+* added support for useSSL property
 
 ## 1.7.4
 
@@ -32,25 +33,24 @@
 
 * added `datasource` and `datasource-classname` options
 * make `connection-init-sql` a none core option
-* make `driver-class-name` optional when `jdbc-url` is given.
+* make `driver-class-name` optional when `jdbc-url` is given
 
 ## 1.6.1
 
 * Call setRegisterMbeans property only when it is specified.
 * Fix a bug introduced in a25b7a7f20b0a5c46dd83ea32d7a5a7b1c184273 where
-  the non core options are no longer properly detected.
+  the non core options are no longer properly detected
 
 ## 1.6.0
 
-* allow configuring without an adapter, but using a JDBC URL and driver class
-  name
-* added `connection-init-sql` option for Hikari config.
+* allow configuring without an adapter, but using a JDBC URL and driver class name
+* added `connection-init-sql` option for Hikari config
 
 ## 1.5.0
 
 * updated `HikariCP` to `2.4.3`
-* added `leak-detection-threshold` option for Hikari config.
-* added `register-mbeans` option for Hikari config.
+* added `leak-detection-threshold` option for Hikari config
+* added `register-mbeans` option for Hikari config
 
 ## 1.4.0
 
@@ -171,4 +171,4 @@
 
 ## 0.1.0
 
-* Initial release
+* initial release
