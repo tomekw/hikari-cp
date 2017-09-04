@@ -48,6 +48,7 @@ You'll also need to add the JDBC driver needed for your database.
 | `:datasource`            | No       | None                   | This property allows you to directly set the instance of the DataSource to be wrapped by the pool.                                                                                                                                                                                                                                     |
 | `:datasource-classname`  | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
 | `:metric-registry`  | No      | None | This is an instance of a dropwizard metrics MetricsRegistry |
+| `:health-check-registry`  | No      | None | This is an instance of a dropwizard metrics HealthCheckRegistry |
 
 **¹** `:adapter` and `:jdbc-url` are mutually exclusive.
 

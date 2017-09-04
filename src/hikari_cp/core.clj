@@ -82,6 +82,7 @@
    :register-mbeans    s/Bool
    (s/optional-key :connection-init-sql) s/Str
    (s/optional-key :metric-registry) s/Any
+   (s/optional-key :health-check-registry) s/Any
    s/Keyword           s/Any})
 
 (def AdapterConfigurationOptions
@@ -143,7 +144,8 @@
         not-core-options      (apply dissoc options
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
-                                     :datasource-classname :driver-class-name :connection-init-sql :metric-registry
+                                     :datasource-classname :driver-class-name :connection-init-sql
+                                     :metric-registry :health-check-registry
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 datasource
@@ -166,7 +168,8 @@
                 jdbc-url
                 driver-class-name
                 connection-init-sql
-                metric-registry]} options]
+                metric-registry
+                health-check-registry]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -190,6 +193,7 @@
     (when pool-name (.setPoolName config pool-name))
     (when connection-test-query (.setConnectionTestQuery config connection-test-query))
     (when metric-registry (.setMetricRegistry config metric-registry))
+    (when health-check-registry (.setHealthCheckRegistry config health-check-registry))
     (when leak-detection-threshold
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure

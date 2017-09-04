@@ -1,5 +1,7 @@
 ## unreleased
 
+* added support for dropwizard healthcheck functionality.
+
 ## 1.7.6
 
 * updated  `HikariCP` to `2.6.0` 
