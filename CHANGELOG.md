@@ -1,7 +1,8 @@
 ## unreleased
 
-* updated  `HikariCP` to `2.6.0` 
+* updated  `HikariCP` to `2.6.0`
 * do not attempt to use :metric-registry as a datasource property
+* added support for dropwizard healthcheck functionality.
 
 ## 1.7.5
 
