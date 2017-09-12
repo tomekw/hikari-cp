@@ -7,7 +7,7 @@
         :url  "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP "2.7.0"]
+                 [com.zaxxer/HikariCP "2.7.1"]
                  [prismatic/schema "1.1.6"]]
   :profiles {:dev {
                    :dependencies [[expectations "2.1.9"]
