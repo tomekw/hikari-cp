@@ -145,13 +145,14 @@
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
                                      :datasource-classname :driver-class-name :connection-init-sql
-                                     :metric-registry :health-check-registry
+                                     :metric-registry :health-check-registry :connection-test
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 datasource
                 datasource-classname
                 auto-commit
                 configure
+                connection-test
                 connection-test-query
                 connection-timeout
                 validation-timeout
@@ -191,6 +192,7 @@
     (when username (.setUsername config username))
     (when password (.setPassword config password))
     (when pool-name (.setPoolName config pool-name))
+    (when (false? connection-test) (.setJdbc4ConnectionTest false))
     (when connection-test-query (.setConnectionTestQuery config connection-test-query))
     (when metric-registry (.setMetricRegistry config metric-registry))
     (when health-check-registry (.setHealthCheckRegistry config health-check-registry))
