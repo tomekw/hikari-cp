@@ -9,6 +9,7 @@
                  [org.tobereplaced/lettercase "1.0.0"]
                  [com.zaxxer/HikariCP "2.7.1"]
                  [prismatic/schema "1.1.6"]]
+  :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {
                    :dependencies [[expectations "2.1.9"]
                                   [org.slf4j/slf4j-nop "1.7.25"]
