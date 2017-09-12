@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.8.0
+
 * added support for dropwizard healthcheck functionality
 * updated `HikariCP` to `2.7.1`
 * added `:connection-test` option for disabling default connection test
