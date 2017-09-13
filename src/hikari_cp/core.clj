@@ -100,12 +100,12 @@
 
 (def DatasourceClassnameConfigurationOptions
   (assoc BaseConfigurationOptions
-         :datasource-classname s/Str))
+         :datasource-class-name s/Str))
 
 ;(s/optional-key :driver-class-name)
 (def ConfigurationOptions (s/conditional
                              :datasource DatasourceConfigurationOptions
-                             :datasource-classname DatasourceClassnameConfigurationOptions
+                             :datasource-class-name DatasourceClassnameConfigurationOptions
                              :adapter AdapterConfigurationOptions
                              :jdbc-url JDBCUrlConfigurationOptions
                              :else AdapterConfigurationOptions))
@@ -144,12 +144,13 @@
         not-core-options      (apply dissoc options
                                      :username :password :pool-name :connection-test-query
                                      :configure :leak-detection-threshold :adapter :jdbc-url
-                                     :datasource-classname :driver-class-name :connection-init-sql
+                                     :datasource-class-name :driver-class-name :connection-init-sql
                                      :metric-registry :health-check-registry :connection-test
                                      (keys BaseConfigurationOptions))
         {:keys [adapter
                 datasource
                 datasource-classname
+                datasource-class-name
                 auto-commit
                 configure
                 connection-test
@@ -182,7 +183,8 @@
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size))
     (when datasource (.setDataSource config datasource))
-    (when datasource-classname (.setDataSourceClassName config datasource-classname))
+    (when-let [dscn (or datasource-class-name datasource-classname)]
+      (.setDataSourceClassName config dscn))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))

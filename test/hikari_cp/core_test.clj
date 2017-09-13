@@ -31,7 +31,7 @@
    :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
 (def alternate-valid-options2
-  {:datasource-classname "com.sybase.jdbc3.jdbc.SybDataSource"})
+  {:datasource-class-name "com.sybase.jdbc3.jdbc.SybDataSource"})
 
 (def metric-registry-options
   {:metric-registry (MetricRegistry.)})
