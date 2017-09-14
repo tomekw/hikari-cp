@@ -192,7 +192,7 @@
     (when username (.setUsername config username))
     (when password (.setPassword config password))
     (when pool-name (.setPoolName config pool-name))
-    (when (false? connection-test) (.setJdbc4ConnectionTest false))
+    (when (false? connection-test) (.setJdbc4ConnectionTest config false))
     (when connection-test-query (.setConnectionTestQuery config connection-test-query))
     (when metric-registry (.setMetricRegistry config metric-registry))
     (when health-check-registry (.setHealthCheckRegistry config health-check-registry))
