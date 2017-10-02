@@ -1,5 +1,7 @@
 ## unreleased
 
+* removed `:connection-test` option as it was deprecated and had no functionality backing it in `HikariCP`. Please use `:connection-test-query`.
+
 ## 1.8.0
 
 * added support for dropwizard healthcheck functionality
@@ -8,7 +10,7 @@
 
 ## 1.7.6
 
-* updated `HikariCP` to `2.6.0` 
+* updated `HikariCP` to `2.6.0`
 * do not attempt to use :metric-registry as a datasource property
 
 ## 1.7.5
