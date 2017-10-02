@@ -7,17 +7,17 @@
         :url  "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP "2.7.1"]
+                 [com.zaxxer/HikariCP "2.7.2"]
                  [prismatic/schema "1.1.6"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {
                    :dependencies [[expectations "2.1.9"]
                                   [org.slf4j/slf4j-nop "1.7.25"]
-                                  [org.clojure/java.jdbc "0.7.1"]
+                                  [org.clojure/java.jdbc "0.7.2"]
                                   [mysql/mysql-connector-java "8.0.7-dmr"]
                                   [org.postgresql/postgresql "9.4.1212"]
-                                  [io.dropwizard.metrics/metrics-core "3.2.4"]
-                                  [io.dropwizard.metrics/metrics-healthchecks "3.2.4"]
+                                  [io.dropwizard.metrics/metrics-core "3.2.5"]
+                                  [io.dropwizard.metrics/metrics-healthchecks "3.2.5"]
 
                                   ; The Oracle driver is only accessible from maven.oracle.com
                                   ; which requires a userId and password

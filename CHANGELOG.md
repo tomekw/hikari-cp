@@ -1,10 +1,12 @@
 ## unreleased
 
-* removed `:connection-test` option as it was deprecated and had no functionality backing it in `HikariCP`. Please use `:connection-test-query`.
+* removed `:connection-test` option as it was deprecated and had no functionality backing it in `HikariCP`.
+  Please use `:connection-test-query`
+* updated `HikariCP` to `2.7.2`
 
 ## 1.8.0
 
-* added support for dropwizard healthcheck functionality
+* added support for Dropwizard healthcheck functionality
 * updated `HikariCP` to `2.7.1`
 * added `:connection-test` option for disabling default connection test
 
@@ -15,8 +17,8 @@
 
 ## 1.7.5
 
-* added support for dropwizard metrics registry
-* added support for useSSL property
+* added support for Dropwizard metrics registry
+* added support for `useSSL` property
 
 ## 1.7.4
 
