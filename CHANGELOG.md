@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated `HikariCP` to `2.7.3`
+
 ## 1.8.1
 
 * removed `:connection-test` option as it was deprecated and had no functionality backing it in `HikariCP`.
