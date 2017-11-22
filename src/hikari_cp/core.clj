@@ -181,11 +181,11 @@
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size))
     (when datasource (.setDataSource config datasource))
-    (when datasource-classname (.setDataSourceClassName config datasource-classname))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
            (.setDataSourceClassName config))
       (.setJdbcUrl config jdbc-url))
+    (when datasource-classname (.setDataSourceClassName config datasource-classname))
     ;; Set optional properties
     (when driver-class-name (.setDriverClassName config driver-class-name))
     (when username (.setUsername config username))
