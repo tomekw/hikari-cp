@@ -1,5 +1,7 @@
 ## unreleased
 
+## 1.8.3
+
 * allow custom `datasource-classname` along with `adapter`
 * updated `HikariCP` to `2.7.4`
 
