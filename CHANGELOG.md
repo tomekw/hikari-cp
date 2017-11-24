@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated `Clojure` to `1.9.0`
+
 ## 1.8.3
 
 * allow custom `datasource-classname` along with `adapter`
