@@ -1,20 +1,37 @@
 ## unreleased
 
+* updated `Clojure` to `1.9.0`
+
+## 1.8.3
+
+* allow custom `datasource-classname` along with `adapter`
+* updated `HikariCP` to `2.7.4`
+
+## 1.8.2
+
+* updated `HikariCP` to `2.7.3`
+
+## 1.8.1
+
+* removed `:connection-test` option as it was deprecated and had no functionality backing it in `HikariCP`.
+  Please use `:connection-test-query`
+* updated `HikariCP` to `2.7.2`
+
 ## 1.8.0
 
-* added support for dropwizard healthcheck functionality
+* added support for Dropwizard healthcheck functionality
 * updated `HikariCP` to `2.7.1`
 * added `:connection-test` option for disabling default connection test
 
 ## 1.7.6
 
-* updated `HikariCP` to `2.6.0` 
+* updated `HikariCP` to `2.6.0`
 * do not attempt to use :metric-registry as a datasource property
 
 ## 1.7.5
 
-* added support for dropwizard metrics registry
-* added support for useSSL property
+* added support for Dropwizard metrics registry
+* added support for `useSSL` property
 
 ## 1.7.4
 
