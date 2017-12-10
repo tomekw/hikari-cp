@@ -46,7 +46,7 @@ You'll also need to add the JDBC driver needed for your database.
 | `:register-mbeans`          | No       | false                  | This property register mbeans which can be used in jmx to monitor hikari-cp.                                                                                                                                                                                                                                                           |
 | `:connection-init-sql`      | No       | None                   | This property sets a SQL statement that will be executed after every new connection creation before adding it to the pool.                                                                                                                                                                                                             |
 | `:datasource`               | No       | None                   | This property allows you to directly set the instance of the DataSource to be wrapped by the pool.                                                                                                                                                                                                                                     |
-| `:datasource-classname`     | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
+| `:datasource-class-name`    | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
 | `:metric-registry`          | No       | None                   | This is an instance of a Dropwizard metrics MetricsRegistry.                                                                                                                                                                                                                                                                           |
 | `:health-check-registry`    | No       | None                   | This is an instance of a Dropwizard metrics HealthCheckRegistry.                                                                                                                                                                                                                                                                       |
 
@@ -171,9 +171,9 @@ Custom translations of properties can be added by extending the
                          :adapter       "sybase"}) ; assumes jconn4.jar (com.sybase.jdbc4.jdbc.SybDataSource)
 
 ; if you're using jconn2.jar or jconn3.jar replace :adapter "sybase" with the following
-; :datasource-classname "com.sybase.jdbc3.jdbc.SybDataSource"
+; :datasource-class-name "com.sybase.jdbc3.jdbc.SybDataSource"
 ; or
-; :datasource-classname "com.sybase.jdbc2.jdbc.SybDataSource"
+; :datasource-class-name "com.sybase.jdbc2.jdbc.SybDataSource"
 
 (def datasource
   (make-datasource datasource-options))

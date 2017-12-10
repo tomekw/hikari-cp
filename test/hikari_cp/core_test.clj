@@ -31,7 +31,7 @@
    :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
 (def alternate-valid-options2
-  {:datasource-classname "com.sybase.jdbc3.jdbc.SybDataSource"})
+  {:datasource-class-name "com.sybase.jdbc3.jdbc.SybDataSource"})
 
 (def metric-registry-options
   {:metric-registry (MetricRegistry.)})
@@ -56,7 +56,7 @@
 (def mysql-datasouurce-config
   (datasource-config (merge valid-options
                             {:adapter "mysql"
-                             :datasource-classname "com.mysql.cj.jdbc.MysqlDataSource"
+                             :datasource-class-name "com.mysql.cj.jdbc.MysqlDataSource"
                              :use-legacy-datetime-code false})))
 
 (def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
