@@ -1,4 +1,4 @@
-(defproject hikari-cp "1.8.3"
+(defproject hikari-cp "2.0.0"
   :description "A Clojure wrapper to HikariCP JDBC connection pool"
   :url "https://github.com/tomekw/hikari-cp"
   :license {:name "Eclipse Public License"

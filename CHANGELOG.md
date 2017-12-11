@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.0.0
+
 * updated `Clojure` to `1.9.0`
 * **BREAKING CHANGE**: rename `datasource-classname` to `datasource-class-name`
 
