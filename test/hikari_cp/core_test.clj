@@ -172,6 +172,8 @@
         (validate-options (merge valid-options {:maximum-pool-size 0})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:adapter :foo})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:datasource-classname "adsf"})))
 (expect map?
         (validate-options (merge valid-options {:username nil})))
 (expect map?

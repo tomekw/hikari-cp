@@ -106,6 +106,10 @@
 (def ConfigurationOptions (s/conditional
                              :datasource DatasourceConfigurationOptions
                              :datasource-class-name DatasourceClassnameConfigurationOptions
+                             ;; Make sure that if the user provides the class
+                             ;; name using the deprecated keyword we'll throw an
+                             ;; exception instead of silently failing.
+                             :datasource-classname DatasourceClassnameConfigurationOptions
                              :adapter AdapterConfigurationOptions
                              :jdbc-url JDBCUrlConfigurationOptions
                              :else AdapterConfigurationOptions))
