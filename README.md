@@ -12,11 +12,7 @@ Add the following dependency to your `project.clj` file:
 [hikari-cp "1.8.3"]
 ```
 
-Note: hikari-cp targets Java 8 by default. If you are using an older version of Java, your `project.clj` should look more like:
-
-```clojure
-[hikari-cp-java6 "1.6.1"]
-```
+Note that hikari-cp requires Java 8 or newer. Older versions are not supported.
 
 You'll also need to add the JDBC driver needed for your database.
 
