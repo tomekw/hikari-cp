@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated `HikariCP` to `2.7.6`
+
 ## 2.0.0
 
 * updated `Clojure` to `1.9.0`
