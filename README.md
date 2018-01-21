@@ -78,6 +78,7 @@ Custom translations of properties can be added by extending the
 | `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
 | `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
 | `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
+| `neo4j`          | `org.neo4j.jdbc.DataSource`                        | No                    |
 | `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | **Yes**               |
 | `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | **Yes**               |
 | `oracle`         | `oracle.jdbc.pool.OracleDataSource`                | **Yes**               |
@@ -121,7 +122,24 @@ Custom translations of properties can be added by extending the
       (println rows)))
   (close-datasource datasource))
 ```
+### Neo4j 
 
+```clojure
+(ns hikari-cp.example
+  (:require [hikari-cp.core :refer :all]
+            [clojure.java.jdbc :as jdbc]))
+
+(def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j,password=xxxx,debug=true"})
+
+(def datasource
+  (make-datasource datasource-options))
+
+(defn -main [& args] 
+  (jdbc/with-db-connection [conn {:datasource datasource}]
+    (let [rows (jdbc/query conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
+      (println rows)))
+  (close-datasource datasource))
+```
 ### H2 minimal config example
 
 ```clojure

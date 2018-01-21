@@ -25,6 +25,7 @@
    "hsqldb"         "org.hsqldb.jdbc.JDBCDataSource"
    "mariadb"        "org.mariadb.jdbc.MySQLDataSource"
    "mysql"          "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+   "neo4j"          "org.neo4j.jdbc.DataSource"
    "sqlserver-jtds" "net.sourceforge.jtds.jdbcx.JtdsDataSource"
    "sqlserver"      "com.microsoft.sqlserver.jdbc.SQLServerDataSource"
    "oracle"         "oracle.jdbc.pool.OracleDataSource"
