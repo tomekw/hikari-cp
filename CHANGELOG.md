@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.1.0
+
 * add preliminary support for Neo4j
 
 ## 2.0.1
