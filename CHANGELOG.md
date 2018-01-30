@@ -1,5 +1,7 @@
 ## unreleased
 
+* add preliminary support for Neo4j
+
 ## 2.0.1
 
 * updated `HikariCP` to `2.7.6`
