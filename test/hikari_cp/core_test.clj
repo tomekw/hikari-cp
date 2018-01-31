@@ -139,7 +139,7 @@
 
 (expect IllegalArgumentException
         (datasource-config (dissoc valid-options :adapter)))
-(expect "Invalid configuration options: (:adapter)"
+(expect #"contains\? % :adapter"
         (try
           (datasource-config (validate-options (dissoc valid-options :adapter)))
           (catch IllegalArgumentException e
