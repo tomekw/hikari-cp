@@ -1,5 +1,8 @@
 ## unreleased
 
+* Replace Schema with clojure.spec. NOTE: internal specs are not part of
+  the public API. Depending on them outside of hikari-cp is discouraged.
+
 ## 2.1.0
 
 * add preliminary support for Neo4j
