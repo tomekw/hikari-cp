@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.2.0
+
 * Replace Schema with clojure.spec. NOTE: internal specs are not part of
   the public API. Depending on them outside of hikari-cp is discouraged.
 
