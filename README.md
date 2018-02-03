@@ -120,7 +120,7 @@ Custom translations of properties can be added by extending the
       (println rows)))
   (close-datasource datasource))
 ```
-### Neo4j 
+### Neo4j
 
 ```clojure
 (ns hikari-cp.example
@@ -132,7 +132,7 @@ Custom translations of properties can be added by extending the
 (def datasource
   (make-datasource datasource-options))
 
-(defn -main [& args] 
+(defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource datasource}]
     (let [rows (jdbc/query conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
       (println rows)))
