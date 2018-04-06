@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated `HikariCP` to `3.0.0`
+
 ## 2.2.0
 
 * Replace Schema with clojure.spec. NOTE: internal specs are not part of
