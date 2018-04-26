@@ -12,7 +12,7 @@
   :profiles {:dev {
                    :dependencies [[expectations "2.1.9"]
                                   [org.slf4j/slf4j-nop "1.7.25"]
-                                  [org.clojure/java.jdbc "0.7.5"]
+                                  [org.clojure/java.jdbc "0.7.6"]
                                   [mysql/mysql-connector-java "8.0.11"]
                                   [org.neo4j/neo4j-jdbc-driver "3.3.0"]
                                   [org.postgresql/postgresql "9.4.1212"]
