@@ -7,7 +7,7 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "2.4.0"]
+[hikari-cp "2.5.0"]
 ```
 
 `hikari-cp` version `2.x` targets Clojure `1.9`. Version `1.8.3` is the last release for Clojure `1.8`.
