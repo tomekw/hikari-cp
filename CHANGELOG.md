@@ -1,5 +1,7 @@
 ## unreleased
 
+* Added support for Mysql Connector's tinyInt1isBit property.
+
 ## 2.5.0
 
 * updated `HikariCP` to `3.2.0`
