@@ -219,6 +219,8 @@
 (expect HikariPool$PoolInitializationException
   (make-datasource valid-options))
 
+(expect "tinyInt1isBit" (translate-property :tinyInt1isBit))
+(expect "tinyInt1isBit" (translate-property :tiny-int1is-bit))
 (expect "useSSL" (translate-property :useSSL))
 (expect "useSSL" (translate-property :use-ssl))
 (expect "useFoo" (translate-property :useFOO))

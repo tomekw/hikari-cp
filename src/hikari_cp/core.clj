@@ -134,6 +134,8 @@
                :jdbc-url ::jdbc-url-options)))
 
 (defmulti translate-property keyword)
+(defmethod translate-property :tinyInt1isBit [_] "tinyInt1isBit")
+(defmethod translate-property :tiny-int1is-bit [_] "tinyInt1isBit")
 (defmethod translate-property :use-ssl [_] "useSSL")
 (defmethod translate-property :useSSL [_] "useSSL")
 (defmethod translate-property :default [x] (mixed-name x))
