@@ -59,7 +59,8 @@ as a datasource property, unless a special translation is defined:
 ;; {:use-ssl false} has a custom translation, so it will be:
 (.addDataSourceProperty config "useSSL" false)
 
-;; {:tinyInt1isBit false} also has a custom translation to support the incorrect property casing in the original java class.
+;; {:tinyInt1isBit false} also has a custom translation to support
+;; the incorrect property casing in the original java class.
 ```
 
 Custom translations of properties can be added by extending the
