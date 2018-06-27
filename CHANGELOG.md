@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.6.0
+
 * Added support for Mysql Connector's tinyInt1isBit property.
 
 ## 2.5.0
