@@ -114,14 +114,15 @@ Custom translations of properties can be added by extending the
                          :port-number        5432
                          :register-mbeans    false})
 
-(def datasource
-  (make-datasource datasource-options))
+(defonce datasource
+  (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (connect!)
+  (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
-  (close-datasource datasource))
+  (close-datasource @datasource))
 ```
 ### Neo4j
 
@@ -132,14 +133,14 @@ Custom translations of properties can be added by extending the
 
 (def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j,password=xxxx,debug=true"})
 
-(def datasource
-  (make-datasource datasource-options))
+(defonce datasource
+  (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
       (println rows)))
-  (close-datasource datasource))
+  (close-datasource @datasource))
 ```
 ### H2 minimal config example
 
@@ -163,14 +164,14 @@ Custom translations of properties can be added by extending the
                          :driverType    "thin"       ; Other options are oci8, oci or kprb. See jdbc.pool.OracleDataSource.makeURL()
                          :adapter       "oracle"})
 
-(def datasource
-  (make-datasource datasource-options))
+(defonce datasource
+  (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
       (println rows)))
-  (close-datasource datasource))
+  (close-datasource @datasource))
 ```
 
 ### Sybase example
@@ -192,14 +193,14 @@ Custom translations of properties can be added by extending the
 ; or
 ; :datasource-class-name "com.sybase.jdbc2.jdbc.SybDataSource"
 
-(def datasource
-  (make-datasource datasource-options))
+(defonce datasource
+  (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource datasource}]
+  (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
-  (close-datasource datasource))
+  (close-datasource @datasource))
 ```
 
 ### SQLite example
