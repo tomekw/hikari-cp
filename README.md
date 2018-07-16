@@ -118,7 +118,6 @@ Custom translations of properties can be added by extending the
   (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (connect!)
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
