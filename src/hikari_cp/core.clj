@@ -122,6 +122,12 @@
 (s/def ::adapter-options
   (s/keys :req-un [::adapter]))
 
+(s/def ::jdbc-url
+  string?)
+
+(s/def ::driver-class-name
+  string?)
+
 (s/def ::jdbc-url-options
   (s/keys :req-un [::jdbc-url]
           :opt-un [::driver-class-name]))
