@@ -1,5 +1,7 @@
 ## unreleased
 
+* Add missing ::jdbc-url-options specs
+
 ## 2.6.0
 
 * Added support for Mysql Connector's tinyInt1isBit property.

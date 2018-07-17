@@ -174,6 +174,11 @@
         (validate-options (merge valid-options {:adapter :foo})))
 (expect IllegalArgumentException
         (validate-options (merge valid-options {:datasource-classname "adsf"})))
+(expect IllegalArgumentException
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url nil})))
+(expect IllegalArgumentException
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
+                                                                  :driver-class-name nil})))
 (expect map?
         (validate-options (merge valid-options {:username nil})))
 (expect map?
@@ -194,6 +199,11 @@
         (validate-options (merge valid-options {:port-number -1})))
 (expect map?
         (validate-options (dissoc valid-options :port-number)))
+(expect map?
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"})))
+(expect map?
+        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
+                                                                  :driver-class-name "org.h2.Driver"})))
 
 
 ;; -- check leak detections option
