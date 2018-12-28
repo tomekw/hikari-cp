@@ -1,6 +1,7 @@
 ## unreleased
 
-* Add missing ::jdbc-url-options specs
+* Add missing `::jdbc-url-options` specs
+* updated `Clojure` to `1.10.0`
 
 ## 2.6.0
 
