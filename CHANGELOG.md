@@ -1,5 +1,6 @@
 ## unreleased
 
+* updated `HikariCP` to `3.3.0`
 * Add missing `::jdbc-url-options` specs
 * updated `Clojure` to `1.10.0`
 
