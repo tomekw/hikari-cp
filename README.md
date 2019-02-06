@@ -10,7 +10,7 @@ Add the following dependency to your `project.clj` file:
 [hikari-cp "2.6.0"]
 ```
 
-`hikari-cp` version `3.x` targets Clojure `1.10`. Version `2.6.0` is the last release for Clojure `1.9`. Version `1.8.3` is the last release for Clojure `1.8`.
+`hikari-cp` version `2.x` targets Clojure `1.9`. Version `1.8.3` is the last release for Clojure `1.8`.
 
 Note that `hikari-cp` requires Java 8 or newer. Older versions are not supported.
 
