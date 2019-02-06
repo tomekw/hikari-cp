@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.7.0
+
 * updated `HikariCP` to `3.3.0`
 * Add missing `::jdbc-url-options` specs
 
