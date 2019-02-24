@@ -1,4 +1,4 @@
-# hikari-cp [![Circle CI](https://circleci.com/gh/tomekw/hikari-cp/tree/master.png?style=badge&circle-token=a17dfed149321f3a2e9b9af11cea96b9003a047a)](https://circleci.com/gh/tomekw/hikari-cp/tree/master) [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
+# hikari-cp [![Circle CI](https://circleci.com/gh/tomekw/hikari-cp/tree/master.svg?style=shield&circle-token=a17dfed149321f3a2e9b9af11cea96b9003a047a)](https://circleci.com/gh/tomekw/hikari-cp/tree/master) [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
