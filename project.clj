@@ -11,9 +11,9 @@
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {
                    :dependencies [[expectations "2.1.10"]
-                                  [org.slf4j/slf4j-nop "1.7.25"]
-                                  [org.clojure/java.jdbc "0.7.8"]
-                                  [mysql/mysql-connector-java "8.0.13"]
+                                  [org.slf4j/slf4j-nop "1.7.26"]
+                                  [org.clojure/java.jdbc "0.7.9"]
+                                  [mysql/mysql-connector-java "8.0.15"]
                                   [org.neo4j/neo4j-jdbc-driver "3.4.0"]
                                   [org.postgresql/postgresql "42.2.5"]
                                   [io.dropwizard.metrics/metrics-core "4.0.5"]
