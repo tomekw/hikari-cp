@@ -1,5 +1,7 @@
 ## unreleased
 
+* allow to set `transaction-isolation` property
+
 ## 2.7.1
 
 * updated `HikariCP` to `3.3.1`
@@ -7,11 +9,11 @@
 ## 2.7.0
 
 * updated `HikariCP` to `3.3.0`
-* Add missing `::jdbc-url-options` specs
+* add missing `::jdbc-url-options` specs
 
 ## 2.6.0
 
-* Added support for Mysql Connector's tinyInt1isBit property.
+* added support for Mysql Connector's tinyInt1isBit property.
 
 ## 2.5.0
 
@@ -27,7 +29,7 @@
 
 ## 2.2.0
 
-* Replace Schema with clojure.spec. NOTE: internal specs are not part of
+* replace Schema with clojure.spec. NOTE: internal specs are not part of
   the public API. Depending on them outside of hikari-cp is discouraged.
 
 ## 2.1.0

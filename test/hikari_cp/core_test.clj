@@ -24,6 +24,7 @@
    :connection-init-sql      "set join_collapse_limit=4"
    :connection-test-query    "select 0"
    :register-mbeans          true
+   :transaction-isolation    "TRANSACTION_SERIALIZABLE"
    #_:leak-detection-threshold #_4000})                     ; a valid option but tested separately below.
 
 (def alternate-valid-options
@@ -53,7 +54,7 @@
   (datasource-config (-> (dissoc valid-options :adapter)
                          (merge alternate-valid-options2))))
 
-(def mysql-datasouurce-config
+(def mysql-datasource-config
   (datasource-config (merge valid-options
                             {:adapter "mysql"
                              :datasource-class-name "com.mysql.cj.jdbc.MysqlDataSource"
@@ -64,9 +65,9 @@
 (def health-check-registry-config (datasource-config (merge valid-options health-check-registry-options)))
 
 (expect false
-        (get (.getDataSourceProperties mysql-datasouurce-config) "useLegacyDatetimeCode"))
+        (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))
 (expect "com.mysql.cj.jdbc.MysqlDataSource"
-        (.getDataSourceClassName mysql-datasouurce-config))
+        (.getDataSourceClassName mysql-datasource-config))
 (expect true
         (.isAutoCommit datasource-config-with-required-settings))
 (expect false
@@ -103,6 +104,8 @@
 (expect (:health-check-registry health-check-registry-options)
   (.getHealthCheckRegistry health-check-registry-config))
 
+(expect "TRANSACTION_SERIALIZABLE"
+  (.getTransactionIsolation datasource-config-with-required-settings))
 
 (expect false
         (.isAutoCommit datasource-config-with-overrides))
@@ -179,6 +182,9 @@
 (expect IllegalArgumentException
         (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
                                                                   :driver-class-name nil})))
+(expect IllegalArgumentException
+        (validate-options (merge valid-options {:transaction-isolation 1})))
+
 (expect map?
         (validate-options (merge valid-options {:username nil})))
 (expect map?

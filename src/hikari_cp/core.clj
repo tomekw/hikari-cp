@@ -87,6 +87,9 @@
 (s/def ::connection-init-sql
   string?)
 
+(s/def ::transaction-isolation
+  string?)
+
 (s/def ::basic-options
   (s/and (s/keys :req-un [::auto-commit
                           ::connection-timeout
@@ -98,6 +101,7 @@
                           ::register-mbeans
                           ::validation-timeout]
                  :opt-un [::connection-timeout
+                          ::transaction-isolation
                           ::leak-detection-threshold])
          ;; Make sure that if the user provides the class
          ;; name using the deprecated keyword we'll throw an
@@ -183,6 +187,7 @@
    :read-only
    :register-mbeans
    :username
+   :transaction-isolation
    :validation-timeout])
 
 (defn datasource-config
@@ -212,6 +217,7 @@
                 jdbc-url
                 driver-class-name
                 connection-init-sql
+                transaction-isolation
                 metric-registry
                 health-check-registry]} options]
     ;; Set pool-specific properties
@@ -244,6 +250,7 @@
       (configure config))
     (when connection-init-sql
       (.setConnectionInitSql config connection-init-sql))
+    (when transaction-isolation (.setTransactionIsolation config transaction-isolation))
     (when register-mbeans
       (.setRegisterMbeans config register-mbeans))
     ;; Set datasource-specific properties
