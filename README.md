@@ -45,13 +45,15 @@ You'll also need to add the JDBC driver needed for your database.
 | `:datasource-class-name`    | No       | None                   | This is the name of the DataSource class provided by the JDBC driver.                                                                                                                                                                                                                                                                  |
 | `:metric-registry`          | No       | None                   | This is an instance of a Dropwizard metrics MetricsRegistry.                                                                                                                                                                                                                                                                           |
 | `:health-check-registry`    | No       | None                   | This is an instance of a Dropwizard metrics HealthCheckRegistry.                                                                                                                                                                                                                                                                       |
-| `:transaction-isolation`    | No       | None                   | Constant name from the Connection class such as `TRANSACTION_READ_COMMITTED`, `TRANSACTION_REPEATABLE_READ`, etc.                                                                                                                                                                                                                      |
+| `:transaction-isolation`    | No       | None                   | Constant name from the [Connection][java.sql.Connection] interface such as `TRANSACTION_READ_COMMITTED`, `TRANSACTION_REPEATABLE_READ`, etc.                                                                                                                                                                                                                      |
 
 **¹** `:adapter` and `:jdbc-url` are mutually exclusive.
 
 You can also add other datasource-specific configuration options.
 By default, keywords will be converted to the camelCase format add added
 as a datasource property, unless a special translation is defined:
+
+[java.sql.Connection]: https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html
 
 ```clojure
 ;; {:tcp-keep-alive true} will be:
