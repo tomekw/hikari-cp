@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.8.0
+
 * allow to set `transaction-isolation` property
 
 ## 2.7.1
