@@ -3,7 +3,8 @@
   (:use expectations)
   (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
            (com.codahale.metrics MetricRegistry)
-           (com.codahale.metrics.health HealthCheckRegistry)))
+           (com.codahale.metrics.health HealthCheckRegistry)
+           (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)))
 
 (def valid-options
   {:auto-commit              false
@@ -40,6 +41,9 @@
 (def health-check-registry-options
   {:health-check-registry (HealthCheckRegistry.)})
 
+(def metrics-tracker-factory-options
+  {:metrics-tracker-factory (PrometheusMetricsTrackerFactory.)})
+
 (def datasource-config-with-required-settings
   (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
 
@@ -63,6 +67,8 @@
 (def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
 
 (def health-check-registry-config (datasource-config (merge valid-options health-check-registry-options)))
+
+(def metrics-tracker-factory-config (datasource-config (merge valid-options metrics-tracker-factory-options)))
 
 (expect false
         (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))
@@ -103,6 +109,11 @@
   (.getHealthCheckRegistry datasource-config-with-required-settings))
 (expect (:health-check-registry health-check-registry-options)
   (.getHealthCheckRegistry health-check-registry-config))
+
+(expect nil
+  (.getMetricsTrackerFactory datasource-config-with-required-settings))
+(expect (:metrics-tracker-factory metrics-tracker-factory-options)
+  (.getMetricsTrackerFactory metrics-tracker-factory-config))
 
 (expect "TRANSACTION_SERIALIZABLE"
   (.getTransactionIsolation datasource-config-with-required-settings))

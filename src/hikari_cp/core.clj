@@ -181,6 +181,7 @@
    :max-lifetime
    :maximum-pool-size
    :metric-registry
+   :metrics-tracker-factory
    :minimum-idle
    :password
    :pool-name
@@ -219,7 +220,8 @@
                 connection-init-sql
                 transaction-isolation
                 metric-registry
-                health-check-registry]} options]
+                health-check-registry
+                metrics-tracker-factory]} options]
     ;; Set pool-specific properties
     (doto config
       (.setAutoCommit          auto-commit)
@@ -244,6 +246,7 @@
     (when connection-test-query (.setConnectionTestQuery config connection-test-query))
     (when metric-registry (.setMetricRegistry config metric-registry))
     (when health-check-registry (.setHealthCheckRegistry config health-check-registry))
+    (when metrics-tracker-factory (.setMetricsTrackerFactory config metrics-tracker-factory))
     (when leak-detection-threshold
       (.setLeakDetectionThreshold config ^Long leak-detection-threshold))
     (when configure
