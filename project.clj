@@ -18,6 +18,7 @@
                                   [org.postgresql/postgresql "42.2.6"]
                                   [io.dropwizard.metrics/metrics-core "4.1.0"]
                                   [io.dropwizard.metrics/metrics-healthchecks "4.1.0"]
+                                  [io.prometheus/simpleclient "0.0.26"]
 
                                   ; The Oracle driver is only accessible from maven.oracle.com
                                   ; which requires a userId and password
