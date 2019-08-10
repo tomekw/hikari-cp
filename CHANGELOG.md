@@ -1,5 +1,9 @@
 ## unreleased
 
+## 2.9.0
+
+* add keyword for setting MetricsTrackerFactory
+
 ## 2.8.0
 
 * allow to set `transaction-isolation` property
