@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.10.0
+
 * updated `HikariCP` to `3.4.1`
 
 ## 2.9.0
