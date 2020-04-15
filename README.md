@@ -1,4 +1,4 @@
-# hikari-cp [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
+# hikari-cp [![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ftomekw%2Fhikari-cp%2Fbadge)](https://actions-badge.atrox.dev/tomekw/hikari-cp/goto) [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
