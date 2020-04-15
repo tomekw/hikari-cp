@@ -1,4 +1,4 @@
-# hikari-cp ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tomekw/hikari-cp/Clojure CI) [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
+# hikari-cp ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tomekw/hikari-cp/Clojure%20CI) [![Clojars Project](https://img.shields.io/clojars/v/hikari-cp.svg)](https://clojars.org/hikari-cp)
 
 A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "zero-overhead" production ready JDBC connection pool.
 
