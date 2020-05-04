@@ -5,7 +5,7 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :scm {:name "git"
         :url  "https://github.com/tomekw/hikari-cp"}
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [org.tobereplaced/lettercase "1.0.0"]
                  [com.zaxxer/HikariCP "3.4.3"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
