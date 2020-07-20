@@ -83,6 +83,7 @@ Custom translations of properties can be added by extending the
 | `hsqldb`         | `org.hsqldb.jdbc.JDBCDataSource`                   | No                    |
 | `mariadb`        | `org.mariadb.jdbc.MySQLDataSource`                 | No                    |
 | `mysql`          | `com.mysql.jdbc.jdbc2.optional.MysqlDataSource`    | **Yes**               |
+| `mysql8`         | `com.mysql.cj.jdbc.MysqlDataSource`                | No                    |
 | `neo4j`          | `org.neo4j.jdbc.DataSource`                        | No                    |
 | `sqlserver-jtds` | `net.sourceforge.jtds.jdbcx.JtdsDataSource`        | **Yes**               |
 | `sqlserver`      | `com.microsoft.sqlserver.jdbc.SQLServerDataSource` | **Yes**               |

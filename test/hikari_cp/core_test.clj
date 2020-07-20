@@ -58,10 +58,12 @@
   (datasource-config (-> (dissoc valid-options :adapter)
                          (merge alternate-valid-options2))))
 
+(def mysql8-datasource-config
+  (datasource-config (merge valid-options {:adapter "mysql8"})))
+
 (def mysql-datasource-config
   (datasource-config (merge valid-options
                             {:adapter "mysql"
-                             :datasource-class-name "com.mysql.cj.jdbc.MysqlDataSource"
                              :use-legacy-datetime-code false})))
 
 (def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
@@ -72,8 +74,10 @@
 
 (expect false
         (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))
-(expect "com.mysql.cj.jdbc.MysqlDataSource"
+(expect "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
         (.getDataSourceClassName mysql-datasource-config))
+(expect "com.mysql.cj.jdbc.MysqlDataSource"
+  (.getDataSourceClassName mysql8-datasource-config))
 (expect true
         (.isAutoCommit datasource-config-with-required-settings))
 (expect false
