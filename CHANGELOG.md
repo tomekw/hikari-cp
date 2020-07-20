@@ -1,5 +1,7 @@
 ## unreleased
 
+## 2.13.0
+
 * set Clojure 1.9.0 as a provided dependency
 * support `mysql8` adapter (sets datasource class name to `com.mysql.cj.jdbc.MysqlDataSource`)
 * updated `HikariCP` to `3.4.5`
