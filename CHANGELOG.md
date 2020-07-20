@@ -1,6 +1,7 @@
 ## unreleased
 
 * set Clojure 1.9.0 as a provided dependency
+* support `mysql8` adapter (sets datasource class name to `com.mysql.cj.jdbc.MysqlDataSource`)
 
 ## 2.12.0
 
