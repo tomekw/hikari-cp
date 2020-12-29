@@ -164,7 +164,7 @@
     (if (s/valid? ::configuration-options merged)
       merged
       (throw (IllegalArgumentException.
-               (s/explain-str ::configuration-options merged))))))
+               ^String (s/explain-str ::configuration-options merged))))))
 
 (def ^:private core-options
   [:adapter
