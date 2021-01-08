@@ -135,7 +135,7 @@ Custom translations of properties can be added by extending the
   (:require [hikari-cp.core :refer :all]
             [clojure.java.jdbc :as jdbc]))
 
-(def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j,password=xxxx,debug=true"})
+(def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j&password=xxxx&debug=true"})
 
 (defonce datasource
   (delay (make-datasource datasource-options)))
