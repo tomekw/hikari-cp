@@ -13,7 +13,7 @@
                                   [org.slf4j/slf4j-nop "1.7.30"]
                                   [org.clojure/java.jdbc "0.7.11"]
                                   [mysql/mysql-connector-java "8.0.21"]
-                                  [org.neo4j/neo4j-jdbc-driver "4.0.1"]
+                                  [org.neo4j/neo4j-jdbc-driver "4.2.0"]
                                   [org.postgresql/postgresql "42.2.14"]
                                   [io.dropwizard.metrics/metrics-core "4.1.11"]
                                   [io.dropwizard.metrics/metrics-healthchecks "4.1.11"]
