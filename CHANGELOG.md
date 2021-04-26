@@ -1,5 +1,7 @@
 ## unreleased
 
+* updated `HikariCP` to `4.0.3`
+
 ## 2.13.0
 
 * set Clojure 1.9.0 as a provided dependency

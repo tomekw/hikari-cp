@@ -7,17 +7,17 @@
         :url  "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP "3.4.5"]]
+                 [com.zaxxer/HikariCP "4.0.3"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {:dependencies [[expectations "2.1.10"]
                                   [org.slf4j/slf4j-nop "1.7.30"]
-                                  [org.clojure/java.jdbc "0.7.11"]
-                                  [mysql/mysql-connector-java "8.0.21"]
-                                  [org.neo4j.driver/neo4j-java-driver "4.2.0"]
-                                  [org.postgresql/postgresql "42.2.14"]
-                                  [io.dropwizard.metrics/metrics-core "4.1.11"]
-                                  [io.dropwizard.metrics/metrics-healthchecks "4.1.11"]
-                                  [io.prometheus/simpleclient "0.9.0"]
+                                  [org.clojure/java.jdbc "0.7.12"]
+                                  [mysql/mysql-connector-java "8.0.24"]
+                                  [org.neo4j.driver/neo4j-java-driver "4.2.5"]
+                                  [org.postgresql/postgresql "42.2.20"]
+                                  [io.dropwizard.metrics/metrics-core "4.2.0-rc.1"]
+                                  [io.dropwizard.metrics/metrics-healthchecks "4.2.0-rc.1"]
+                                  [io.prometheus/simpleclient "0.10.0"]
 
                                   ; The Oracle driver is only accessible from maven.oracle.com
                                   ; which requires a userId and password
