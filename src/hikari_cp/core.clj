@@ -6,15 +6,16 @@
             [clojure.spec.alpha :as s]))
 
 (def default-datasource-options
-  {:auto-commit        true
-   :read-only          false
-   :connection-timeout 30000
-   :validation-timeout 5000
-   :idle-timeout       600000
-   :max-lifetime       1800000
-   :minimum-idle       10
-   :maximum-pool-size  10
-   :register-mbeans    false})
+  {:allow-pool-suspension false
+   :auto-commit           true
+   :read-only             false
+   :connection-timeout    30000
+   :validation-timeout    5000
+   :idle-timeout          600000
+   :max-lifetime          1800000
+   :minimum-idle          10
+   :maximum-pool-size     10
+   :register-mbeans       false})
 
 (def ^{:private true} adapters-to-datasource-class-names
   {"derby"          "org.apache.derby.jdbc.ClientDataSource"
@@ -54,6 +55,9 @@
   "Returns true only if x is acceptable value, 0 or greater-than-equal 2000"
   [x]
   (or (== 0 x) (>= x 2000)))
+
+(s/def ::allow-pool-suspension
+  boolean?)
 
 (s/def ::auto-commit
   boolean?)
@@ -101,7 +105,8 @@
                           ::read-only
                           ::register-mbeans
                           ::validation-timeout]
-                 :opt-un [::connection-timeout
+                 :opt-un [::allow-pool-suspension
+                          ::connection-timeout
                           ::transaction-isolation
                           ::leak-detection-threshold])
          ;; Make sure that if the user provides the class
@@ -168,6 +173,7 @@
 
 (def ^:private core-options
   [:adapter
+   :allow-pool-suspension
    :auto-commit
    :configure
    :connection-init-sql
@@ -199,6 +205,7 @@
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options core-options)
         {:keys [adapter
+                allow-pool-suspension
                 datasource
                 datasource-class-name
                 auto-commit
@@ -225,6 +232,7 @@
                 metrics-tracker-factory]} options]
     ;; Set pool-specific properties
     (doto config
+      (.setAllowPoolSuspension allow-pool-suspension)
       (.setAutoCommit          auto-commit)
       (.setReadOnly            read-only)
       (.setConnectionTimeout   connection-timeout)
