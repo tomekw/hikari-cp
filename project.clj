@@ -7,7 +7,7 @@
         :url  "https://github.com/tomekw/hikari-cp"}
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP "4.0.3"]]
+                 [com.zaxxer/HikariCP "5.0.1"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {:dependencies [[expectations "2.1.10"]
                                   [org.slf4j/slf4j-nop "1.7.30"]
