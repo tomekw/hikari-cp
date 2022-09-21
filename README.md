@@ -7,12 +7,12 @@ A Clojure wrapper to [HikariCP](https://github.com/brettwooldridge/HikariCP) - "
 Add the following dependency to your `project.clj` file:
 
 ```clojure
-[hikari-cp "2.14.0"]
+[hikari-cp "3.0.0"]
 ```
 
-`hikari-cp` version `2.x` targets Clojure `1.9`. Version `1.8.3` is the last release for Clojure `1.8`.
+`hikari-cp` version `3.x` targets Clojure `1.11`. Version `2.14.3` was the last release for Clojure `1.9`. Version `1.8.3` was the last release for Clojure `1.8`.
 
-Note that `hikari-cp` requires Java 8 or newer. Older versions are not supported.
+Note that `hikari-cp` requires Java 11 or newer. Version `2.14.3` was the last release for Java 8.
 
 You'll also need to add the JDBC driver needed for your database.
 
@@ -225,6 +225,6 @@ arguments are provided:
 
 ## License
 
-Copyright © 2014 - 2020 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
+Copyright © 2014 - 2022 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
