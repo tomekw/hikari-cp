@@ -11,3 +11,5 @@ pom.xml.asc
 .env
 *.log
 *.iml
+.lsp/
+.clj-kondo/

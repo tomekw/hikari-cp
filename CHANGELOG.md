@@ -1,4 +1,7 @@
-## unreleased
+## 3.0.0
+
+* updated `HikariCP` to `5.0.1`
+* bumped Clojure dependency to `1.11.1`
 
 ## 2.14.0
 
