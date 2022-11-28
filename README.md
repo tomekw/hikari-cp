@@ -92,6 +92,7 @@ Custom translations of properties can be added by extending the
 | `postgresql`     | `org.postgresql.ds.PGSimpleDataSource`             | **Yes**               |
 | `fdbsql`         | `com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource` | No                    |
 | `sybase`         | `com.sybase.jdbc4.jdbc.SybDataSource`              | Yes                   |
+| `sqlite`         | `org.sqlite.SQLiteDataSource`                      | No                    |
 
 ## Usage
 
