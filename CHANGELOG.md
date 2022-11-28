@@ -1,3 +1,7 @@
+## unreleased
+
+* fixed sqlite adapter datasource class name
+
 ## 3.0.0
 
 * updated `HikariCP` to `5.0.1`

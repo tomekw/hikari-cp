@@ -33,7 +33,7 @@
    "postgresql"     "org.postgresql.ds.PGSimpleDataSource"
    "fdbsql"         "com.foundationdb.sql.jdbc.ds.FDBSimpleDataSource"
    "sybase"         "com.sybase.jdbc4.jdbc.SybDataSource"
-   "sqlite"         "org.sqlite.JDBC"})
+   "sqlite"         "org.sqlite.SQLiteDataSource"})
 
 (defn- gte-0?
   "Returns true if num is greater than or equal 0, else false"
