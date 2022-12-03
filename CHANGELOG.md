@@ -1,6 +1,7 @@
 ## unreleased
 
 * fixed sqlite adapter datasource class name
+* fixed MariaDB adapter datasource class name
 
 ## 3.0.0
 
