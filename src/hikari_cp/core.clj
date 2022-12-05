@@ -22,7 +22,7 @@
    "db2"            "com.ibm.db2.jcc.DB2SimpleDataSource"
    "h2"             "org.h2.jdbcx.JdbcDataSource"
    "hsqldb"         "org.hsqldb.jdbc.JDBCDataSource"
-   "mariadb"        "org.mariadb.jdbc.MySQLDataSource"
+   "mariadb"        "org.mariadb.jdbc.MariaDbDataSource"
    "mysql"          "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
    "mysql8"         "com.mysql.cj.jdbc.MysqlDataSource"
    "neo4j"          "org.neo4j.jdbc.DataSource"
