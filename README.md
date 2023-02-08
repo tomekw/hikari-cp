@@ -227,14 +227,14 @@ Custom translations of properties can be added by extending the
     [com.clickhouse.jdbc ClickHouseDataSource]))
 
 (defonce clickhouse-datasource
-         (let [jdbc-url "jdbc:ch://localhost:8123/test_db"
-               properties (doto
-                            (Properties.)
-                            (.setProperty "user" "username")
-                            (.setProperty "password" "password")
-                            (.setProperty "client_name" "test_client")
-                            (.setProperty "custom_http_params" "max_query_size=1000000"))]
-           (ClickHouseDataSource. jdbc-url properties)))
+  (let [jdbc-url "jdbc:ch://localhost:8123/test_db"
+        properties (doto
+                     (Properties.)
+                     (.setProperty "user" "username")
+                     (.setProperty "password" "password")
+                     (.setProperty "client_name" "test_client")
+                     (.setProperty "custom_http_params" "max_query_size=1000000"))]
+    (ClickHouseDataSource. jdbc-url properties)))
 
 (def datasource-options
   {:datasource clickhouse-datasource
