@@ -214,6 +214,43 @@ Custom translations of properties can be added by extending the
 (def datasource-options {:jdbc-url "jdbc:sqlite:db/database.db"})
 ```
 
+### Clickhouse example
+- Official ClickHouse JDBC driver's `ClickHouseDataSource` does not have a zero arity constructor.
+- This mandates creating `ClickHouseDataSource` separately and setting `:datasource` property in `datasource-options`
+```clojure
+(ns hikari-cp.example
+  (:require
+    [hikari-cp.core :refer :all]
+    [next.jdbc :as jdbc])
+  (:import
+    [java.util Properties]
+    [com.clickhouse.jdbc ClickHouseDataSource]))
+
+(defonce clickhouse-datasource
+         (let [jdbc-url "jdbc:ch://localhost:8123/test_db"
+               properties (doto
+                            (Properties.)
+                            (.setProperty "user" "username")
+                            (.setProperty "password" "password")
+                            (.setProperty "client_name" "test_client")
+                            (.setProperty "custom_http_params" "max_query_size=1000000"))]
+           (ClickHouseDataSource. jdbc-url properties)))
+
+(def datasource-options
+  {:datasource clickhouse-datasource
+   :connection-timeout 5000
+   :maximum-pool-size 20
+   :max-lifetime 300000
+   :pool-name "clickhouse-conn-pool"})
+
+(defn -main
+  [& args]
+  (with-open [conn (jdbc/get-connection {:datasource @datasource})]
+    (let [rows (jdbc/execute! conn ["SELECT 0"])]
+      (println rows)))
+  (close-datasource @datasource))
+```
+
 ### Notice
 
 `make-datasource` will throw `IllegalArgumentException` when invalid
