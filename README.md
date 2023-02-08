@@ -243,6 +243,9 @@ Custom translations of properties can be added by extending the
    :max-lifetime 300000
    :pool-name "clickhouse-conn-pool"})
 
+(defonce datasource 
+  (delay (make-datasource datasource-options)))
+
 (defn -main
   [& args]
   (with-open [conn (jdbc/get-connection {:datasource @datasource})]
