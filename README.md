@@ -214,8 +214,8 @@ Custom translations of properties can be added by extending the
 (def datasource-options {:jdbc-url "jdbc:sqlite:db/database.db"})
 ```
 
-### Clickhouse example
-- Official ClickHouse JDBC driver's `ClickHouseDataSource` does not have a zero arity constructor.
+### ClickHouse example
+- [Official ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java)'s `ClickHouseDataSource` does not have a zero arity constructor.
 - This mandates creating `ClickHouseDataSource` separately and setting `:datasource` property in `datasource-options`
 ```clojure
 (ns hikari-cp.example
