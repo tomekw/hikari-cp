@@ -215,7 +215,9 @@ Custom translations of properties can be added by extending the
 ```
 
 ### ClickHouse example
-- [Official ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java)'s `ClickHouseDataSource` does not have a zero arity constructor.
+`hikari-cp` can be used with [official ClickHouse driver](https://github.com/ClickHouse/clickhouse-java) in following two ways:
+1. Using `:datasource` property:
+- Official ClickHouse JDBC driver's `ClickHouseDataSource` does not have a zero arity constructor.
 - This mandates creating `ClickHouseDataSource` separately and setting `:datasource` property in `datasource-options`
 ```clojure
 (ns hikari-cp.example
@@ -244,6 +246,33 @@ Custom translations of properties can be added by extending the
    :pool-name "clickhouse-conn-pool"})
 
 (defonce datasource 
+  (delay (make-datasource datasource-options)))
+
+(defn -main
+  [& args]
+  (with-open [conn (jdbc/get-connection {:datasource @datasource})]
+    (let [rows (jdbc/execute! conn ["SELECT 0"])]
+      (println rows)))
+  (close-datasource @datasource))
+```
+2. Using `:jdbc-url` and `:driver-class-name` properties:
+```clojure
+(ns hikari-cp.example
+  (:require
+    [hikari-cp.core :refer :all]
+    [next.jdbc :as jdbc]))
+
+(def datasource-options-2
+  {:jdbc-url "jdbc:ch://localhost:8123/test_db"
+   :username "username"
+   :password "password"
+   :driver-class-name "com.clickhouse.jdbc.ClickHouseDriver"
+   :connection-timeout 5000
+   :maximum-pool-size 20
+   :max-lifetime 300000
+   :pool-name "clickhouse-conn-pool"})
+
+(defonce datasource
   (delay (make-datasource datasource-options)))
 
 (defn -main
