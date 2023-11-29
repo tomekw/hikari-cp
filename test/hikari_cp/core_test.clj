@@ -1,10 +1,13 @@
 (ns hikari-cp.core-test
-  (:require [hikari-cp.core :refer :all])
-  (:use expectations)
-  (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
-           (com.codahale.metrics MetricRegistry)
-           (com.codahale.metrics.health HealthCheckRegistry)
-           (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)))
+  (:require
+   [hikari-cp.core :as hikari-cp]
+   [expectations :refer [expect]])
+  (:import
+   (com.codahale.metrics MetricRegistry)
+   (com.codahale.metrics.health HealthCheckRegistry)
+   com.zaxxer.hikari.HikariConfig
+   (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)
+   (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)))
 
 (def valid-options
   {:auto-commit              false
@@ -44,36 +47,39 @@
 (def metrics-tracker-factory-options
   {:metrics-tracker-factory (PrometheusMetricsTrackerFactory.)})
 
-(def datasource-config-with-required-settings
-  (datasource-config (apply dissoc valid-options (keys default-datasource-options))))
+(def ^HikariConfig datasource-config-with-required-settings
+  (hikari-cp/datasource-config (apply dissoc valid-options (keys hikari-cp/default-datasource-options))))
 
-(def datasource-config-with-overrides
-  (datasource-config valid-options))
+(def ^HikariConfig datasource-config-with-overrides
+  (hikari-cp/datasource-config valid-options))
 
-(def datasource-config-with-overrides-alternate
-  (datasource-config (-> (dissoc valid-options :adapter)
+(def ^HikariConfig datasource-config-with-overrides-alternate
+  (hikari-cp/datasource-config (-> (dissoc valid-options :adapter)
                          (merge alternate-valid-options))))
 
-(def datasource-config-with-overrides-alternate2
-  (datasource-config (-> (dissoc valid-options :adapter)
+(def ^HikariConfig datasource-config-with-overrides-alternate2
+  (hikari-cp/datasource-config (-> (dissoc valid-options :adapter)
                          (merge alternate-valid-options2))))
 
-(def mysql8-datasource-config
-  (datasource-config (merge valid-options {:adapter "mysql8"})))
+(def ^HikariConfig mysql8-datasource-config
+  (hikari-cp/datasource-config (merge valid-options {:adapter "mysql8"})))
 
-(def mysql-datasource-config
-  (datasource-config (merge valid-options
+(def ^HikariConfig mysql-datasource-config
+  (hikari-cp/datasource-config (merge valid-options
                             {:adapter "mysql"
                              :use-legacy-datetime-code false})))
 
-(def metric-registry-config (datasource-config (merge valid-options metric-registry-options)))
+(def  ^HikariConfig metric-registry-config
+  (hikari-cp/datasource-config (merge valid-options metric-registry-options)))
 
-(def health-check-registry-config (datasource-config (merge valid-options health-check-registry-options)))
+(def ^HikariConfig health-check-registry-config
+  (hikari-cp/datasource-config (merge valid-options health-check-registry-options)))
 
-(def metrics-tracker-factory-config (datasource-config (merge valid-options metrics-tracker-factory-options)))
+(def ^HikariConfig metrics-tracker-factory-config
+  (hikari-cp/datasource-config (merge valid-options metrics-tracker-factory-options)))
 
 (expect false
-        (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))
+        (get (.getDataSourceProperties ^HikariConfig mysql-datasource-config) "useLegacyDatetimeCode"))
 (expect "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
         (.getDataSourceClassName mysql-datasource-config))
 (expect "com.mysql.cj.jdbc.MysqlDataSource"
@@ -156,106 +162,106 @@
         (.getDataSourceClassName datasource-config-with-overrides-alternate2))
 
 (expect IllegalArgumentException
-        (datasource-config (dissoc valid-options :adapter)))
+        (hikari-cp/datasource-config (dissoc valid-options :adapter)))
 (expect #"contains\? % :adapter"
         (try
-          (datasource-config (validate-options (dissoc valid-options :adapter)))
+          (hikari-cp/datasource-config (hikari-cp/validate-options (dissoc valid-options :adapter)))
           (catch IllegalArgumentException e
             (str (.getMessage e)))))
 
 (expect "jdbc:postgres:test"
-        (.getJdbcUrl (datasource-config {:jdbc-url "jdbc:postgres:test"})))
+        (.getJdbcUrl (hikari-cp/datasource-config {:jdbc-url "jdbc:postgres:test"})))
 
 (expect map?
-        (validate-options valid-options))
+        (hikari-cp/validate-options valid-options))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:auto-commit 1})))
+        (hikari-cp/validate-options (merge valid-options {:auto-commit 1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:read-only 1})))
+        (hikari-cp/validate-options (merge valid-options {:read-only 1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:connection-timeout "foo"})))
+        (hikari-cp/validate-options (merge valid-options {:connection-timeout "foo"})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:connection-timeout 999})))
+        (hikari-cp/validate-options (merge valid-options {:connection-timeout 999})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:validation-timeout 999})))
+        (hikari-cp/validate-options (merge valid-options {:validation-timeout 999})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:idle-timeout -1})))
+        (hikari-cp/validate-options (merge valid-options {:idle-timeout -1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:max-lifetime -1})))
+        (hikari-cp/validate-options (merge valid-options {:max-lifetime -1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:minimum-idle -1})))
+        (hikari-cp/validate-options (merge valid-options {:minimum-idle -1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:maximum-pool-size -1})))
+        (hikari-cp/validate-options (merge valid-options {:maximum-pool-size -1})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:maximum-pool-size 0})))
+        (hikari-cp/validate-options (merge valid-options {:maximum-pool-size 0})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:adapter :foo})))
+        (hikari-cp/validate-options (merge valid-options {:adapter :foo})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:datasource-classname "adsf"})))
+        (hikari-cp/validate-options (merge valid-options {:datasource-classname "adsf"})))
 (expect IllegalArgumentException
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url nil})))
+        (hikari-cp/validate-options (merge (dissoc valid-options :adapter) {:jdbc-url nil})))
 (expect IllegalArgumentException
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
+        (hikari-cp/validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
                                                                   :driver-class-name nil})))
 (expect IllegalArgumentException
-        (validate-options (merge valid-options {:transaction-isolation 1})))
+        (hikari-cp/validate-options (merge valid-options {:transaction-isolation 1})))
 
 (expect map?
-        (validate-options (merge valid-options {:username nil})))
+        (hikari-cp/validate-options (merge valid-options {:username nil})))
 (expect map?
-        (validate-options (dissoc valid-options :username)))
+        (hikari-cp/validate-options (dissoc valid-options :username)))
 (expect map?
-        (validate-options (dissoc valid-options :password)))
+        (hikari-cp/validate-options (dissoc valid-options :password)))
 (expect map?
-        (validate-options (merge valid-options {:password nil})))
+        (hikari-cp/validate-options (merge valid-options {:password nil})))
 (expect map?
-        (validate-options (merge valid-options {:database-name nil})))
+        (hikari-cp/validate-options (merge valid-options {:database-name nil})))
 (expect map?
-        (validate-options (dissoc valid-options :database-name)))
+        (hikari-cp/validate-options (dissoc valid-options :database-name)))
 (expect map?
-        (validate-options (dissoc valid-options :server-name)))
+        (hikari-cp/validate-options (dissoc valid-options :server-name)))
 (expect map?
-        (validate-options (merge valid-options {:server-name nil})))
+        (hikari-cp/validate-options (merge valid-options {:server-name nil})))
 (expect map?
-        (validate-options (merge valid-options {:port-number -1})))
+        (hikari-cp/validate-options (merge valid-options {:port-number -1})))
 (expect map?
-        (validate-options (dissoc valid-options :port-number)))
+        (hikari-cp/validate-options (dissoc valid-options :port-number)))
 (expect map?
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"})))
+        (hikari-cp/validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"})))
 (expect map?
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
+        (hikari-cp/validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
                                                                   :driver-class-name "org.h2.Driver"})))
 
 
 ;; -- check leak detections option
 ;; default should stay 0
 (expect 0 (-> valid-options
-              (datasource-config)
+              (hikari-cp/datasource-config)
               (.getLeakDetectionThreshold)))
 
 ;; it should apply a correct value
-(let [config (datasource-config (assoc valid-options :leak-detection-threshold 3000))]
+(let [config (hikari-cp/datasource-config (assoc valid-options :leak-detection-threshold 3000))]
   (expect 3000 (.getLeakDetectionThreshold config)))
 
 ;; it should complain, that value is too small
 (expect IllegalArgumentException
-  (validate-options (assoc valid-options :leak-detection-threshold 1)))
+  (hikari-cp/validate-options (assoc valid-options :leak-detection-threshold 1)))
 (expect IllegalArgumentException
-  (validate-options (assoc valid-options :leak-detection-threshold 1999)))
+  (hikari-cp/validate-options (assoc valid-options :leak-detection-threshold 1999)))
 
 ;; Ensure that core options aren't being set as datasource properties
 (expect #{"portNumber" "databaseName" "serverName"}
   (set (keys (.getDataSourceProperties metric-registry-config))))
 
 (expect HikariPool$PoolInitializationException
-  (make-datasource valid-options))
+  (hikari-cp/make-datasource valid-options))
 
-(expect "tinyInt1isBit" (translate-property :tinyInt1isBit))
-(expect "tinyInt1isBit" (translate-property :tiny-int1is-bit))
-(expect "useSSL" (translate-property :useSSL))
-(expect "useSSL" (translate-property :use-ssl))
-(expect "useFoo" (translate-property :useFOO))
+(expect "tinyInt1isBit" (hikari-cp/translate-property :tinyInt1isBit))
+(expect "tinyInt1isBit" (hikari-cp/translate-property :tiny-int1is-bit))
+(expect "useSSL" (hikari-cp/translate-property :useSSL))
+(expect "useSSL" (hikari-cp/translate-property :use-ssl))
+(expect "useFoo" (hikari-cp/translate-property :useFOO))
 
 ;; translate-property is extensible
-(defmethod translate-property ::extend-translate-test [_] 42)
-(expect 42 (translate-property ::extend-translate-test))
+(defmethod hikari-cp/translate-property ::extend-translate-test [_] 42)
+(expect 42 (hikari-cp/translate-property ::extend-translate-test))

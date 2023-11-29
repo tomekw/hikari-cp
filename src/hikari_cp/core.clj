@@ -194,7 +194,7 @@
 
 (defn datasource-config
   "Create datasource config from `datasource-options`"
-  [datasource-options]
+  ^HikariConfig [datasource-options]
   (let [config (HikariConfig.)
         options               (validate-options datasource-options)
         not-core-options      (apply dissoc options core-options)
@@ -273,3 +273,13 @@
   "Close given `datasource`"
   [^HikariDataSource datasource]
   (.close datasource))
+
+(defn is-running?
+  "Check if given `datasource` is running"
+  [^HikariDataSource datasource]
+  (.isRunning datasource))
+
+(defn is-closed?
+  "Check if given `datasource` is closed"
+  [^HikariDataSource datasource]
+  (.isClosed datasource))
