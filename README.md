@@ -101,7 +101,7 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            [next.jdbc :as jdbc]))
 
 (def datasource-options {:auto-commit        true
                          :read-only          false
@@ -124,7 +124,7 @@ Custom translations of properties can be added by extending the
   (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource @datasource}]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource @datasource))
@@ -134,7 +134,7 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            [next.jdbc :as jdbc]))
 
 (def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j&password=xxxx&debug=true"})
 
@@ -142,7 +142,7 @@ Custom translations of properties can be added by extending the
   (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource @datasource}]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/query conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
       (println rows)))
   (close-datasource @datasource))
@@ -159,7 +159,7 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            [next.jdbc :as jdbc]))
 
 (def datasource-options {:username      "username"
                          :password      "password"
@@ -173,7 +173,7 @@ Custom translations of properties can be added by extending the
   (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource @datasource}]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
       (println rows)))
   (close-datasource @datasource))
@@ -184,7 +184,7 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            [next.jdbc :as jdbc]))
 
 (def datasource-options {:username      "username"
                          :password      "password"
@@ -202,7 +202,7 @@ Custom translations of properties can be added by extending the
   (delay (make-datasource datasource-options)))
 
 (defn -main [& args]
-  (jdbc/with-db-connection [conn {:datasource @datasource}]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/query conn "SELECT 0")]
       (println rows)))
   (close-datasource @datasource))
@@ -245,12 +245,12 @@ Custom translations of properties can be added by extending the
    :max-lifetime 300000
    :pool-name "clickhouse-conn-pool"})
 
-(defonce datasource 
+(defonce datasource
   (delay (make-datasource datasource-options)))
 
 (defn -main
   [& args]
-  (with-open [conn (jdbc/get-connection {:datasource @datasource})]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/execute! conn ["SELECT 0"])]
       (println rows)))
   (close-datasource @datasource))
@@ -277,7 +277,7 @@ Custom translations of properties can be added by extending the
 
 (defn -main
   [& args]
-  (with-open [conn (jdbc/get-connection {:datasource @datasource})]
+  (with-open [conn (jdbc/get-connection @datasource {})]
     (let [rows (jdbc/execute! conn ["SELECT 0"])]
       (println rows)))
   (close-datasource @datasource))
