@@ -1,5 +1,10 @@
 ## unreleased
 
+## 3.1.0
+
+* updated `HikariCP` to `5.1.0`
+* bumped Clojure dependency to `1.11.3`
+
 ## 3.0.1
 
 * fixed SQLite adapter datasource class name
