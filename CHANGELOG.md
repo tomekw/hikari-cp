@@ -22,6 +22,7 @@
 ## 2.14.0
 
 * updated `HikariCP` to `4.0.3`
+* add `:allow-pool-suspension` option
 
 ## 2.13.0
 
