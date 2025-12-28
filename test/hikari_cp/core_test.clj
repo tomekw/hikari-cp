@@ -28,7 +28,7 @@
    :transaction-isolation    "TRANSACTION_SERIALIZABLE"})
 
 (def alternate-valid-options
-  {:driver-class-name "org.postgresql.ds.PGPoolingDataSource"
+  {:driver-class-name "org.postgresql.Driver"
    :jdbc-url          "jdbc:postgresql://localhost:5433/test"})
 
 (def alternate-valid-options2
@@ -191,7 +191,7 @@
 
 (deftest datasource-config-alternate-test
   (testing "driver class name with alternate options"
-    (is (= "org.postgresql.ds.PGPoolingDataSource"
+    (is (= "org.postgresql.Driver"
            (.getDriverClassName datasource-config-with-overrides-alternate))))
 
   (testing "jdbc url with alternate options"
@@ -373,3 +373,32 @@
   (testing "translate-property is extensible"
     (defmethod translate-property ::extend-translate-test [_] 42)
     (is (= 42 (translate-property ::extend-translate-test)))))
+
+(deftest driver-class-name-validation-test
+  (testing "valid PostgreSQL driver class is accepted"
+    (is (map? (validate-options (merge (dissoc valid-options :adapter)
+                                      {:jdbc-url "jdbc:postgresql://localhost:5432/test"
+                                       :driver-class-name "org.postgresql.Driver"})))))
+
+  (testing "valid MySQL driver class is accepted"
+    (is (map? (validate-options (merge (dissoc valid-options :adapter)
+                                      {:jdbc-url "jdbc:mysql://localhost:3306/test"
+                                       :driver-class-name "com.mysql.cj.jdbc.Driver"})))))
+
+  (testing "DataSource class is rejected as driver class"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge (dissoc valid-options :adapter)
+                                         {:jdbc-url "jdbc:postgresql://localhost:5432/test"
+                                          :driver-class-name "org.postgresql.ds.PGSimpleDataSource"})))))
+
+  (testing "non-existent driver class is rejected"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge (dissoc valid-options :adapter)
+                                         {:jdbc-url "jdbc:postgresql://localhost:5432/test"
+                                          :driver-class-name "com.fake.NonExistentDriver"})))))
+
+  (testing "random class name that's not a driver is rejected"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge (dissoc valid-options :adapter)
+                                         {:jdbc-url "jdbc:postgresql://localhost:5432/test"
+                                          :driver-class-name "java.lang.String"}))))))

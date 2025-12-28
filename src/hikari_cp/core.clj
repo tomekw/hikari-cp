@@ -130,8 +130,22 @@
 (s/def ::jdbc-url
   string?)
 
+(defn- valid-driver-class?
+  "Returns true if the class name is a valid JDBC Driver class.
+   Checks that:
+   1. The class exists on the classpath
+   2. The class implements java.sql.Driver interface"
+  [class-name]
+  (try
+    (let [clazz (Class/forName class-name)]
+      (.isAssignableFrom java.sql.Driver clazz))
+    (catch ClassNotFoundException _
+      false)
+    (catch Exception _
+      false)))
+
 (s/def ::driver-class-name
-  string?)
+  (s/and string? valid-driver-class?))
 
 (s/def ::jdbc-url-options
   (s/keys :req-un [::jdbc-url]

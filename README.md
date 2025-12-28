@@ -30,7 +30,7 @@ You'll also need to add the JDBC driver needed for your database.
 | `:maximum-pool-size`        | No       | `10`                   | This property controls the maximum size that the pool is allowed to reach, including both idle and in-use connections. Basically this value will determine the maximum number of actual connections to the database backend.                                                                                                           |
 | `:pool-name`                | No       | Auto-generated         | This property represents a user-defined name for the connection pool and appears mainly in logging and JMX management consoles to identify pools and pool configurations.                                                                                                                                                              |
 | `:jdbc-url`                 | **Yes¹** | None                   | This property sets the JDBC connection URL. Please note the `h2` adapter expects `:url` instead of `:jdbc-url`.                                                                                                                                                                                                                        |
-| `:driver-class-name`        | No       | None                   | This property sets the JDBC driver class.                                                                                                                                                                                                                                                                                              |
+| `:driver-class-name`        | No       | None                   | This property sets the JDBC driver class. The class must exist on the classpath and implement `java.sql.Driver`. Note: Do not use DataSource class names here (e.g., use `org.postgresql.Driver`, not `org.postgresql.ds.PGSimpleDataSource`).                                                                                        |
 | `:adapter`                  | **Yes¹** | None                   | This property sets the database adapter. Please check [Adapters and corresponding datasource class names](#adapters-and-corresponding-datasource-class-names) for the full list of supported adapters and their datasource class names. The value should be provided as a string.                                                      |
 | `:username`                 | No       | None                   | This property sets the default authentication username used when obtaining Connections from the underlying driver.                                                                                                                                                                                                                     |
 | `:password`                 | No       | None                   | This property sets the default authentication password used when obtaining Connections from the underlying driver.                                                                                                                                                                                                                     |
@@ -245,7 +245,7 @@ Custom translations of properties can be added by extending the
    :max-lifetime 300000
    :pool-name "clickhouse-conn-pool"})
 
-(defonce datasource 
+(defonce datasource
   (delay (make-datasource datasource-options)))
 
 (defn -main
@@ -283,7 +283,7 @@ Custom translations of properties can be added by extending the
   (close-datasource @datasource))
 ```
 
-### Notice
+## Notice
 
 `make-datasource` will throw `IllegalArgumentException` when invalid
 arguments are provided:
@@ -293,8 +293,43 @@ arguments are provided:
 ;; IllegalArgumentException: Invalid configuration options: (:username :database-name)
 ```
 
+`make-datasource` will also validate that the `:driver-class-name` (if provided) is a valid JDBC Driver class:
+
+```clojure
+(make-datasource {:jdbc-url "jdbc:postgresql://localhost:5432/test"
+                  :driver-class-name "org.postgresql.ds.PGSimpleDataSource"})
+;; IllegalArgumentException: "org.postgresql.ds.PGSimpleDataSource" - failed: valid-driver-class?
+;; This class is a DataSource, not a Driver. Use "org.postgresql.Driver" instead.
+```
+
+The driver class must:
+- Exist on the classpath
+- Implement the `java.sql.Driver` interface
+- Not be a DataSource class (DataSource classes should use `:datasource` or `:datasource-class-name` instead)
+
+## Troubleshooting
+
+### Driver class validation errors
+
+If you receive an error like `"failed: valid-driver-class?"`, check that:
+
+1. **The JDBC driver is in your dependencies** - Make sure you've added the appropriate JDBC driver to your `project.clj` or `deps.edn`
+2. **You're using a Driver class, not a DataSource class** - Common mistake:
+   - ❌ Wrong: `"org.postgresql.ds.PGSimpleDataSource"` (this is a DataSource)
+   - ✅ Correct: `"org.postgresql.Driver"` (this is a Driver)
+3. **The class name is spelled correctly** - Check the documentation for your specific JDBC driver
+
+### Common driver class names
+
+| Database   | Correct Driver Class Name        | Common Mistake (DataSource)              |
+|------------|----------------------------------|------------------------------------------|
+| PostgreSQL | `org.postgresql.Driver`          | `org.postgresql.ds.PGSimpleDataSource`   |
+| MySQL      | `com.mysql.cj.jdbc.Driver`       | `com.mysql.cj.jdbc.MysqlDataSource`      |
+| H2         | `org.h2.Driver`                  | `org.h2.jdbcx.JdbcDataSource`            |
+| SQLite     | `org.sqlite.JDBC`                | `org.sqlite.SQLiteDataSource`            |
+
 ## License
 
-Copyright © 2014 - 2024 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
+Copyright © 2014 [Tomek Wałkuski](https://github.com/tomekw) and [Jan Stępień](https://github.com/jstepien)
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.

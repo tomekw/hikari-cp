@@ -5,17 +5,18 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :scm {:name "git"
         :url  "https://github.com/tomekw/hikari-cp"}
-  :dependencies [[org.clojure/clojure "1.11.3" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.12.4" :scope "provided"]
                  [org.tobereplaced/lettercase "1.0.0"]
-                 [com.zaxxer/HikariCP "6.3.1"]]
+                 [com.zaxxer/HikariCP "7.0.2"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
   :profiles {:dev {:dependencies [[org.slf4j/slf4j-nop "2.0.17"]
                                   [org.clojure/java.jdbc "0.7.12"]
+                                  [com.h2database/h2 "2.4.240"]
                                   [mysql/mysql-connector-java "8.0.33"]
-                                  [org.neo4j.driver/neo4j-java-driver "5.28.9"]
-                                  [org.postgresql/postgresql "42.7.7"]
-                                  [io.dropwizard.metrics/metrics-core "4.2.33"]
-                                  [io.dropwizard.metrics/metrics-healthchecks "4.2.33"]
+                                  [org.neo4j.driver/neo4j-java-driver "6.0.2"]
+                                  [org.postgresql/postgresql "42.7.8"]
+                                  [io.dropwizard.metrics/metrics-core "4.2.37"]
+                                  [io.dropwizard.metrics/metrics-healthchecks "4.2.37"]
                                   [io.prometheus/simpleclient "0.16.0"]
 
                                   ; The Oracle driver is only accessible from maven.oracle.com
