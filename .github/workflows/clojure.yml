@@ -8,12 +8,33 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Install Leiningen
+      uses: DeLaGuardo/setup-clojure@12.5
+      with:
+        lein: latest
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-lein-${{ hashFiles('**/project.clj') }}
+        restore-keys: |
+          ${{ runner.os }}-lein-
+
     - name: Install dependencies
       run: lein deps
+
     - name: Run tests
       run: lein test
