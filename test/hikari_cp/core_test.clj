@@ -1,6 +1,6 @@
 (ns hikari-cp.core-test
-  (:require [hikari-cp.core :refer :all])
-  (:use expectations)
+  (:require [clojure.test :refer :all]
+            [hikari-cp.core :refer :all])
   (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
            (com.codahale.metrics MetricRegistry)
            (com.codahale.metrics.health HealthCheckRegistry)
@@ -25,8 +25,7 @@
    :connection-init-sql      "set join_collapse_limit=4"
    :connection-test-query    "select 0"
    :register-mbeans          true
-   :transaction-isolation    "TRANSACTION_SERIALIZABLE"
-   #_:leak-detection-threshold #_4000})                     ; a valid option but tested separately below.
+   :transaction-isolation    "TRANSACTION_SERIALIZABLE"})
 
 (def alternate-valid-options
   {:driver-class-name "org.postgresql.ds.PGPoolingDataSource"
@@ -72,190 +71,305 @@
 
 (def metrics-tracker-factory-config (datasource-config (merge valid-options metrics-tracker-factory-options)))
 
-(expect false
-        (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))
-(expect "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
-        (.getDataSourceClassName mysql-datasource-config))
-(expect "com.mysql.cj.jdbc.MysqlDataSource"
-  (.getDataSourceClassName mysql8-datasource-config))
-(expect true
-        (.isAutoCommit datasource-config-with-required-settings))
-(expect false
-        (.isReadOnly datasource-config-with-required-settings))
-(expect 30000
-        (.getConnectionTimeout datasource-config-with-required-settings))
-(expect 5000
-        (.getValidationTimeout datasource-config-with-required-settings))
-(expect 600000
-        (.getIdleTimeout datasource-config-with-required-settings))
-(expect 1800000
-        (.getMaxLifetime datasource-config-with-required-settings))
-(expect 10
-        (.getMinimumIdle datasource-config-with-required-settings))
-(expect 10
-        (.getMaximumPoolSize datasource-config-with-required-settings))
-(expect "org.postgresql.ds.PGSimpleDataSource"
-        (.getDataSourceClassName datasource-config-with-required-settings))
-(expect "username"
-        (.getUsername datasource-config-with-required-settings))
-(expect "password"
-        (.getPassword datasource-config-with-required-settings))
-(expect 5433
-        (-> datasource-config-with-required-settings
-            .getDataSourceProperties
-            (get "portNumber")))
-(expect nil
-        (.getMetricRegistry datasource-config-with-required-settings))
-(expect (:metric-registry metric-registry-options)
-        (.getMetricRegistry metric-registry-config))
+(deftest mysql-datasource-properties-test
+  (testing "MySQL datasource uses legacy datetime code false"
+    (is (= false (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))))
 
-(expect nil
-  (.getHealthCheckRegistry datasource-config-with-required-settings))
-(expect (:health-check-registry health-check-registry-options)
-  (.getHealthCheckRegistry health-check-registry-config))
+  (testing "MySQL datasource class name"
+    (is (= "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
+           (.getDataSourceClassName mysql-datasource-config))))
 
-(expect nil
-  (.getMetricsTrackerFactory datasource-config-with-required-settings))
-(expect (:metrics-tracker-factory metrics-tracker-factory-options)
-  (.getMetricsTrackerFactory metrics-tracker-factory-config))
+  (testing "MySQL8 datasource class name"
+    (is (= "com.mysql.cj.jdbc.MysqlDataSource"
+           (.getDataSourceClassName mysql8-datasource-config)))))
 
-(expect "TRANSACTION_SERIALIZABLE"
-  (.getTransactionIsolation datasource-config-with-required-settings))
+(deftest datasource-config-with-required-settings-test
+  (testing "auto-commit default setting"
+    (is (= true (.isAutoCommit datasource-config-with-required-settings))))
 
-(expect false
-        (.isAutoCommit datasource-config-with-overrides))
-(expect true
-        (.isReadOnly datasource-config-with-overrides))
-(expect 1000
-        (.getConnectionTimeout datasource-config-with-overrides))
-(expect 1000
-        (.getValidationTimeout datasource-config-with-overrides))
-(expect 0
-        (.getIdleTimeout datasource-config-with-overrides))
-(expect 0
-        (.getMaxLifetime datasource-config-with-overrides))
-(expect 0
-        (.getMinimumIdle datasource-config-with-overrides))
-(expect 1
-        (.getMaximumPoolSize datasource-config-with-overrides))
-(expect "db-pool"
-        (.getPoolName datasource-config-with-overrides))
-(expect "set join_collapse_limit=4"
-        (.getConnectionInitSql datasource-config-with-overrides))
-(expect "select 0"
-        (.getConnectionTestQuery datasource-config-with-overrides))
-(expect true
-        (.isRegisterMbeans datasource-config-with-overrides))
+  (testing "read-only default setting"
+    (is (= false (.isReadOnly datasource-config-with-required-settings))))
 
-(expect "org.postgresql.ds.PGPoolingDataSource"
-          (.getDriverClassName datasource-config-with-overrides-alternate))
-(expect "jdbc:postgresql://localhost:5433/test"
-        (.getJdbcUrl datasource-config-with-overrides-alternate))
+  (testing "connection timeout default"
+    (is (= 30000 (.getConnectionTimeout datasource-config-with-required-settings))))
 
-(expect "com.sybase.jdbc3.jdbc.SybDataSource"
-        (.getDataSourceClassName datasource-config-with-overrides-alternate2))
+  (testing "validation timeout default"
+    (is (= 5000 (.getValidationTimeout datasource-config-with-required-settings))))
 
-(expect IllegalArgumentException
-        (datasource-config (dissoc valid-options :adapter)))
-(expect #"contains\? % :adapter"
-        (try
-          (datasource-config (validate-options (dissoc valid-options :adapter)))
-          (catch IllegalArgumentException e
-            (str (.getMessage e)))))
+  (testing "idle timeout default"
+    (is (= 600000 (.getIdleTimeout datasource-config-with-required-settings))))
 
-(expect "jdbc:postgres:test"
-        (.getJdbcUrl (datasource-config {:jdbc-url "jdbc:postgres:test"})))
+  (testing "max lifetime default"
+    (is (= 1800000 (.getMaxLifetime datasource-config-with-required-settings))))
 
-(expect map?
-        (validate-options valid-options))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:auto-commit 1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:read-only 1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:connection-timeout "foo"})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:connection-timeout 999})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:validation-timeout 999})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:idle-timeout -1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:max-lifetime -1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:minimum-idle -1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:maximum-pool-size -1})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:maximum-pool-size 0})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:adapter :foo})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:datasource-classname "adsf"})))
-(expect IllegalArgumentException
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url nil})))
-(expect IllegalArgumentException
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
-                                                                  :driver-class-name nil})))
-(expect IllegalArgumentException
-        (validate-options (merge valid-options {:transaction-isolation 1})))
+  (testing "minimum idle default"
+    (is (= 10 (.getMinimumIdle datasource-config-with-required-settings))))
 
-(expect map?
-        (validate-options (merge valid-options {:username nil})))
-(expect map?
-        (validate-options (dissoc valid-options :username)))
-(expect map?
-        (validate-options (dissoc valid-options :password)))
-(expect map?
-        (validate-options (merge valid-options {:password nil})))
-(expect map?
-        (validate-options (merge valid-options {:database-name nil})))
-(expect map?
-        (validate-options (dissoc valid-options :database-name)))
-(expect map?
-        (validate-options (dissoc valid-options :server-name)))
-(expect map?
-        (validate-options (merge valid-options {:server-name nil})))
-(expect map?
-        (validate-options (merge valid-options {:port-number -1})))
-(expect map?
-        (validate-options (dissoc valid-options :port-number)))
-(expect map?
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"})))
-(expect map?
-        (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url "jdbc:h2:~/test"
-                                                                  :driver-class-name "org.h2.Driver"})))
+  (testing "maximum pool size default"
+    (is (= 10 (.getMaximumPoolSize datasource-config-with-required-settings))))
 
+  (testing "datasource class name for postgresql"
+    (is (= "org.postgresql.ds.PGSimpleDataSource"
+           (.getDataSourceClassName datasource-config-with-required-settings))))
 
-;; -- check leak detections option
-;; default should stay 0
-(expect 0 (-> valid-options
-              (datasource-config)
-              (.getLeakDetectionThreshold)))
+  (testing "username setting"
+    (is (= "username" (.getUsername datasource-config-with-required-settings))))
 
-;; it should apply a correct value
-(let [config (datasource-config (assoc valid-options :leak-detection-threshold 3000))]
-  (expect 3000 (.getLeakDetectionThreshold config)))
+  (testing "password setting"
+    (is (= "password" (.getPassword datasource-config-with-required-settings))))
 
-;; it should complain, that value is too small
-(expect IllegalArgumentException
-  (validate-options (assoc valid-options :leak-detection-threshold 1)))
-(expect IllegalArgumentException
-  (validate-options (assoc valid-options :leak-detection-threshold 1999)))
+  (testing "port number datasource property"
+    (is (= 5433 (-> datasource-config-with-required-settings
+                    .getDataSourceProperties
+                    (get "portNumber")))))
 
-;; Ensure that core options aren't being set as datasource properties
-(expect #{"portNumber" "databaseName" "serverName"}
-  (set (keys (.getDataSourceProperties metric-registry-config))))
+  (testing "metric registry default is nil"
+    (is (nil? (.getMetricRegistry datasource-config-with-required-settings))))
 
-(expect HikariPool$PoolInitializationException
-  (make-datasource valid-options))
+  (testing "health check registry default is nil"
+    (is (nil? (.getHealthCheckRegistry datasource-config-with-required-settings))))
 
-(expect "tinyInt1isBit" (translate-property :tinyInt1isBit))
-(expect "tinyInt1isBit" (translate-property :tiny-int1is-bit))
-(expect "useSSL" (translate-property :useSSL))
-(expect "useSSL" (translate-property :use-ssl))
-(expect "useFoo" (translate-property :useFOO))
+  (testing "metrics tracker factory default is nil"
+    (is (nil? (.getMetricsTrackerFactory datasource-config-with-required-settings))))
 
-;; translate-property is extensible
-(defmethod translate-property ::extend-translate-test [_] 42)
-(expect 42 (translate-property ::extend-translate-test))
+  (testing "transaction isolation setting"
+    (is (= "TRANSACTION_SERIALIZABLE"
+           (.getTransactionIsolation datasource-config-with-required-settings)))))
+
+(deftest metric-registry-config-test
+  (testing "metric registry is set when provided"
+    (is (= (:metric-registry metric-registry-options)
+           (.getMetricRegistry metric-registry-config)))))
+
+(deftest health-check-registry-config-test
+  (testing "health check registry is set when provided"
+    (is (= (:health-check-registry health-check-registry-options)
+           (.getHealthCheckRegistry health-check-registry-config)))))
+
+(deftest metrics-tracker-factory-config-test
+  (testing "metrics tracker factory is set when provided"
+    (is (= (:metrics-tracker-factory metrics-tracker-factory-options)
+           (.getMetricsTrackerFactory metrics-tracker-factory-config)))))
+
+(deftest datasource-config-with-overrides-test
+  (testing "auto-commit override"
+    (is (= false (.isAutoCommit datasource-config-with-overrides))))
+
+  (testing "read-only override"
+    (is (= true (.isReadOnly datasource-config-with-overrides))))
+
+  (testing "connection timeout override"
+    (is (= 1000 (.getConnectionTimeout datasource-config-with-overrides))))
+
+  (testing "validation timeout override"
+    (is (= 1000 (.getValidationTimeout datasource-config-with-overrides))))
+
+  (testing "idle timeout override"
+    (is (= 0 (.getIdleTimeout datasource-config-with-overrides))))
+
+  (testing "max lifetime override"
+    (is (= 0 (.getMaxLifetime datasource-config-with-overrides))))
+
+  (testing "minimum idle override"
+    (is (= 0 (.getMinimumIdle datasource-config-with-overrides))))
+
+  (testing "maximum pool size override"
+    (is (= 1 (.getMaximumPoolSize datasource-config-with-overrides))))
+
+  (testing "pool name setting"
+    (is (= "db-pool" (.getPoolName datasource-config-with-overrides))))
+
+  (testing "connection init sql"
+    (is (= "set join_collapse_limit=4"
+           (.getConnectionInitSql datasource-config-with-overrides))))
+
+  (testing "connection test query"
+    (is (= "select 0" (.getConnectionTestQuery datasource-config-with-overrides))))
+
+  (testing "register mbeans"
+    (is (= true (.isRegisterMbeans datasource-config-with-overrides)))))
+
+(deftest datasource-config-alternate-test
+  (testing "driver class name with alternate options"
+    (is (= "org.postgresql.ds.PGPoolingDataSource"
+           (.getDriverClassName datasource-config-with-overrides-alternate))))
+
+  (testing "jdbc url with alternate options"
+    (is (= "jdbc:postgresql://localhost:5433/test"
+           (.getJdbcUrl datasource-config-with-overrides-alternate)))))
+
+(deftest datasource-config-alternate2-test
+  (testing "datasource class name with alternate options 2"
+    (is (= "com.sybase.jdbc3.jdbc.SybDataSource"
+           (.getDataSourceClassName datasource-config-with-overrides-alternate2)))))
+
+(deftest datasource-config-validation-errors-test
+  (testing "missing adapter throws exception"
+    (is (thrown? IllegalArgumentException
+                 (datasource-config (dissoc valid-options :adapter)))))
+
+  (testing "missing adapter error message"
+    (is (re-find #"contains\? % :adapter"
+                 (try
+                   (datasource-config (validate-options (dissoc valid-options :adapter)))
+                   (catch IllegalArgumentException e
+                     (str (.getMessage e)))))))
+
+  (testing "jdbc-url is used when provided"
+    (is (= "jdbc:postgres:test"
+           (.getJdbcUrl (datasource-config {:jdbc-url "jdbc:postgres:test"}))))))
+
+(deftest validate-options-test
+  (testing "valid options return a map"
+    (is (map? (validate-options valid-options))))
+
+  (testing "invalid auto-commit type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:auto-commit 1})))))
+
+  (testing "invalid read-only type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:read-only 1})))))
+
+  (testing "invalid connection-timeout type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:connection-timeout "foo"})))))
+
+  (testing "connection-timeout below minimum throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:connection-timeout 999})))))
+
+  (testing "validation-timeout below minimum throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:validation-timeout 999})))))
+
+  (testing "negative idle-timeout throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:idle-timeout -1})))))
+
+  (testing "negative max-lifetime throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:max-lifetime -1})))))
+
+  (testing "negative minimum-idle throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:minimum-idle -1})))))
+
+  (testing "negative maximum-pool-size throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:maximum-pool-size -1})))))
+
+  (testing "zero maximum-pool-size throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:maximum-pool-size 0})))))
+
+  (testing "invalid adapter throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:adapter :foo})))))
+
+  (testing "deprecated datasource-classname throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:datasource-classname "adsf"})))))
+
+  (testing "nil jdbc-url without adapter throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge (dissoc valid-options :adapter) {:jdbc-url nil})))))
+
+  (testing "nil driver-class-name with jdbc-url throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge (dissoc valid-options :adapter)
+                                         {:jdbc-url "jdbc:h2:~/test"
+                                          :driver-class-name nil})))))
+
+  (testing "invalid transaction-isolation type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:transaction-isolation 1}))))))
+
+(deftest validate-options-optional-fields-test
+  (testing "nil username is valid"
+    (is (map? (validate-options (merge valid-options {:username nil})))))
+
+  (testing "missing username is valid"
+    (is (map? (validate-options (dissoc valid-options :username)))))
+
+  (testing "missing password is valid"
+    (is (map? (validate-options (dissoc valid-options :password)))))
+
+  (testing "nil password is valid"
+    (is (map? (validate-options (merge valid-options {:password nil})))))
+
+  (testing "nil database-name is valid"
+    (is (map? (validate-options (merge valid-options {:database-name nil})))))
+
+  (testing "missing database-name is valid"
+    (is (map? (validate-options (dissoc valid-options :database-name)))))
+
+  (testing "missing server-name is valid"
+    (is (map? (validate-options (dissoc valid-options :server-name)))))
+
+  (testing "nil server-name is valid"
+    (is (map? (validate-options (merge valid-options {:server-name nil})))))
+
+  (testing "negative port-number is valid"
+    (is (map? (validate-options (merge valid-options {:port-number -1})))))
+
+  (testing "missing port-number is valid"
+    (is (map? (validate-options (dissoc valid-options :port-number)))))
+
+  (testing "jdbc-url without adapter is valid"
+    (is (map? (validate-options (merge (dissoc valid-options :adapter)
+                                      {:jdbc-url "jdbc:h2:~/test"})))))
+
+  (testing "jdbc-url with driver-class-name is valid"
+    (is (map? (validate-options (merge (dissoc valid-options :adapter)
+                                      {:jdbc-url "jdbc:h2:~/test"
+                                       :driver-class-name "org.h2.Driver"}))))))
+
+(deftest leak-detection-threshold-test
+  (testing "default leak detection threshold is 0"
+    (is (= 0 (-> valid-options
+                 (datasource-config)
+                 (.getLeakDetectionThreshold)))))
+
+  (testing "leak detection threshold can be set to valid value"
+    (let [config (datasource-config (assoc valid-options :leak-detection-threshold 3000))]
+      (is (= 3000 (.getLeakDetectionThreshold config)))))
+
+  (testing "leak detection threshold below 2000 throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (assoc valid-options :leak-detection-threshold 1)))))
+
+  (testing "leak detection threshold of 1999 throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (assoc valid-options :leak-detection-threshold 1999))))))
+
+(deftest core-options-not-set-as-datasource-properties-test
+  (testing "only non-core options are set as datasource properties"
+    (is (= #{"portNumber" "databaseName" "serverName"}
+           (set (keys (.getDataSourceProperties metric-registry-config)))))))
+
+(deftest make-datasource-test
+  (testing "make-datasource throws exception with invalid connection details"
+    (is (thrown? HikariPool$PoolInitializationException
+                 (make-datasource valid-options)))))
+
+(deftest translate-property-test
+  (testing "tinyInt1isBit translates correctly"
+    (is (= "tinyInt1isBit" (translate-property :tinyInt1isBit))))
+
+  (testing "tiny-int1is-bit translates to tinyInt1isBit"
+    (is (= "tinyInt1isBit" (translate-property :tiny-int1is-bit))))
+
+  (testing "useSSL translates correctly"
+    (is (= "useSSL" (translate-property :useSSL))))
+
+  (testing "use-ssl translates to useSSL"
+    (is (= "useSSL" (translate-property :use-ssl))))
+
+  (testing "useFOO translates to useFoo"
+    (is (= "useFoo" (translate-property :useFOO)))))
+
+(deftest translate-property-extensibility-test
+  (testing "translate-property is extensible"
+    (defmethod translate-property ::extend-translate-test [_] 42)
+    (is (= 42 (translate-property ::extend-translate-test)))))

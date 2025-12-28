@@ -9,8 +9,7 @@
                  [org.tobereplaced/lettercase "1.0.0"]
                  [com.zaxxer/HikariCP "6.3.1"]]
   :deploy-repositories [["clojars" {:sign-releases false :url "https://clojars.org/repo"}]]
-  :profiles {:dev {:dependencies [[expectations "2.1.10"]
-                                  [org.slf4j/slf4j-nop "2.0.17"]
+  :profiles {:dev {:dependencies [[org.slf4j/slf4j-nop "2.0.17"]
                                   [org.clojure/java.jdbc "0.7.12"]
                                   [mysql/mysql-connector-java "8.0.33"]
                                   [org.neo4j.driver/neo4j-java-driver "5.28.9"]
@@ -25,6 +24,4 @@
                                   ; Or manual download with account
                                   ; http://www.oracle.com/technetwork/database/features/jdbc/default-2280471.html
                                   #_[com.oracle.jdbc/ojdbc7 "12.1.0.2"]]
-                   :plugins      [[lein-ancient "0.7.0"]
-                                  [lein-expectations "0.0.8"]]}}
-  :aliases {"test" "expectations"})
+                   :plugins      [[lein-ancient "0.7.0"]]}})
