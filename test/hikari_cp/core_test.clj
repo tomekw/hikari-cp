@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [hikari-cp.core :refer :all])
   (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
+           (com.zaxxer.hikari HikariConfig HikariDataSource)
            (com.codahale.metrics MetricRegistry)
            (com.codahale.metrics.health HealthCheckRegistry)
            (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)))
@@ -74,141 +75,141 @@
 
 (deftest mysql-datasource-properties-test
   (testing "MySQL datasource uses legacy datetime code false"
-    (is (= false (get (.getDataSourceProperties mysql-datasource-config) "useLegacyDatetimeCode"))))
+    (is (= false (get (.getDataSourceProperties ^HikariConfig mysql-datasource-config) "useLegacyDatetimeCode"))))
 
   (testing "MySQL datasource class name"
     (is (= "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
-           (.getDataSourceClassName mysql-datasource-config))))
+           (.getDataSourceClassName ^HikariConfig mysql-datasource-config))))
 
   (testing "MySQL8 datasource class name"
     (is (= "com.mysql.cj.jdbc.MysqlDataSource"
-           (.getDataSourceClassName mysql8-datasource-config)))))
+           (.getDataSourceClassName ^HikariConfig mysql8-datasource-config)))))
 
 (deftest datasource-config-with-required-settings-test
   (testing "allow-pool-suspension default setting"
-    (is (= false (.isAllowPoolSuspension datasource-config-with-required-settings))))
+    (is (= false (.isAllowPoolSuspension ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "auto-commit default setting"
-    (is (= true (.isAutoCommit datasource-config-with-required-settings))))
+    (is (= true (.isAutoCommit ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "read-only default setting"
-    (is (= false (.isReadOnly datasource-config-with-required-settings))))
+    (is (= false (.isReadOnly ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "connection timeout default"
-    (is (= 30000 (.getConnectionTimeout datasource-config-with-required-settings))))
+    (is (= 30000 (.getConnectionTimeout ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "validation timeout default"
-    (is (= 5000 (.getValidationTimeout datasource-config-with-required-settings))))
+    (is (= 5000 (.getValidationTimeout ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "idle timeout default"
-    (is (= 600000 (.getIdleTimeout datasource-config-with-required-settings))))
+    (is (= 600000 (.getIdleTimeout ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "max lifetime default"
-    (is (= 1800000 (.getMaxLifetime datasource-config-with-required-settings))))
+    (is (= 1800000 (.getMaxLifetime ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "minimum idle default"
-    (is (= 10 (.getMinimumIdle datasource-config-with-required-settings))))
+    (is (= 10 (.getMinimumIdle ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "maximum pool size default"
-    (is (= 10 (.getMaximumPoolSize datasource-config-with-required-settings))))
+    (is (= 10 (.getMaximumPoolSize ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "datasource class name for postgresql"
     (is (= "org.postgresql.ds.PGSimpleDataSource"
-           (.getDataSourceClassName datasource-config-with-required-settings))))
+           (.getDataSourceClassName ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "username setting"
-    (is (= "username" (.getUsername datasource-config-with-required-settings))))
+    (is (= "username" (.getUsername ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "password setting"
-    (is (= "password" (.getPassword datasource-config-with-required-settings))))
+    (is (= "password" (.getPassword ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "port number datasource property"
-    (is (= 5433 (-> datasource-config-with-required-settings
+    (is (= 5433 (-> ^HikariConfig datasource-config-with-required-settings
                     .getDataSourceProperties
                     (get "portNumber")))))
 
   (testing "metric registry default is nil"
-    (is (nil? (.getMetricRegistry datasource-config-with-required-settings))))
+    (is (nil? (.getMetricRegistry ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "health check registry default is nil"
-    (is (nil? (.getHealthCheckRegistry datasource-config-with-required-settings))))
+    (is (nil? (.getHealthCheckRegistry ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "metrics tracker factory default is nil"
-    (is (nil? (.getMetricsTrackerFactory datasource-config-with-required-settings))))
+    (is (nil? (.getMetricsTrackerFactory ^HikariConfig datasource-config-with-required-settings))))
 
   (testing "transaction isolation setting"
     (is (= "TRANSACTION_SERIALIZABLE"
-           (.getTransactionIsolation datasource-config-with-required-settings)))))
+           (.getTransactionIsolation ^HikariConfig datasource-config-with-required-settings)))))
 
 (deftest metric-registry-config-test
   (testing "metric registry is set when provided"
     (is (= (:metric-registry metric-registry-options)
-           (.getMetricRegistry metric-registry-config)))))
+           (.getMetricRegistry ^HikariConfig metric-registry-config)))))
 
 (deftest health-check-registry-config-test
   (testing "health check registry is set when provided"
     (is (= (:health-check-registry health-check-registry-options)
-           (.getHealthCheckRegistry health-check-registry-config)))))
+           (.getHealthCheckRegistry ^HikariConfig health-check-registry-config)))))
 
 (deftest metrics-tracker-factory-config-test
   (testing "metrics tracker factory is set when provided"
     (is (= (:metrics-tracker-factory metrics-tracker-factory-options)
-           (.getMetricsTrackerFactory metrics-tracker-factory-config)))))
+           (.getMetricsTrackerFactory ^HikariConfig metrics-tracker-factory-config)))))
 
 (deftest datasource-config-with-overrides-test
   (testing "allow-pool-suspension override"
-    (is (= true (.isAllowPoolSuspension datasource-config-with-overrides))))
+    (is (= true (.isAllowPoolSuspension ^HikariConfig datasource-config-with-overrides))))
 
   (testing "auto-commit override"
-    (is (= false (.isAutoCommit datasource-config-with-overrides))))
+    (is (= false (.isAutoCommit ^HikariConfig datasource-config-with-overrides))))
 
   (testing "read-only override"
-    (is (= true (.isReadOnly datasource-config-with-overrides))))
+    (is (= true (.isReadOnly ^HikariConfig datasource-config-with-overrides))))
 
   (testing "connection timeout override"
-    (is (= 1000 (.getConnectionTimeout datasource-config-with-overrides))))
+    (is (= 1000 (.getConnectionTimeout ^HikariConfig datasource-config-with-overrides))))
 
   (testing "validation timeout override"
-    (is (= 1000 (.getValidationTimeout datasource-config-with-overrides))))
+    (is (= 1000 (.getValidationTimeout ^HikariConfig datasource-config-with-overrides))))
 
   (testing "idle timeout override"
-    (is (= 0 (.getIdleTimeout datasource-config-with-overrides))))
+    (is (= 0 (.getIdleTimeout ^HikariConfig datasource-config-with-overrides))))
 
   (testing "max lifetime override"
-    (is (= 0 (.getMaxLifetime datasource-config-with-overrides))))
+    (is (= 0 (.getMaxLifetime ^HikariConfig datasource-config-with-overrides))))
 
   (testing "minimum idle override"
-    (is (= 0 (.getMinimumIdle datasource-config-with-overrides))))
+    (is (= 0 (.getMinimumIdle ^HikariConfig datasource-config-with-overrides))))
 
   (testing "maximum pool size override"
-    (is (= 1 (.getMaximumPoolSize datasource-config-with-overrides))))
+    (is (= 1 (.getMaximumPoolSize ^HikariConfig datasource-config-with-overrides))))
 
   (testing "pool name setting"
-    (is (= "db-pool" (.getPoolName datasource-config-with-overrides))))
+    (is (= "db-pool" (.getPoolName ^HikariConfig datasource-config-with-overrides))))
 
   (testing "connection init sql"
     (is (= "set join_collapse_limit=4"
-           (.getConnectionInitSql datasource-config-with-overrides))))
+           (.getConnectionInitSql ^HikariConfig datasource-config-with-overrides))))
 
   (testing "connection test query"
-    (is (= "select 0" (.getConnectionTestQuery datasource-config-with-overrides))))
+    (is (= "select 0" (.getConnectionTestQuery ^HikariConfig datasource-config-with-overrides))))
 
   (testing "register mbeans"
-    (is (= true (.isRegisterMbeans datasource-config-with-overrides)))))
+    (is (= true (.isRegisterMbeans ^HikariConfig datasource-config-with-overrides)))))
 
 (deftest datasource-config-alternate-test
   (testing "driver class name with alternate options"
     (is (= "org.postgresql.Driver"
-           (.getDriverClassName datasource-config-with-overrides-alternate))))
+           (.getDriverClassName ^HikariConfig datasource-config-with-overrides-alternate))))
 
   (testing "jdbc url with alternate options"
     (is (= "jdbc:postgresql://localhost:5433/test"
-           (.getJdbcUrl datasource-config-with-overrides-alternate)))))
+           (.getJdbcUrl ^HikariConfig datasource-config-with-overrides-alternate)))))
 
 (deftest datasource-config-alternate2-test
   (testing "datasource class name with alternate options 2"
     (is (= "com.sybase.jdbc3.jdbc.SybDataSource"
-           (.getDataSourceClassName datasource-config-with-overrides-alternate2)))))
+           (.getDataSourceClassName ^HikariConfig datasource-config-with-overrides-alternate2)))))
 
 (deftest datasource-config-validation-errors-test
   (testing "missing adapter throws exception"
@@ -224,7 +225,7 @@
 
   (testing "jdbc-url is used when provided"
     (is (= "jdbc:postgres:test"
-           (.getJdbcUrl (datasource-config {:jdbc-url "jdbc:postgres:test"}))))))
+           (.getJdbcUrl ^HikariConfig (datasource-config {:jdbc-url "jdbc:postgres:test"}))))))
 
 (deftest validate-options-test
   (testing "valid options return a map"
@@ -338,13 +339,11 @@
 
 (deftest leak-detection-threshold-test
   (testing "default leak detection threshold is 0"
-    (is (= 0 (-> valid-options
-                 (datasource-config)
-                 (.getLeakDetectionThreshold)))))
+    (is (= 0 (.getLeakDetectionThreshold ^HikariConfig (datasource-config valid-options)))))
 
   (testing "leak detection threshold can be set to valid value"
     (let [config (datasource-config (assoc valid-options :leak-detection-threshold 3000))]
-      (is (= 3000 (.getLeakDetectionThreshold config)))))
+      (is (= 3000 (.getLeakDetectionThreshold ^HikariConfig config)))))
 
   (testing "leak detection threshold below 2000 throws exception"
     (is (thrown? IllegalArgumentException
@@ -357,7 +356,7 @@
 (deftest core-options-not-set-as-datasource-properties-test
   (testing "only non-core options are set as datasource properties"
     (is (= #{"portNumber" "databaseName" "serverName"}
-           (set (keys (.getDataSourceProperties metric-registry-config)))))))
+           (set (keys (.getDataSourceProperties ^HikariConfig metric-registry-config)))))))
 
 (deftest make-datasource-test
   (testing "make-datasource throws exception with invalid connection details"

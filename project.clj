@@ -25,4 +25,5 @@
                                   ; Or manual download with account
                                   ; http://www.oracle.com/technetwork/database/features/jdbc/default-2280471.html
                                   #_[com.oracle.jdbc/ojdbc7 "12.1.0.2"]]
-                   :plugins      [[lein-ancient "0.7.0"]]}})
+                   :plugins      [[lein-ancient "0.7.0"]
+                                  [jonase/eastwood "1.4.3"]]}})
