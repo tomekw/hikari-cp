@@ -287,3 +287,13 @@
   "Close given `datasource`"
   [^HikariDataSource datasource]
   (.close datasource))
+
+(defn is-running?
+  "Check if given `datasource` is running"
+  [^HikariDataSource datasource]
+  (.isRunning datasource))
+
+(defn is-closed?
+  "Check if given `datasource` is closed"
+  [^HikariDataSource datasource]
+  (.isClosed datasource))

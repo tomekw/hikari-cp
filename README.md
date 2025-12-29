@@ -130,8 +130,10 @@ Custom translations of properties can be added by extending the
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
-      (println rows)))
-  (close-datasource @datasource))
+      (println rows)
+      (println (is-running? @datasource))))
+  (close-datasource @datasource)
+  (println (is-closed? @datasource)))
 ```
 ### Neo4j
 
