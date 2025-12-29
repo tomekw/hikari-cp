@@ -7,7 +7,8 @@
            (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)))
 
 (def valid-options
-  {:auto-commit              false
+  {:allow-pool-suspension    true
+   :auto-commit              false
    :read-only                true
    :connection-timeout       1000
    :validation-timeout       1000
@@ -84,6 +85,9 @@
            (.getDataSourceClassName mysql8-datasource-config)))))
 
 (deftest datasource-config-with-required-settings-test
+  (testing "allow-pool-suspension default setting"
+    (is (= false (.isAllowPoolSuspension datasource-config-with-required-settings))))
+
   (testing "auto-commit default setting"
     (is (= true (.isAutoCommit datasource-config-with-required-settings))))
 
@@ -152,6 +156,9 @@
            (.getMetricsTrackerFactory metrics-tracker-factory-config)))))
 
 (deftest datasource-config-with-overrides-test
+  (testing "allow-pool-suspension override"
+    (is (= true (.isAllowPoolSuspension datasource-config-with-overrides))))
+
   (testing "auto-commit override"
     (is (= false (.isAutoCommit datasource-config-with-overrides))))
 
@@ -222,6 +229,10 @@
 (deftest validate-options-test
   (testing "valid options return a map"
     (is (map? (validate-options valid-options))))
+
+  (testing "invalid allow-pool-suspension type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (merge valid-options {:allow-pool-suspension 1})))))
 
   (testing "invalid auto-commit type throws exception"
     (is (thrown? IllegalArgumentException

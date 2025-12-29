@@ -24,6 +24,7 @@ You'll also need to add the JDBC driver needed for your database.
 
 | Option                      | Required | Default value          | Description                                                                                                                                                                                                                                                                                                                            |
 | --------------------------- | :------: | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `:allow-pool-suspension`    | No       | `false`                | This property controls whether the pool can be suspended and resumed through JMX. |
 | `:auto-commit`              | No       | `true`                 | This property controls the default auto-commit behavior of connections returned from the pool. It is a boolean value.                                                                                                                                                                                                                  |
 | `:read-only`                | No       | `false`                | This property controls whether Connections obtained from the pool are in read-only mode by default.                                                                                                                                                                                                                                    |
 | `:connection-timeout`       | No       | `30000`                | This property controls the maximum number of milliseconds that a client will wait for a connection from the pool. If this time is exceeded without a connection becoming available, a SQLException will be thrown. 1000ms is the minimum value.                                                                                        |
@@ -107,22 +108,23 @@ Custom translations of properties can be added by extending the
   (:require [hikari-cp.core :refer :all]
             [clojure.java.jdbc :as jdbc]))
 
-(def datasource-options {:auto-commit        true
-                         :read-only          false
-                         :connection-timeout 30000
-                         :validation-timeout 5000
-                         :idle-timeout       600000
-                         :max-lifetime       1800000
-                         :minimum-idle       10
-                         :maximum-pool-size  10
-                         :pool-name          "db-pool"
-                         :adapter            "postgresql"
-                         :username           "username"
-                         :password           "password"
-                         :database-name      "database"
-                         :server-name        "localhost"
-                         :port-number        5432
-                         :register-mbeans    false})
+(def datasource-options {:allow-pool-suspension false
+                         :auto-commit           true
+                         :read-only             false
+                         :connection-timeout    30000
+                         :validation-timeout    5000
+                         :idle-timeout          600000
+                         :max-lifetime          1800000
+                         :minimum-idle          10
+                         :maximum-pool-size     10
+                         :pool-name             "db-pool"
+                         :adapter               "postgresql"
+                         :username              "username"
+                         :password              "password"
+                         :database-name         "database"
+                         :server-name           "localhost"
+                         :port-number           5432
+                         :register-mbeans       false})
 
 (defonce datasource
   (delay (make-datasource datasource-options)))
