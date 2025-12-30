@@ -3,6 +3,7 @@
 * updated `HikariCP` to `7.0.2`
 * bumped Clojure dependency to `1.12.4`
 * added `is-running?` and `is-closed?` fns
+* added `:allow-pool-suspension` option
 
 ## 3.3.0
 
