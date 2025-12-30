@@ -1,0 +1,37 @@
+{:paths ["src"]
+
+ :deps {org.clojure/clojure {:mvn/version "1.12.4"}
+        org.tobereplaced/lettercase {:mvn/version "1.0.0"}
+        com.zaxxer/HikariCP {:mvn/version "7.0.2"}}
+
+ :aliases
+ {:dev
+  {:extra-paths ["test" "dev"]
+   :extra-deps {org.slf4j/slf4j-nop {:mvn/version "2.0.17"}
+                org.clojure/java.jdbc {:mvn/version "0.7.12"}
+                com.h2database/h2 {:mvn/version "2.4.240"}
+                com.mysql/mysql-connector-j {:mvn/version "9.5.0"}
+                org.neo4j.driver/neo4j-java-driver {:mvn/version "6.0.2"}
+                org.postgresql/postgresql {:mvn/version "42.7.8"}
+                io.dropwizard.metrics/metrics-core {:mvn/version "4.2.37"}
+                io.dropwizard.metrics/metrics-healthchecks {:mvn/version "4.2.37"}
+                io.prometheus/simpleclient {:mvn/version "0.16.0"}}}
+
+  :test
+  {:extra-paths ["test"]
+   :extra-deps {io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :main-opts ["-m" "cognitect.test-runner"]}
+
+  :eastwood
+  {:extra-deps {jonase/eastwood {:mvn/version "1.4.3"}}
+   :main-opts ["-m" "eastwood.lint" "{:source-paths [\"src\"]}"]}
+
+  :ancient
+  {:extra-deps {com.github.liquidz/antq {:mvn/version "2.11.1276"}}
+   :main-opts ["-m" "antq.core"]}
+
+  :build
+  {:deps {io.github.clojure/tools.build {:mvn/version "0.10.11"}
+          slipset/deps-deploy {:mvn/version "0.2.2"}}
+   :ns-default build}}}

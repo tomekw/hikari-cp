@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [hikari-cp.core :refer :all])
   (:import (com.zaxxer.hikari.pool HikariPool$PoolInitializationException)
-           (com.zaxxer.hikari HikariConfig HikariDataSource)
+           (com.zaxxer.hikari HikariConfig)
            (com.codahale.metrics MetricRegistry)
            (com.codahale.metrics.health HealthCheckRegistry)
            (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)))
