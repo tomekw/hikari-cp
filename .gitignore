@@ -15,3 +15,5 @@ pom.xml.asc
 .clj-kondo/
 .eastwood
 .cpcache/
+.calva/mcp-server/port
+.portal/vs-code.edn

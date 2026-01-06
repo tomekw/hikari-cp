@@ -106,7 +106,10 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            ;; with clojure.java.jdbc:
+            [clojure.java.jdbc :as jdbc]
+            ;; or with next.jdbc:
+            [next.jdbc :as nj]))
 
 (def datasource-options {:allow-pool-suspension false
                          :auto-commit           true
@@ -129,9 +132,19 @@ Custom translations of properties can be added by extending the
 (defonce datasource
   (delay (make-datasource datasource-options)))
 
+;; clojure.java.jdbc:
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
+      (println rows)
+      (println (is-running? @datasource))))
+  (close-datasource @datasource)
+  (println (is-closed? @datasource)))
+
+;; next.jdbc:
+(defn -main [& args]
+  (with-open [conn (nj/get-connection @datasource)]
+    (let [rows (nj/execute! conn ["SELECT 0"])]
       (println rows)
       (println (is-running? @datasource))))
   (close-datasource @datasource)
@@ -142,16 +155,26 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            ;; with clojure.java.jdbc:
+            [clojure.java.jdbc :as jdbc]
+            ;; or with next.jdbc:
+            [next.jdbc :as nj]))
 
 (def datasource-options {:jdbc-url "jdbc:neo4j:bolt://host:port/?username=neo4j&password=xxxx&debug=true"})
 
 (defonce datasource
   (delay (make-datasource datasource-options)))
 
+;; clojure.java.jdbc:
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
+      (println rows))))
+
+;; next.jdbc:
+(defn -main [& args]
+  (with-open [conn (nj/get-connection @datasource)]
+    (let [rows (nj/execute! conn ["MATCH (n:Foo) WHERE n.name = ? RETURN n" "john"])]
       (println rows)))
   (close-datasource @datasource))
 ```
@@ -167,7 +190,10 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            ;; with clojure.java.jdbc:
+            [clojure.java.jdbc :as jdbc]
+            ;; or with next.jdbc:
+            [next.jdbc :as nj]))
 
 (def datasource-options {:username      "username"
                          :password      "password"
@@ -180,9 +206,17 @@ Custom translations of properties can be added by extending the
 (defonce datasource
   (delay (make-datasource datasource-options)))
 
+;; clojure.java.jdbc:
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0 FROM dual")]
+      (println rows)))
+  (close-datasource @datasource))
+
+;; next.jdbc:
+(defn -main [& args]
+  (with-open [conn (nj/get-connection @datasource)]
+    (let [rows (nj/execute! conn ["SELECT 0 FROM dual"])]
       (println rows)))
   (close-datasource @datasource))
 ```
@@ -192,7 +226,10 @@ Custom translations of properties can be added by extending the
 ```clojure
 (ns hikari-cp.example
   (:require [hikari-cp.core :refer :all]
-            [clojure.java.jdbc :as jdbc]))
+            ;; with clojure.java.jdbc:
+            [clojure.java.jdbc :as jdbc]
+            ;; or with next.jdbc:
+            [next.jdbc :as nj]))
 
 (def datasource-options {:username      "username"
                          :password      "password"
@@ -209,9 +246,17 @@ Custom translations of properties can be added by extending the
 (defonce datasource
   (delay (make-datasource datasource-options)))
 
+;; clojure.java.jdbc:
 (defn -main [& args]
   (jdbc/with-db-connection [conn {:datasource @datasource}]
     (let [rows (jdbc/query conn "SELECT 0")]
+      (println rows)))
+  (close-datasource @datasource))
+
+;; next.jdbc:
+(defn -main [& args]
+  (with-open [conn (nj/get-connection @datasource)]
+    (let [rows (nj/execute! conn ["SELECT 0"])]
       (println rows)))
   (close-datasource @datasource))
 ```
