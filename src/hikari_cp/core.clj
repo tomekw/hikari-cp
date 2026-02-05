@@ -51,6 +51,11 @@
   [x]
   (>= x 1000))
 
+(defn- gte-30000?
+  "Returns true if num is greater than or equal 30000, else false"
+  [x]
+  (>= x 30000))
+
 (defn- leak-threshold?
   "Returns true only if x is acceptable value, 0 or greater-than-equal 2000"
   [x]
@@ -73,6 +78,9 @@
 
 (s/def ::validation-timeout
   (s/and integer? gte-1000?))
+
+(s/def ::keepalive-time
+  (s/and integer? gte-30000?))
 
 (s/def ::idle-timeout
   (s/and integer? gte-0?))
@@ -107,6 +115,7 @@
                           ::validation-timeout]
                  :opt-un [::allow-pool-suspension
                           ::connection-timeout
+                          ::keepalive-time
                           ::transaction-isolation
                           ::leak-detection-threshold])
          ;; Make sure that if the user provides the class
@@ -198,6 +207,7 @@
    :health-check-registry
    :idle-timeout
    :jdbc-url
+   :keepalive-time
    :leak-detection-threshold
    :max-lifetime
    :maximum-pool-size
@@ -228,6 +238,7 @@
                 connection-timeout
                 validation-timeout
                 idle-timeout
+                keepalive-time
                 max-lifetime
                 maximum-pool-size
                 minimum-idle
@@ -255,6 +266,7 @@
       (.setMaxLifetime         max-lifetime)
       (.setMinimumIdle         minimum-idle)
       (.setMaximumPoolSize     maximum-pool-size))
+    (when keepalive-time (.setKeepaliveTime config keepalive-time))
     (when datasource (.setDataSource config datasource))
     (if adapter
       (->> (get adapters-to-datasource-class-names adapter)
