@@ -411,8 +411,9 @@
     (is (thrown? IllegalArgumentException
                  (validate-options (merge (dissoc valid-options :adapter)
                                          {:jdbc-url "jdbc:postgresql://localhost:5432/test"
-                                          :driver-class-name "java.lang.String"})))))
+                                          :driver-class-name "java.lang.String"}))))))
 
+(deftest is-running-test
   (testing "is-running?"
     (let [pool (make-datasource {:adapter "h2"
                                  :url "jdbc:h2:mem:test"})]
@@ -420,8 +421,9 @@
 
           (close-datasource pool)
 
-          (is (= false (is-running? pool)))))
+          (is (= false (is-running? pool))))))
 
+(deftest is-closed-test
   (testing "is-closed?"
     (let [pool (make-datasource {:adapter "h2"
                                  :url "jdbc:h2:mem:test"})]
