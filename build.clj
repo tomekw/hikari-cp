@@ -34,6 +34,7 @@
           :jar-file jar-file}))
 
 (defn deploy [_]
+  (jar nil)
   (dd/deploy {:installer :remote
               :artifact jar-file
               :pom-file (b/pom-path {:lib lib :class-dir class-dir})}))
