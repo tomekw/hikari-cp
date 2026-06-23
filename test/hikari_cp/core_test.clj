@@ -353,6 +353,22 @@
     (is (thrown? IllegalArgumentException
                  (validate-options (assoc valid-options :leak-detection-threshold 1999))))))
 
+(deftest keepalive-time-test
+  (testing "default keepalive time is 120000 (2 minutes)"
+    (is (= 120000 (.getKeepaliveTime ^HikariConfig (datasource-config valid-options)))))
+
+  (testing "keepalive time can be set to valid value"
+    (let [config (datasource-config (assoc valid-options :keepalive-time 30000))]
+      (is (= 30000 (.getKeepaliveTime ^HikariConfig config)))))
+
+  (testing "keepalive time below 30000 throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (assoc valid-options :keepalive-time 29999)))))
+
+  (testing "invalid keepalive time type throws exception"
+    (is (thrown? IllegalArgumentException
+                 (validate-options (assoc valid-options :keepalive-time "foo"))))))
+
 (deftest core-options-not-set-as-datasource-properties-test
   (testing "only non-core options are set as datasource properties"
     (is (= #{"portNumber" "databaseName" "serverName"}
